@@ -1,0 +1,228 @@
+/* HeroBanner.css */
+
+/* ─── Banner Wrapper ─── */
+.hero-banner {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  min-height: 420px;
+  max-height: 640px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Background Image ─── */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1800&auto=format&fit=crop&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ─── Dark Overlay ─── */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.38) 50%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  z-index: 1;
+}
+
+/* ─── 30 / 70 Inner Grid ─── */
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+  box-sizing: border-box;
+}
+
+/* Left column – filter (30%) */
+.hero-filter-col {
+  flex: 0 0 30%;
+  max-width: 30%;
+}
+
+/* ─── Hero Content (right 70%) ─── */
+.hero-content {
+  flex: 0 0 70%;
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 1.5rem;
+  will-change: transform, opacity;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Title ─── */
+.hero-title {
+  font-family: 'Barlow Condensed', 'Arial Black', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  line-height: 1.08;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.1rem 0;
+}
+
+/* ─── Subtitle ─── */
+.hero-subtitle {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.65;
+  max-width: 520px;
+  margin: 0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  animation: fadeUp 0.9s 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── Social Sidebar ─── */
+.social-sidebar {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #222;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease;
+  border-left: 3px solid rgba(0, 0, 0, 0.08);
+}
+
+.social-icon:first-child {
+  border-radius: 4px 0 0 0;
+}
+
+.social-icon:last-child {
+  border-radius: 0 0 0 4px;
+}
+
+.social-icon:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+  transform: translateX(-3px);
+}
+
+/* ─── Responsive: Tablet (≤ 900px) ─── */
+@media (max-width: 900px) {
+  .hero-banner {
+    height: auto;
+    max-height: none;
+    min-height: 520px;
+  }
+
+  .hero-inner {
+    flex-direction: column;
+    padding: 48px 24px;
+    gap: 32px;
+  }
+
+  .hero-filter-col,
+  .hero-content {
+    flex: unset;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .hero-content {
+    order: -1;
+    padding: 0;
+    text-align: center;
+  }
+
+  .hero-subtitle {
+    margin: 0 auto;
+    max-width: 90%;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .social-sidebar {
+    top: auto;
+    bottom: 1.2rem;
+    transform: none;
+    right: 0;
+    display: none;
+  }
+
+  .social-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ─── Responsive: Mobile (≤ 480px) ─── */
+@media (max-width: 480px) {
+  .hero-banner {
+    min-height: 480px;
+  }
+
+  .hero-inner {
+    padding: 32px 16px;
+    gap: 24px;
+  }
+
+  .hero-content {
+    padding: 0;
+  }
+
+  .hero-title {
+    font-size: clamp(1.75rem, 9vw, 2.5rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .social-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+}

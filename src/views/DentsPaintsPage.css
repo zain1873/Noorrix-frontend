@@ -1,0 +1,166 @@
+﻿/* =============================
+   DENTS & PAINTS PAGE STYLES
+   ============================= */
+
+/* ── Hero Banner ── */
+.dp-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a;
+}
+
+.dp-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.dp-hero:hover .dp-hero-bg {
+  transform: scale(1);
+}
+
+.dp-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+  z-index: 2;
+}
+
+.dp-hero-top-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--theme-color, #ac1c7a), var(--theme-color, #ac1c7a));
+  z-index: 5;
+}
+
+.dp-hero-glow {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 180px;
+  background: radial-gradient(ellipse, rgba(172, 28, 122, 0.12), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.dp-hero-container {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 24px;
+  width: 100%;
+}
+
+.dp-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color, #ac1c7a);
+  margin-bottom: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 6px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dp-hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 700px;
+}
+
+.dp-hero-title span {
+  color: var(--theme-color, #ac1c7a);
+  position: relative;
+  display: inline-block;
+}
+
+.dp-hero-title span::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--theme-color, #ac1c7a);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.dp-hero-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 32px 0;
+  line-height: 1.7;
+  max-width: 580px;
+}
+
+.dp-hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.dp-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 32px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.dp-hero-btn-primary {
+  background: linear-gradient(135deg, var(--theme-color, #ac1c7a), #8a1560);
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(172, 28, 122, 0.35);
+}
+
+.dp-hero-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(172, 28, 122, 0.5);
+}
+
+.dp-hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.dp-hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-3px);
+}

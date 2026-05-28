@@ -1,0 +1,475 @@
+/* ============================================
+   Vehicle Sourcing Page Styles
+   ============================================ */
+
+/* ── Hero ── */
+.vs-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a;
+}
+
+.vs-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.vs-hero:hover .vs-hero-bg {
+  transform: scale(1);
+}
+
+.vs-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+  z-index: 2;
+}
+
+.vs-hero-top-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--theme-color);
+  z-index: 5;
+}
+
+.vs-hero-glow {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 180px;
+  background: radial-gradient(ellipse, rgba(172, 28, 122, 0.12), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vs-hero-container {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px 100px;
+  width: 100%;
+}
+
+.vs-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color);
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 6px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.vs-hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 16px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 680px;
+}
+
+.vs-hero-title span {
+  color: var(--theme-color);
+}
+
+.vs-hero-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.vs-hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.vs-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.vs-hero-btn-primary {
+  background: var(--theme-color);
+  color: #fff;
+}
+
+.vs-hero-btn-primary:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+.vs-hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.vs-hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+/* ── Info + Sidebar Section ── */
+.vs-info-sidebar-section {
+  background: var(--background-color);
+  padding: 72px 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.vs-info-sidebar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Left content */
+.vs-info-main {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.vs-info-peace {
+  font-size: 1.05rem;
+  color: #1a1a2e;
+  line-height: 1.6;
+}
+
+.vs-info-peace strong {
+  font-weight: 700;
+}
+
+.vs-info-quote-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--theme-color);
+  margin-top: 6px;
+}
+
+.vs-info-text {
+  font-size: 0.95rem;
+  color: var(--muted-text);
+  line-height: 1.8;
+}
+
+.vs-info-phone {
+  color: var(--theme-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.vs-info-phone:hover {
+  text-decoration: underline;
+}
+
+/* Sourcing Form */
+.vs-form-wrapper {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--theme-color);
+  border-radius: 10px;
+  padding: 32px 28px;
+  margin-top: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.vs-form-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 24px;
+}
+
+.vs-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vs-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.vs-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vs-form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vs-form-input,
+.vs-form-select,
+.vs-form-textarea {
+  padding: 11px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #333;
+  font-family: var(--font-main);
+  background: #fafafa;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.vs-form-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.vs-form-input:focus,
+.vs-form-select:focus,
+.vs-form-textarea:focus {
+  border-color: var(--theme-color);
+  box-shadow: 0 0 0 3px rgba(172, 28, 122, 0.08);
+  background: #fff;
+}
+
+.vs-form-input::placeholder,
+.vs-form-textarea::placeholder {
+  color: #aaa;
+}
+
+.vs-form-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--theme-color);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.vs-form-submit:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+/* ── CTA ── */
+.vs-cta {
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a;
+}
+
+.vs-cta-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.vs-cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.87) 0%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 2;
+}
+
+.vs-cta-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 200px;
+  background: radial-gradient(ellipse, rgba(172, 28, 122, 0.15), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vs-cta-container {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.vs-cta-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 6px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.vs-cta-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  max-width: 600px;
+}
+
+.vs-cta-title span {
+  color: var(--theme-color);
+}
+
+.vs-cta-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+.vs-cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.vs-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 30px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.vs-cta-btn-primary {
+  background: var(--theme-color);
+  color: #fff;
+}
+
+.vs-cta-btn-primary:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+.vs-cta-btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.vs-cta-btn-secondary:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .vs-info-sidebar-container {
+    grid-template-columns: 1fr 300px;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 900px) {
+  .vs-hero-title {
+    font-size: 2.4rem;
+  }
+
+  .vs-info-sidebar-container {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .vs-hero-title {
+    font-size: 1.9rem;
+  }
+
+  .vs-hero-container,
+  .vs-cta-container {
+    padding: 80px 20px;
+  }
+
+  .vs-info-sidebar-section {
+    padding: 48px 20px;
+  }
+
+  .vs-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-form-wrapper {
+    padding: 24px 18px;
+  }
+
+  .vs-cta-title {
+    font-size: 2rem;
+  }
+}

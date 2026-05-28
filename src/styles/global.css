@@ -1,0 +1,105 @@
+﻿/* =========================
+   ROOT THEME VARIABLES
+========================= */
+:root {
+  /* Brand Colors */
+  --theme-color: #ac1c7a;
+  --background-color: #fffdf5;
+  --muted-text: #6b6f85;
+
+  /* UI Colors */
+  --border-color: #f0e8d0;
+  --hover-color: #8a1560;
+
+  /* Fonts */
+  --font-main: 'Montserrat', sans-serif;
+  --font-script: 'Great Vibes', cursive;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(44, 48, 88, 0.06);
+}
+
+/* =========================
+   GLOBAL RESET
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+.hero-logo svg{
+  color: var(--text-color);
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.breadcrumb:hover{
+  color: var(--theme-color) !important;
+}
+
+/* Buttons */
+button {
+  font-family: var(--font-main);
+  cursor: pointer;
+}
+
+/* =========================
+   UTILITY CLASSES
+========================= */
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--theme-color);
+}
+
+.bg-primary {
+  background: var(--primary-color);
+}
+
+.bg-secondary {
+  background: var(--theme-color);
+}
+
+/* Script Font Utility */
+.font-script {
+  font-family: var(--font-script);
+}
+
+
+/* --------- section padding ---------- */
+.sp {
+  padding: 70px 20px;
+}
+.sec-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: #fff;
+  display: inline-block;
+  position: relative;
+}
+.wrapper {
+  background-color: #292525;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sp {
+    padding: 40px 14px;
+  }
+  .sec-title {
+  font-size: 32px;
+  line-height: 38px;
+}
+}

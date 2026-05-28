@@ -1,0 +1,132 @@
+.subscribe-banner {
+  background-color: #f0eff4;
+  padding: 44px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.subscribe-banner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: var(--theme-color);
+}
+
+.subscribe-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #000;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: -0.2px;
+}
+
+.subscribe-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.subscribe-input {
+  border: 1.5px solid #d8d6e3;
+  border-radius: 6px;
+  padding: 18px 14px;
+  font-size: 13px;
+  color: #555;
+  background: #fff;
+  outline: none;
+  width: 280px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subscribe-input::placeholder {
+  color: #aaa;
+}
+
+.subscribe-input:focus {
+  border-color: var(--theme-color);
+}
+
+.subscribe-btn {
+  background: var(--theme-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 18px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.2px;
+}
+
+.subscribe-btn:hover {
+  background: #000;
+  box-shadow: 0 4px 12px rgba(91, 79, 207, 0.35);
+  transform: translateY(-1px);
+}
+
+.subscribe-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .subscribe-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 20px 24px;
+  }
+
+  .subscribe-form {
+    width: 100%;
+  }
+
+  .subscribe-input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+/* Mobile */
+@media (max-width: 540px) {
+  .subscribe-banner {
+    padding: 18px 16px 22px;
+  }
+
+  .subscribe-title {
+    font-size: 22px;
+    white-space: normal;
+  }
+
+  .subscribe-form {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .subscribe-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .subscribe-btn {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+}

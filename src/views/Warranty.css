@@ -1,0 +1,507 @@
+﻿/* ============================================
+   Warranty Page Styles
+   ============================================ */
+
+/* ── Hero ── */
+.wr-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a;
+}
+
+.wr-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.wr-hero:hover .wr-hero-bg {
+  transform: scale(1);
+}
+
+.wr-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+  z-index: 2;
+}
+
+.wr-hero-top-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--theme-color);
+  z-index: 5;
+}
+
+.wr-hero-glow {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 180px;
+  background: radial-gradient(ellipse, rgba(172, 28, 122, 0.12), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.wr-hero-container {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px 100px;
+  width: 100%;
+}
+
+.wr-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color);
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 6px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wr-hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 16px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 680px;
+}
+
+.wr-hero-title span {
+  color: var(--theme-color);
+}
+
+.wr-hero-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.wr-hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.wr-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.wr-hero-btn-primary {
+  background: var(--theme-color);
+  color: #fff;
+}
+
+.wr-hero-btn-primary:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+.wr-hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.wr-hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+/* ── Warranty Options ── */
+.wr-options {
+  background: var(--background-color);
+  padding: 80px 24px;
+}
+
+.wr-options-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.wr-options-image {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+.wr-options-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 2px solid rgba(172, 28, 122, 0.1);
+  pointer-events: none;
+}
+
+.wr-options-image img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.wr-options-image:hover img {
+  transform: scale(1.03);
+}
+
+.wr-options-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wr-options-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color);
+}
+
+.wr-options-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.wr-options-title span {
+  color: var(--theme-color);
+}
+
+.wr-options-desc {
+  font-size: 0.95rem;
+  color: var(--muted-text);
+  line-height: 1.75;
+}
+
+/* 2x2 Features Grid */
+.wr-features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.wr-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 18px 16px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.wr-feature-item:hover {
+  box-shadow: 0 6px 24px rgba(172, 28, 122, 0.1);
+  transform: translateY(-2px);
+}
+
+.wr-feature-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  background: rgba(172, 28, 122, 0.08);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-color);
+}
+
+.wr-feature-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.wr-feature-desc {
+  font-size: 0.82rem;
+  color: var(--muted-text);
+  line-height: 1.55;
+}
+
+/* ── Extended Warranty + Sidebar Section ── */
+.wr-info-sidebar-section {
+  background: var(--background-color);
+  padding: 72px 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.wr-info-sidebar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Left content */
+.wr-info-main {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.wr-info-peace {
+  font-size: 1.05rem;
+  color: #1a1a2e;
+  line-height: 1.6;
+}
+
+.wr-info-peace strong {
+  font-weight: 700;
+}
+
+.wr-info-text {
+  font-size: 0.95rem;
+  color: var(--muted-text);
+  line-height: 1.8;
+}
+
+.wr-info-ext-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--theme-color);
+  margin-top: 6px;
+}
+
+/* ── CTA ── */
+.wr-cta {
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a;
+}
+
+.wr-cta-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.wr-cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.87) 0%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 2;
+}
+
+.wr-cta-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 200px;
+  background: radial-gradient(ellipse, rgba(172, 28, 122, 0.15), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.wr-cta-container {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.wr-cta-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 6px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wr-cta-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  max-width: 600px;
+}
+
+.wr-cta-title span {
+  color: var(--theme-color);
+}
+
+.wr-cta-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+.wr-cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.wr-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 30px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.wr-cta-btn-primary {
+  background: var(--theme-color);
+  color: #fff;
+}
+
+.wr-cta-btn-primary:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+.wr-cta-btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.wr-cta-btn-secondary:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .wr-info-sidebar-container {
+    grid-template-columns: 1fr 300px;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 900px) {
+  .wr-options-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .wr-options-image img {
+    height: 360px;
+  }
+
+  .wr-hero-title {
+    font-size: 2.4rem;
+  }
+
+  .wr-options-title {
+    font-size: 2rem;
+  }
+
+  .wr-info-sidebar-container {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 600px) {
+  .wr-hero-title {
+    font-size: 1.9rem;
+  }
+
+  .wr-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wr-options-title {
+    font-size: 1.7rem;
+  }
+
+  .wr-cta-title {
+    font-size: 2rem;
+  }
+
+  .wr-hero-container,
+  .wr-cta-container {
+    padding: 80px 20px;
+  }
+
+  .wr-info-sidebar-section {
+    padding: 48px 20px;
+  }
+}

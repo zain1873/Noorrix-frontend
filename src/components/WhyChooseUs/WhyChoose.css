@@ -1,0 +1,196 @@
+/* ===== Why Choose Us Section ===== */
+
+.why-section {
+  background-color: #ffffff;
+  padding: 56px 24px;
+}
+
+.why-container {
+  margin: 0 auto;
+}
+
+/* Header */
+.why-header {
+  margin-bottom: 36px;
+  margin-bottom: 50px;
+}
+
+.why-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.why-subtitle {
+  font-size: 0.875rem;
+  color: #fff;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Grid */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Card */
+.why-card {
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 0;
+}
+
+/* Fill sweep from top (number side) */
+.why-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background-color: var(--theme-color, #4f46e5);
+  transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+  border-radius: 8px;
+}
+
+.why-card:hover::before {
+  height: 100%;
+}
+
+.why-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Number */
+.why-number {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--theme-color, #4f46e5);
+  line-height: 1;
+  display: block;
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.why-card:hover .why-number {
+  color: #ffffff;
+}
+
+/* Card Title */
+.why-card-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+  line-height: 1.3;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.why-card:hover .why-card-title {
+  color: #ffffff;
+}
+
+/* Card Description */
+.why-card-desc {
+  font-size: 0.8125rem;
+  color: #555555;
+  margin: 0;
+  line-height: 1.6;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.why-card:hover .why-card-desc {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 1024px) {
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .why-title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .why-section {
+    padding: 48px 20px;
+  }
+
+  .why-title {
+    font-size: 1.5rem;
+  }
+
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .why-card {
+    padding: 22px 18px;
+  }
+
+  .why-number {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .why-section {
+    padding: 36px 16px;
+  }
+
+  .why-title {
+    font-size: 1.25rem;
+  }
+
+  .why-subtitle {
+    font-size: 0.8125rem;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .why-card {
+    padding: 20px 16px;
+    gap: 8px;
+  }
+
+  .why-number {
+    font-size: 1.375rem;
+  }
+
+  .why-card-title {
+    font-size: 18px;
+  }
+
+  .why-card-desc {
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,287 @@
+﻿/* =============================
+   TRUST SECTION
+   Why Car Owners Trust Us
+   ============================= */
+
+.trust-section {
+  background-color: #ffffff;
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.trust-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+.trust-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.trust-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #111111;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.trust-title-highlight {
+  color: var(--theme-color, #ac1c7a);
+  position: relative;
+  display: inline-block;
+}
+
+.trust-title-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--theme-color, #ac1c7a);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+.trust-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* ── Decorative accent bar under header ── */
+.trust-accent-bar {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--theme-color, #ac1c7a), var(--theme-color, #ac1c7a));
+  border-radius: 2px;
+  margin: 0 auto;
+}
+
+/* ── Grid ── */
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* ── Card ── */
+.trust-card {
+  background: #f7f7f9;
+  border-radius: 14px;
+  padding: 36px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Hover fill sweep from left */
+.trust-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--theme-color, #ac1c7a), #8a1560);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+  border-radius: 14px;
+}
+
+.trust-card:hover::before {
+  width: 100%;
+}
+
+.trust-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(172, 28, 122, 0.18);
+}
+
+/* ── Icon Circle ── */
+.trust-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--theme-color, #ac1c7a), #8a1560);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.35s ease, transform 0.35s ease;
+}
+
+.trust-card:hover .trust-icon-wrapper {
+  background: #ffffff;
+  transform: scale(1.05);
+}
+
+.trust-icon {
+  font-size: 24px;
+  color: #ffffff;
+  transition: color 0.35s ease;
+}
+
+.trust-card:hover .trust-icon {
+  color: var(--theme-color, #ac1c7a);
+}
+
+/* ── Card Title ── */
+.trust-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+  line-height: 1.3;
+  transition: color 0.35s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.trust-card:hover .trust-card-title {
+  color: #ffffff;
+}
+
+/* ── Card Description ── */
+.trust-card-desc {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.65;
+  transition: color 0.35s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.trust-card:hover .trust-card-desc {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* ── Decorative number on card ── */
+.trust-card-number {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.04);
+  line-height: 1;
+  transition: color 0.35s ease;
+  user-select: none;
+  pointer-events: none;
+}
+
+.trust-card:hover .trust-card-number {
+  color: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Golden line accent on card top ── */
+.trust-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 24px;
+  width: 40px;
+  height: 3px;
+  background: var(--theme-color, #ac1c7a);
+  border-radius: 0 0 3px 3px;
+  transition: width 0.35s ease, background 0.35s ease;
+}
+
+.trust-card:hover::after {
+  width: 60px;
+  background: #ffffff;
+}
+
+/* =============================
+   RESPONSIVE
+   ============================= */
+
+@media (max-width: 1024px) {
+  .trust-section {
+    padding: 64px 24px;
+  }
+
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+
+  .trust-title {
+    font-size: 2.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .trust-section {
+    padding: 48px 20px;
+  }
+
+  .trust-title {
+    font-size: 1.75rem;
+  }
+
+  .trust-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .trust-header {
+    margin-bottom: 40px;
+  }
+
+  .trust-card {
+    padding: 28px 22px 26px;
+  }
+
+  .trust-icon-wrapper {
+    width: 48px;
+    height: 48px;
+  }
+
+  .trust-icon {
+    font-size: 20px;
+  }
+
+  .trust-card-title {
+    font-size: 1rem;
+  }
+
+  .trust-card-desc {
+    font-size: 0.8125rem;
+  }
+
+  .trust-card-number {
+    font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .trust-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .trust-section {
+    padding: 40px 16px;
+  }
+
+  .trust-title {
+    font-size: 1.5rem;
+  }
+}

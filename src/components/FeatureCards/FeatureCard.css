@@ -1,0 +1,476 @@
+/* === Card Wrapper === */
+.card-wrapper {
+  /* display: flex; */
+  justify-content: start;
+  align-items: center;
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+/* === Section Heading === */
+
+
+.sec-title::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 3px;
+  background: var(--theme-color);
+  border-radius: 2px;
+  margin-top: 5px;
+}
+
+.section-heading p {
+  font-size: 14px;
+  color: #fff;
+  margin: 8px 0 16px;
+  margin-bottom: 50px;
+}
+
+/* === Card === */
+.mazda-card {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 380px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.mazda-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* === Image === */
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: #ddd;
+  cursor: pointer;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card-image-zoom {
+
+}
+.mazda-card:hover img {
+    transform: scale(1.08);
+}
+
+/* === AA Badge === */
+.aa-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 5px 8px 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  min-width: 140px;
+}
+
+.aa-dealer-note {
+  font-size: 8px;
+  color: #555;
+  margin: 0 0 3px 0;
+  line-height: 1.2;
+}
+
+.aa-badge-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aa-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.aa-text {
+  font-size: 14px;
+  font-weight: 900;
+  color: #f5a700;
+  letter-spacing: -0.5px;
+}
+
+.aa-sub,
+.aa-sub2 {
+  font-size: 7px;
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.approved-divider {
+  width: 1px;
+  height: 28px;
+  background: #ddd;
+}
+
+.approved-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.approved-icon {
+  color: #f5a700;
+  font-size: 12px;
+}
+
+.approved-text {
+  font-size: 7px;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 0.3px;
+}
+
+/* === Image Controls === */
+.image-controls {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.img-btn {
+  background: rgba(255, 255, 255, 0.88);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: #333;
+  transition: background 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.img-btn:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.img-count-btn span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* === Content === */
+.card-content {
+  padding: 14px 16px 16px;
+}
+
+.car-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 2px;
+  line-height: 1.2;
+}
+
+.car-subtitle {
+  font-size: 12px;
+  color: rgb(156 163 175);
+  margin: 0 0 12px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* === Specs Grid === */
+.specs-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 4px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #ececec;
+  padding-bottom: 14px;
+}
+
+/* -------------slider---------- */
+
+
+
+
+/* -----end--------- */
+.spec-item {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  gap: 5px;
+  border: 1px solid transparent;
+  padding: 4px;
+  width: fit-content;
+  background-color: #eee;
+}
+
+.spec-icon {
+  color: #000;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.spec-value {
+  font-size: 10px;
+  color: #4b5563;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* === Price Section === */
+.price-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.monthly-price {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--theme-color);
+  line-height: 1.1;
+}
+
+.price-label {
+  font-size: 11px;
+  color: #777;
+  margin-top: 1px;
+}
+
+.total-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.total-amount {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.1;
+}
+
+.total-label {
+  font-size: 11px;
+  color: #777;
+  margin-top: 1px;
+}
+
+/* === Rating Badges === */
+.rating-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 30px;
+}
+
+.badge-source {
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.autotrader-source {
+  background: #ffffff;
+  color: #e85626;
+  border-right: 1.5px solid #ddd;
+}
+
+.gurus-source {
+  background: #ffffff;
+  color: #00a862;
+  border-right: 1.5px solid #ddd;
+}
+
+.badge-label {
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.great {
+  color: #00875a;
+  background: #f0faf5;
+}
+
+.good {
+  color: #00875a;
+  background: #f0faf5;
+}
+
+/* === Buttons === */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: filter 0.2s ease, transform 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-finance {
+  background: var(--theme-color);
+  color: #ffffff;
+  font-size: 15px;
+  padding: 13px 0;
+  letter-spacing: 0.2px;
+}
+
+.btn-finance:hover {
+  filter: brightness(1.1);
+}
+
+.btn-reserve {
+  background: #1a1a1a;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 9px 0 8px;
+  gap: 1px;
+}
+
+.btn-reserve:hover {
+  filter: brightness(1.25);
+}
+
+.reserve-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.reserve-sub {
+  font-size: 11px;
+  color: #aaa;
+  font-weight: 400;
+}
+
+/* === Swiper Overrides === */
+.swiper {
+  padding-bottom: 36px !important;
+}
+
+.swiper-slide {
+  padding: 6px 0 10px;
+  height: auto;
+}
+.swiper-button-prev {
+  display: none;
+}
+.swiper-button-next {
+  display: none;
+}
+
+.swiper-pagination-bullet {
+  width: 8px !important;
+  height: 8px !important;
+  background: #ccc !important;
+  opacity: 1 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--theme-color) !important;
+}
+
+/* === Responsive === */
+@media (min-width: 480px) {
+  .mazda-card {
+    max-width: 420px;
+  }
+
+  .card-image-container {
+    height: 240px;
+  }
+
+  .car-title {
+    font-size: 18px;
+  }
+
+  .price-amount {
+    font-size: 26px;
+  }
+}
+
+@media (min-width: 768px) {
+  .mazda-card {
+    max-width: 460px;
+  }
+
+  .card-image-container {
+    height: 260px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mazda-card {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 360px) {
+  .card-content {
+    padding: 12px 12px 14px;
+  }
+
+  .specs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .price-amount {
+    font-size: 20px;
+  }
+
+  .car-title {
+    font-size: 17px;
+  }
+}

@@ -1,0 +1,302 @@
+﻿/* ── Section ── */
+.cars-section {
+  font-family: var(--font-main, 'Montserrat', sans-serif);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 70px 20px;
+}
+
+.cars-section__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-text, #6b6f85);
+  margin: 0 0 8px;
+}
+
+.cars-section__title {
+  font-family: var(--font-main, 'Montserrat', sans-serif);
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #111111;
+  margin: 0 0 10px;
+}
+
+.cars-section__title em {
+  color: var(--theme-color, #ac1c7a);
+  font-style: normal;
+}
+
+.cars-section__desc {
+  font-size: 14px;
+  color: var(--muted-text, #6b6f85);
+  max-width: 500px;
+  line-height: 1.65;
+  margin: 0 0 2.5rem;
+}
+
+/* ── Grid ── */
+.cars-section__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 2rem;
+}
+
+/* ── CTA ── */
+.cars-section__cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 0.5px solid var(--border-color, #f0e8d0);
+  gap: 12px;
+}
+
+.cars-section__cta-text {
+  font-size: 13px;
+  color: var(--muted-text, #6b6f85);
+  margin: 0;
+}
+
+.cars-section__cta-btn {
+  font-family: var(--font-main, 'Montserrat', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 22px;
+  border-radius: 8px;
+  background: var(--theme-color, #ac1c7a);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.cars-section__cta-btn:hover  { background: var(--hover-color, #8a1560); }
+.cars-section__cta-btn:active { transform: scale(0.97); }
+
+/* ── Card ── */
+.car-card {
+  background: #ffffff;
+  border: 0.5px solid var(--border-color, #f0e8d0);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.car-card:hover {
+  border-color: var(--theme-color, #ac1c7a);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(44, 48, 88, 0.06));
+}
+
+/* ── Compare image area ── */
+.car-card__compare {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  cursor: ew-resize;
+  user-select: none;
+  background: #111;
+}
+
+.car-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.car-card__img--before { z-index: 1; }
+.car-card__img--after  { z-index: 2; transition: clip-path 0.04s linear; }
+
+/* ── Slider line ── */
+.car-card__line {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.92);
+  z-index: 3;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: left 0.04s linear;
+}
+
+/* ── Knob ── */
+.car-card__knob {
+  position: absolute;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: left 0.04s linear;
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.12);
+}
+
+.car-card__knob svg {
+  width: 16px;
+  height: 16px;
+  color: #222;
+}
+
+/* ── Labels ── */
+.car-card__label {
+  position: absolute;
+  bottom: 10px;
+  z-index: 5;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 4px;
+  pointer-events: none;
+  font-family: var(--font-main, 'Montserrat', sans-serif);
+}
+
+.car-card__label--before {
+  left: 10px;
+  background: rgba(0, 0, 0, 0.60);
+  color: #fff;
+}
+
+.car-card__label--after {
+  right: 10px;
+  background: var(--theme-color, #ac1c7a);
+  opacity: 0.9;
+  color: #fff;
+}
+
+/* ── Hint ── */
+.car-card__hint {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  background: rgba(0, 0, 0, 0.48);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 5;
+  pointer-events: none;
+  letter-spacing: 0.06em;
+  transition: opacity 0.3s;
+  font-family: var(--font-main, 'Montserrat', sans-serif);
+}
+
+.car-card__hint--hidden { opacity: 0; }
+
+/* ── Card body ── */
+.car-card__body {
+  padding: 1rem 1.2rem 1.25rem;
+}
+
+.car-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.car-card__name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #111111;
+  margin: 0;
+}
+
+/* ── Badges ── */
+.car-card__badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.car-card__badge--restore {
+  background: #f3eaf9;
+  color: var(--theme-color, #ac1c7a);
+}
+.car-card__badge--custom {
+  background: #fdf4e6;
+  color: #8a1560;
+}
+.car-card__badge--detail {
+  background: #e8f4fd;
+  color: #1a73e8;
+}
+
+/* ── Description ── */
+.car-card__desc {
+  font-size: 12.5px;
+  color: var(--muted-text, #6b6f85);
+  line-height: 1.58;
+  margin: 0 0 13px;
+}
+
+/* ── Stats ── */
+.car-card__stats {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+
+.car-card__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.car-card__stat-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.car-card__stat-label {
+  font-size: 11px;
+  color: var(--muted-text, #6b6f85);
+}
+
+.car-card__stat-divider {
+  width: 0.5px;
+  background: var(--border-color, #f0e8d0);
+  align-self: stretch;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .cars-section__grid  { grid-template-columns: repeat(2, 1fr); }
+  .cars-section__title { font-size: 52px; }
+}
+
+@media (max-width: 768px) {
+  .cars-section { padding: 40px 14px; }
+}
+
+@media (max-width: 580px) {
+  .cars-section__grid  { grid-template-columns: 1fr; }
+  .cars-section__title { font-size: 42px; }
+  .cars-section__cta   { flex-direction: column; align-items: flex-start; }
+}

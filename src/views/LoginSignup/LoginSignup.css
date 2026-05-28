@@ -1,0 +1,426 @@
+/* LoginSignup — centered card, no scroll */
+
+.ls-page {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0a;
+  padding: 20px;
+  position: relative;
+  font-family: var(--font-main);
+}
+
+/* Decorative blobs */
+.ls-bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+.ls-blob-1 {
+  width: 500px;
+  height: 500px;
+  background: var(--theme-color);
+  top: -160px;
+  right: -100px;
+}
+
+.ls-blob-2 {
+  width: 400px;
+  height: 400px;
+  background: #c9a227;
+  bottom: -120px;
+  left: -100px;
+}
+
+/* Card */
+.ls-card {
+  position: relative;
+  z-index: 1;
+  background: #111;
+  border: 1px solid #242424;
+  border-radius: 18px;
+  padding: 36px 44px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+}
+
+/* Logo */
+.ls-logo {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--theme-color);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  text-decoration: none;
+}
+
+/* Heading */
+.ls-heading {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.ls-subheading {
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+/* Tabs */
+.ls-tabs {
+  display: flex;
+  background: #181818;
+  border: 1px solid #222;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+  margin-bottom: 20px;
+}
+
+.ls-tab {
+  flex: 1;
+  padding: 9px 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #555;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  transition: background 0.22s, color 0.22s;
+}
+
+.ls-tab.active {
+  background: var(--theme-color);
+  color: #fff;
+}
+
+/* Form */
+.ls-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Field with icon */
+.ls-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ls-field-icon {
+  position: absolute;
+  left: 13px;
+  color: #555;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.ls-field:focus-within .ls-field-icon {
+  color: var(--theme-color);
+}
+
+.ls-input {
+  width: 100%;
+  height: 44px;
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 9px;
+  padding: 0 42px 0 40px;
+  color: #fff;
+  font-size: 14px;
+  font-family: var(--font-main);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ls-input:focus {
+  border-color: var(--theme-color);
+  box-shadow: 0 0 0 3px rgba(172, 28, 122, 0.12);
+}
+
+.ls-input::placeholder {
+  color: #3a3a3a;
+}
+
+/* Eye toggle */
+.ls-eye-btn {
+  position: absolute;
+  right: 13px;
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.ls-eye-btn:hover {
+  color: var(--theme-color);
+}
+
+/* Forgot */
+.ls-forgot {
+  text-align: right;
+  margin-top: -4px;
+}
+
+.ls-forgot button {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.ls-forgot button:hover {
+  color: var(--theme-color);
+}
+
+/* Submit */
+.ls-submit-btn {
+  width: 100%;
+  height: 46px;
+  background: linear-gradient(135deg, var(--theme-color) 0%, #8a1560 100%);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+  box-shadow: 0 6px 20px rgba(172, 28, 122, 0.3);
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.ls-submit-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(172, 28, 122, 0.42);
+}
+
+.ls-submit-arrow {
+  font-size: 15px;
+}
+
+/* Divider */
+.ls-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 14px;
+}
+
+.ls-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #222;
+  display: block;
+}
+
+.ls-divider-text {
+  font-size: 11px;
+  color: #444;
+}
+
+/* Switch */
+.ls-switch {
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+}
+
+.ls-switch button {
+  color: var(--theme-color);
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 13px;
+  padding: 0;
+}
+
+.ls-switch button:hover {
+  text-decoration: underline;
+}
+
+/* Footer note */
+.ls-footer-note {
+  text-align: center;
+  font-size: 11px;
+  color: #444;
+  margin-top: 14px;
+}
+
+.ls-footer-note a {
+  color: #666;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.ls-footer-note a:hover {
+  color: var(--theme-color);
+}
+
+/* Forgot password icon */
+.ls-forgot-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: rgba(172, 28, 122, 0.12);
+  border: 1px solid rgba(172, 28, 122, 0.25);
+  margin: 0 auto 18px;
+}
+
+.ls-forgot-big-icon {
+  font-size: 26px;
+  color: var(--theme-color);
+}
+
+/* Success state */
+.ls-card-center {
+  text-align: center;
+}
+
+.ls-success-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(172, 28, 122, 0.1);
+  border: 1px solid rgba(172, 28, 122, 0.3);
+  margin: 0 auto 18px;
+}
+
+.ls-success-icon {
+  font-size: 30px;
+  color: var(--theme-color);
+}
+
+.ls-reset-email {
+  display: block;
+  margin-top: 6px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.ls-reset-note {
+  font-size: 12px;
+  color: #555;
+  margin-top: 14px;
+  text-align: center;
+}
+
+.ls-resend-btn {
+  background: none;
+  border: none;
+  color: var(--theme-color);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-main);
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.ls-resend-btn:hover {
+  opacity: 0.8;
+}
+
+/* Back button */
+.ls-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 14px;
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 13px;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.ls-back-btn:hover {
+  color: var(--theme-color);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .ls-card {
+    padding: 28px 20px;
+    border-radius: 14px;
+  }
+
+  .ls-heading {
+    font-size: 20px;
+  }
+}
+
+/* ── Error states ── */
+.ls-error {
+  font-size: 12px;
+  color: #ff5b5b;
+  margin: -6px 0 4px 2px;
+}
+
+.ls-error-general {
+  background: rgba(255, 91, 91, 0.1);
+  border: 1px solid rgba(255, 91, 91, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.ls-input-error {
+  border-color: #ff5b5b !important;
+}
+
+.ls-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}

@@ -1,0 +1,149 @@
+/* ─── Breadcrumb ─── */
+.brand-breadcrumb-bar {
+  background: #fff;
+  border-bottom: 1px solid #e8e0cc;
+}
+.brand-breadcrumb-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  color: var(--muted-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.brand-breadcrumb-inner a {
+  color: var(--muted-text);
+  text-decoration: none;
+  transition: color 0.18s;
+}
+.brand-breadcrumb-inner a:hover { color: var(--theme-color); }
+.brand-breadcrumb-current { color: #222; font-weight: 600; }
+
+/* ─── Hero ─── */
+.brand-hero {
+  background: #0d0d0d;
+  border-bottom: 3px solid var(--secondary-color);
+}
+.brand-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+.brand-hero-text { flex: 1; }
+.brand-hero-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+.brand-hero-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.92rem;
+  color: #bbb;
+  margin: 0 0 1.5rem;
+  line-height: 1.6;
+  max-width: 580px;
+}
+.brand-search-btn {
+  background: var(--theme-color);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 28px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  color: #fff;
+}
+.brand-search-btn:hover {
+  transform: translateY(-1px);
+}
+.brand-logo-card {
+  background: #fff;
+  border-radius: 12px;
+  width: 140px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.brand-logo-card img {
+  max-width: 100%;
+  max-height: 68px;
+  object-fit: contain;
+}
+
+/* ─── Cars Section ─── */
+.brand-cars-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+.brand-cars-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 1.5rem;
+}
+/* ─── Cards Grid ─── */
+.brand-cars-section .stock-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.brand-cars-section .stock-cards-grid .mazda-card {
+  max-width: 100%;
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .brand-cars-section .stock-cards-grid { grid-template-columns: 1fr; }
+}
+
+.brand-no-results {
+  text-align: center;
+  padding: 4rem 0;
+}
+.brand-no-results p {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--muted-text);
+  font-size: 1rem;
+  margin: 0 0 1.5rem;
+}
+.brand-view-all-btn {
+  display: inline-block;
+  background: var(--theme-color);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.brand-view-all-btn:hover { background: #8a155f; }
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .brand-hero-inner {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  .brand-logo-card { width: 100px; height: 72px; }
+  .brand-hero-title { font-size: 1.35rem; }
+}
