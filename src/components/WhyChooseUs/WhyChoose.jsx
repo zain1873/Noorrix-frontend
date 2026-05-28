@@ -13,7 +13,7 @@ const features = [
     number: "02",
     title: "Competitive pricing",
     description:
-      "Transparent, upfront pricing with great value on every deal—ensuring you always get the best for your budget.",
+      "Transparents, upfront pricing with great value on every deal—ensuring you always get the best for your budget.",
   },
   {
     number: "03",
