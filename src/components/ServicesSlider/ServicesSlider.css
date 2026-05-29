@@ -1,6 +1,6 @@
 
 .car-services-section {
-  background: #f4f6f9;
+  background: #292525;
   display: flex;
   align-items: center;
   padding: 60px 16px;
@@ -28,7 +28,7 @@
 .cs-title {
   font-size: clamp(28px, 5vw, 48px);
   font-weight: 800;
-  color: #1a2a4a;
+  color: #fff;
   line-height: 1.1;
   text-transform: uppercase;
 }

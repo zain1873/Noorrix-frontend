@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  background: #0f0f0f;
+  background: rgb(41, 37, 37) !important;
   color: white;
   font-family: Arial, sans-serif;
 }

@@ -1,5 +1,5 @@
 .browse-section {
-  background-color: #f0f0f0;
+  background-color: #292525;
   padding: 48px 24px;
   font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
 }
@@ -10,7 +10,7 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
   margin-bottom: 32px;
-  color: #111;
+  color: #fff;
 }
 
 .cards-wrapper {
