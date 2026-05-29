@@ -16,7 +16,7 @@
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-position: top;
   z-index: 1;
   transform: scale(1.05);
   transition: transform 8s ease;
@@ -251,7 +251,6 @@
   flex-direction: column;
   gap: 12px;
   cursor: default;
-  border: 1px solid #f0f0f0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   position: relative;
   border-left: 4px solid transparent;
@@ -408,6 +407,17 @@
   font-size: 0.95rem;
   color: #333;
   font-weight: 500;
+}
+
+.contact-form-detail-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+.contact-form-detail-link:hover {
+  color: var(--theme-color, #ac1c7a);
+  text-decoration: underline;
 }
 
 .contact-form-detail-icon {

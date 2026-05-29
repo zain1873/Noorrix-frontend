@@ -300,14 +300,14 @@ export default function AffordableCarCentreHeader() {
 
             {/* Phone Numbers — desktop only */}
             <div className="acc-desktop-only acc-phone-block">
-              <div className="flex items-center gap-2">
+              <a href="tel:07930955645" className="flex items-center gap-2 acc-phone-link">
                 <FaPhoneVolume size={13} color="#fff" />
                 <span className="acc-contact-number">07930955645</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </a>
+              <a href="tel:07435761085" className="flex items-center gap-2 acc-phone-link">
                 <FaPhoneAlt size={13} color="#fff" />
                 <span className="acc-contact-number">07435761085</span>
-              </div>
+              </a>
             </div>
 
             {/* WhatsApp — always visible */}

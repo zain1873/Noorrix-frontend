@@ -7,10 +7,6 @@ export const metadata = {
   title: "Noorrix Motors | Quality Used Cars UK",
   description:
     "Noorrix Motors — quality used cars, vans, finance, servicing, warranty and vehicle sourcing across the UK.",
-  icons: {
-    icon: "/favicon.jpg",
-    apple: "/favicon.jpg",
-  },
 };
 
 export default function RootLayout({ children }) {

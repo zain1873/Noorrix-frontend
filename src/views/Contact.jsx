@@ -185,19 +185,26 @@ function Contact() {
                   <span className="contact-form-detail-icon">
                     <FaPhoneAlt />
                   </span>
-                  <span>07435761085</span>
+                  <a href="tel:07435761085" className="contact-form-detail-link">07435761085</a>
                 </div>
                 <div className="contact-form-detail-item">
                   <span className="contact-form-detail-icon">
                     <FaEnvelope />
                   </span>
-                  <span>info@noorrixmotors.co.uk</span>
+                  <a href="mailto:info@noorrixmotors.co.uk" className="contact-form-detail-link">info@noorrixmotors.co.uk</a>
                 </div>
                 <div className="contact-form-detail-item">
                   <span className="contact-form-detail-icon">
                     <FaMapMarkerAlt />
                   </span>
-                  <span>1 Cauldwell Walk, Bedford MK429DT</span>
+                  <a
+                    href="https://maps.google.com/maps?q=1+Cauldwell+Walk%2C+Bedford%2C+MK42+9DT%2C+UK"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-form-detail-link"
+                  >
+                    1 Cauldwell Walk, Bedford MK42 9DT
+                  </a>
                 </div>
                 <div className="contact-form-detail-item">
                   <span className="contact-form-detail-icon">

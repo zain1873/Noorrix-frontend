@@ -55,6 +55,14 @@
   margin-bottom: 2px;
 }
 
+.acc-phone-link {
+  text-decoration: none;
+  color: inherit;
+}
+.acc-phone-link:hover .acc-contact-number {
+  text-decoration: underline;
+}
+
 .acc-contact-number {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.05rem;
@@ -621,7 +629,7 @@
   background: var(--theme-color);
   color: #fff;
   border-radius: 8px;
-  padding: 9px 20px;
+  padding: 11px 20px;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.88rem;
   font-weight: 700;
