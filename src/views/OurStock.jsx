@@ -11,6 +11,7 @@ import {
 import "../components/FeatureCards/FeatureCard.css";
 import "./OurStock.css";
 import { stockData, makeModels } from "../data/cars";
+import { useAuth, loginGate } from "../context/AuthContext";
 
 /* ─────────────────── Filter-only data ─────────────────── */
 const makes = Object.keys(makeModels);
@@ -48,6 +49,7 @@ const filterConfig = [
 /* ─────────────────── Component ─────────────────── */
 export default function OurStock() {
   const router = useRouter();
+  const { user } = useAuth();
 
   const [make,         setMake]         = useState("");
   const [model,        setModel]        = useState("");
@@ -394,7 +396,7 @@ export default function OurStock() {
                   </div>
                   <div className="action-buttons">
                     <button className="btn btn-finance" onClick={(e) => e.stopPropagation()}>View Details</button>
-                    <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push('/login'); }}>
+                    <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push(loginGate(user, `/checkout?amount=200&car=${car.id}`)); }}>
                       <span className="reserve-title">Reserve For £200</span>
                       <span className="reserve-sub">Deposit fully refundable</span>
                     </button>

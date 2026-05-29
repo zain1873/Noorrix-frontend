@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth, getDisplayName } from "../../context/AuthContext";
 import "./Navbar.css";
 const logo = "/assets/images/noorix_logo.jpg";
 import { makeModels, toBrandSlug } from "../../data/cars";
@@ -32,6 +34,8 @@ import {
   FaHammer,
   FaInfoCircle,
   FaMoneyBillWave,
+  FaUserCircle,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 // ─── Mobile Contact Dropdown ──────────────────────────────────────────────────
@@ -229,9 +233,32 @@ export default function AffordableCarCentreHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
   const lastScrollY = useRef(0);
   const hiddenRef = useRef(false);
   const SCROLL_THRESHOLD = 80;
+
+  const router = useRouter();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    setUserMenuOpen(false);
+    router.push("/");
+  };
+
+  // Close the user dropdown when clicking outside of it.
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    const onClick = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [userMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -292,8 +319,31 @@ export default function AffordableCarCentreHeader() {
             {/* Reviews — desktop only */}
             <button className="acc-reviews-btn acc-desktop-only">Reviews</button>
 
-            {/* Login — desktop only */}
-            <Link href="/login" className="acc-login-btn acc-desktop-only">Login</Link>
+            {/* Login / Account — desktop only */}
+            {user ? (
+              <div className="acc-user-menu acc-desktop-only" ref={userMenuRef}>
+                <button
+                  className="acc-user-btn"
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  aria-haspopup="true"
+                  aria-expanded={userMenuOpen}
+                >
+                  <FaUserCircle size={18} />
+                  <span className="acc-user-name">{getDisplayName(user)}</span>
+                  <FaChevronDown size={11} className={`acc-user-caret${userMenuOpen ? " open" : ""}`} />
+                </button>
+                {userMenuOpen && (
+                  <div className="acc-user-dropdown">
+                    {user.email && <div className="acc-user-email">{user.email}</div>}
+                    <button className="acc-user-logout" onClick={handleLogout}>
+                      <FaSignOutAlt size={14} /> Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link href="/login" className="acc-login-btn acc-desktop-only">Login</Link>
+            )}
 
             {/* Contact Us — desktop only */}
             <Link href="/contact" className="acc-contact-us-btn acc-desktop-only">Contact Us</Link>

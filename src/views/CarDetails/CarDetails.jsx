@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { stockData } from "../../data/cars";
+import { useAuth, loginGate } from "../../context/AuthContext";
 
 // ---------- react-icons ----------
 import { FiChevronLeft, FiChevronRight, FiChevronDown, FiChevronUp, FiX } from "react-icons/fi";
@@ -399,6 +400,8 @@ function VehicleDescriptionSection() {
 // DARK SPEC CARD  (replaces PriceCard + DealerCard + OutOfHoursPanel)
 // ----------------------------------------------------------------
 function DarkSpecCard({ car }) {
+  const router = useRouter();
+  const { user } = useAuth();
   return (
     <div className="dark-spec-card">
 
@@ -454,7 +457,10 @@ function DarkSpecCard({ car }) {
       <div className="dark-btns">
 
         {/* Reserve */}
-        <button className="dark-btn-reserve" onClick={() => router.push('/login')}>
+        <button
+          className="dark-btn-reserve"
+          onClick={() => router.push(loginGate(user, `/checkout?amount=99&car=${car.id}`))}
+        >
           Reserve now for £99 <FiChevronRight size={16} />
         </button>
 

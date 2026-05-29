@@ -643,6 +643,94 @@
   background: #333;
 }
 
+/* ─── Logged-in user menu ─────────────────────────────── */
+.acc-user-menu {
+  position: relative;
+}
+
+.acc-user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--theme-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.acc-user-btn:hover {
+  background: var(--hover-color, #8a1560);
+}
+
+.acc-user-name {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.acc-user-caret {
+  transition: transform 0.2s;
+}
+.acc-user-caret.open {
+  transform: rotate(180deg);
+}
+
+.acc-user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: #fff;
+  border: 1px solid #ececf1;
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(44, 48, 88, 0.16);
+  padding: 8px;
+  z-index: 1200;
+  animation: acc-user-pop 0.16s ease-out;
+}
+@keyframes acc-user-pop {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.acc-user-email {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  color: #6b6f85;
+  padding: 8px 10px 10px;
+  border-bottom: 1px solid #f0f0f3;
+  margin-bottom: 6px;
+  word-break: break-all;
+}
+
+.acc-user-logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #b3261e;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.acc-user-logout:hover {
+  background: #fdecec;
+}
+
 @media (max-width: 640px) {
   .acc-logo-script {
     font-size: 1.7rem;

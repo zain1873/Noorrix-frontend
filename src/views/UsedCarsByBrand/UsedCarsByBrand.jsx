@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import Navbar from "../../components/Navbar/Navbar";
 import NoorrixFooter from "../../components/Footer/Footer";
 import { stockData, makeModels, toBrandSlug } from "../../data/cars";
+import { useAuth, loginGate } from "../../context/AuthContext";
 import {
   FaCalendarAlt, FaTachometerAlt, FaCog, FaLeaf,
   FaGasPump, FaClone,
@@ -50,6 +51,7 @@ const brandLogos = {
 export default function UsedCarsByBrand() {
   const { brand } = useParams();
   const router = useRouter();
+  const { user } = useAuth();
 
   const matchedMake = Object.keys(makeModels).find(
     (make) => toBrandSlug(make) === brand
@@ -179,7 +181,7 @@ export default function UsedCarsByBrand() {
                     </button>
                     <button
                       className="btn btn-reserve"
-                      onClick={(e) => { e.preventDefault(); router.push('/login'); }}
+                      onClick={(e) => { e.preventDefault(); router.push(loginGate(user, `/checkout?amount=200&car=${car.id}`)); }}
                     >
                       <span className="reserve-title">Reserve For £200</span>
                       <span className="reserve-sub">

@@ -3,12 +3,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FiMail, FiLock, FiUser, FiEye, FiEyeOff, FiArrowLeft, FiCheckCircle } from "react-icons/fi";
+import { useAuth } from "@/context/AuthContext";
 import "./LoginSignup.css";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
+// Only allow same-site relative paths as a post-login redirect (avoids open redirects).
+function safeReturnTo() {
+  if (typeof window === "undefined") return "/";
+  const target = new URLSearchParams(window.location.search).get("returnTo");
+  return target && target.startsWith("/") && !target.startsWith("//") ? target : "/";
+}
+
 export default function LoginSignup() {
   const router = useRouter();
+  const { login } = useAuth();
 
   const [tab, setTab] = useState("login");
   const [view, setView] = useState("auth"); // "auth" | "forgot" | "forgot-sent"
@@ -40,7 +49,8 @@ export default function LoginSignup() {
         if (res.ok) {
           localStorage.setItem("access", data.access);
           localStorage.setItem("refresh", data.refresh);
-          router.push("/");
+          login({ name: "", email: form.email });
+          router.push(safeReturnTo());
         } else {
           setErrors({ general: data.detail || "Login failed. Please try again." });
         }
@@ -69,7 +79,8 @@ export default function LoginSignup() {
             localStorage.setItem("access", tokenData.access);
             localStorage.setItem("refresh", tokenData.refresh);
           }
-          router.push("/");
+          login({ name: form.name, email: form.email });
+          router.push(safeReturnTo());
         } else {
           // Map API field errors (arrays) to single strings
           const fieldErrors = {};

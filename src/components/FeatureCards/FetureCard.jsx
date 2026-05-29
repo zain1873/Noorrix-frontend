@@ -15,11 +15,13 @@ import {
   FaClone,
 } from "react-icons/fa";
 import { stockData } from "../../data/cars";
+import { useAuth, loginGate } from "../../context/AuthContext";
 import "./FeatureCard.css";
 
 
 const FeatureCard = () => {
   const router = useRouter();
+  const { user } = useAuth();
   const swiperRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -136,7 +138,7 @@ const FeatureCard = () => {
                 {/* Action Buttons */}
                 <div className="action-buttons">
                   <button className="btn btn-finance" onClick={(e) => { e.stopPropagation(); router.push(`/cars/${car.id}`); }}>View Details</button>
-                  <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push('/login'); }}>
+                  <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push(loginGate(user, `/checkout?amount=200&car=${car.id}`)); }}>
                     <span className="reserve-title">Reserve For £200</span>
                     <span className="reserve-sub">Deposit fully refundable</span>
                   </button>

@@ -16,7 +16,7 @@ import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
 import "./Contact.css";
 
-// ─── Contact Info Data ───────────────────────────────────────────────────────
+// ─── Contact Info Data ─────────────────────────────────────────────
 const contactInfo = [
   {
     icon: <FaMapMarkerAlt />,
