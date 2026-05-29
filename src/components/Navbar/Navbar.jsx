@@ -296,7 +296,7 @@ export default function AffordableCarCentreHeader() {
             <Link href="/login" className="acc-login-btn acc-desktop-only">Login</Link>
 
             {/* Contact Us — desktop only */}
-            <button className="acc-contact-us-btn acc-desktop-only">Contact Us</button>
+            <Link href="/contact" className="acc-contact-us-btn acc-desktop-only">Contact Us</Link>
 
             {/* Phone Numbers — desktop only */}
             <div className="acc-desktop-only acc-phone-block">

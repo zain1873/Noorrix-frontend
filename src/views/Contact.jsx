@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 const contactBanner = "/assets/images/banners/contact-banner.jpg";
 import {
   FaMapMarkerAlt,
@@ -9,6 +9,8 @@ import {
   FaPaperPlane,
   FaCar,
   FaClipboardList,
+  FaCheckCircle,
+  FaExclamationCircle,
 } from "react-icons/fa";
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
@@ -40,7 +42,52 @@ const contactInfo = [
   },
 ];
 
+const INITIAL = { name: "", email: "", phone: "", subject: "", message: "" };
+
 function Contact() {
+  const [formData, setFormData] = useState(INITIAL);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [serverMessage, setServerMessage] = useState("");
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => ({ ...prev, [name]: null }));
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus("loading");
+    setFieldErrors({});
+    setServerMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus("success");
+        setServerMessage(data.message);
+        setFormData(INITIAL);
+      } else {
+        setStatus("error");
+        setFieldErrors(data.errors || {});
+        setServerMessage(data.message || "");
+      }
+    } catch {
+      setStatus("error");
+      setServerMessage("Failed to send message. Please try again or call us directly.");
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -217,33 +264,50 @@ function Contact() {
 
             {/* Right — Form */}
             <div className="contact-form-wrapper">
-              <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+              <form className="contact-form" onSubmit={handleSubmit}>
+                {status === "error" && serverMessage && !Object.keys(fieldErrors).length && (
+                  <div className="contact-form-alert contact-form-alert--error">
+                    <FaExclamationCircle className="contact-form-alert-icon" />
+                    <span>{serverMessage}</span>
+                  </div>
+                )}
+
                 <div className="contact-form-row">
                   <div className="contact-form-group">
                     <label className="contact-form-label" htmlFor="name">
                       Your Name <span>*</span>
                     </label>
                     <input
-                      className="contact-form-input"
+                      className={`contact-form-input${fieldErrors.name ? " contact-form-input--error" : ""}`}
                       type="text"
                       id="name"
                       name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       placeholder="Enter your full name"
                       required
                     />
+                    {fieldErrors.name && (
+                      <span className="contact-form-field-error">{fieldErrors.name[0]}</span>
+                    )}
                   </div>
                   <div className="contact-form-group">
                     <label className="contact-form-label" htmlFor="email">
                       Email Address <span>*</span>
                     </label>
                     <input
-                      className="contact-form-input"
+                      className={`contact-form-input${fieldErrors.email ? " contact-form-input--error" : ""}`}
                       type="email"
                       id="email"
                       name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       placeholder="Enter your email address"
                       required
                     />
+                    {fieldErrors.email && (
+                      <span className="contact-form-field-error">{fieldErrors.email[0]}</span>
+                    )}
                   </div>
                 </div>
 
@@ -257,6 +321,8 @@ function Contact() {
                       type="tel"
                       id="phone"
                       name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -265,13 +331,18 @@ function Contact() {
                       Subject <span>*</span>
                     </label>
                     <input
-                      className="contact-form-input"
+                      className={`contact-form-input${fieldErrors.subject ? " contact-form-input--error" : ""}`}
                       type="text"
                       id="subject"
                       name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
                       placeholder="e.g. Test drive booking"
                       required
                     />
+                    {fieldErrors.subject && (
+                      <span className="contact-form-field-error">{fieldErrors.subject[0]}</span>
+                    )}
                   </div>
                 </div>
 
@@ -280,18 +351,42 @@ function Contact() {
                     Your Message <span>*</span>
                   </label>
                   <textarea
-                    className="contact-form-textarea"
+                    className={`contact-form-textarea${fieldErrors.message ? " contact-form-textarea--error" : ""}`}
                     id="message"
                     name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="Tell us how we can help you..."
                     required
                   />
+                  {fieldErrors.message && (
+                    <span className="contact-form-field-error">{fieldErrors.message[0]}</span>
+                  )}
                 </div>
 
-                <button type="submit" className="contact-form-submit">
+                <button
+                  type="submit"
+                  className="contact-form-submit"
+                  disabled={status === "loading"}
+                >
                   <FaPaperPlane size={16} />
-                  Send Message
+                  {status === "loading" ? "Sending..." : "Send Message"}
                 </button>
+
+                {/* ── Success Banner (below button) ── */}
+                {status === "success" && (
+                  <div className="contact-success-banner">
+                    <div className="contact-success-icon-wrap">
+                      <FaCheckCircle />
+                    </div>
+                    <div className="contact-success-body">
+                      <p className="contact-success-title">Message Sent!</p>
+                      <p className="contact-success-sub">
+                        Thank you for reaching out. We'll get back to you within 1 business day.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </form>
             </div>
           </div>
