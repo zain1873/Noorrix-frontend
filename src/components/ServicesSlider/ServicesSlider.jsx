@@ -18,7 +18,7 @@ const services = [
     icon: FaExchangeAlt,
     description: "Part Exchange",
     content:
-      "Looking to upgrade your vehicle? Our Part Exchange service makes it effortless. We offer competitive valuations for your current car, giving you the best possible price towards your next vehicle. Our team handles all the paperwork, so you can drive away in your new car with minimal hassle. We accept all makes and models, regardless of age or condition.",
+      "Looking to upgrades your vehicle? Our Part Exchange service makes it effortless. We offer competitive valuations for your current car, giving you the best possible price towards your next vehicle. Our team handles all the paperwork, so you can drive away in your new car with minimal hassle. We accept all makes and models, regardless of age or condition.",
     image:
       "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80",
   },
