@@ -395,7 +395,7 @@ export default function OurStock() {
                     </div>
                   </div>
                   <div className="action-buttons">
-                    <button className="btn btn-finance" onClick={(e) => e.stopPropagation()}>View Details</button>
+                    <button className="btn btn-finance" onClick={(e) => { e.stopPropagation(); router.push(`/cars/${car.id}`); }}>View Details</button>
                     <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push(loginGate(user, `/checkout?amount=200&car=${car.id}`)); }}>
                       <span className="reserve-title">Reserve For £200</span>
                       <span className="reserve-sub">Deposit fully refundable</span>
