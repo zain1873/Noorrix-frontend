@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FiMail, FiLock, FiUser, FiEye, FiEyeOff, FiArrowLeft, FiCheckCircle } from "react-icons/fi";
+import { FiMail, FiLock, FiUser, FiEye, FiEyeOff, FiCheckCircle } from "react-icons/fi";
 import { useAuth } from "@/context/AuthContext";
 import "./LoginSignup.css";
 
@@ -15,17 +15,43 @@ function safeReturnTo() {
   return target && target.startsWith("/") && !target.startsWith("//") ? target : "/";
 }
 
+function PasswordHints({ password }) {
+  if (!password) return null;
+  const minLen = password.length >= 8;
+  const notNumeric = !/^\d+$/.test(password);
+  // Only render when at least one checkable rule is failing
+  if (minLen && notNumeric) return null;
+
+  return (
+    <ul className="ls-pwd-hints">
+      <li className={minLen ? "hint-ok" : "hint-fail"}>At least 8 characters</li>
+      <li className={notNumeric ? "hint-ok" : "hint-fail"}>Not entirely numeric</li>
+      <li>Not too similar to your name or email</li>
+      <li>Not a commonly used password</li>
+    </ul>
+  );
+}
+
 export default function LoginSignup() {
   const router = useRouter();
   const { login } = useAuth();
 
   const [tab, setTab] = useState("login");
-  const [view, setView] = useState("auth"); // "auth" | "forgot" | "forgot-sent"
-  const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "", resetEmail: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
   const [showPwd, setShowPwd] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [resetSuccess, setResetSuccess] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("reset") === "success") {
+      setResetSuccess(true);
+      window.history.replaceState({}, "", "/login");
+    }
+  }, []);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -34,6 +60,7 @@ export default function LoginSignup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setResetSuccess(false);
     setErrors({});
     setLoading(true);
 
@@ -47,9 +74,7 @@ export default function LoginSignup() {
         const data = await res.json();
 
         if (res.ok) {
-          localStorage.setItem("access", data.access);
-          localStorage.setItem("refresh", data.refresh);
-          login({ name: "", email: form.email });
+          login({ name: data.name || "", email: data.email || form.email }, { access: data.access, refresh: data.refresh });
           router.push(safeReturnTo());
         } else {
           setErrors({ general: data.detail || "Login failed. Please try again." });
@@ -68,21 +93,19 @@ export default function LoginSignup() {
         const data = await res.json();
 
         if (res.ok) {
-          // Auto-login after successful registration
           const tokenRes = await fetch(`${API}/api/v1/auth/token/`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: form.email, password: form.password }),
           });
           if (tokenRes.ok) {
-            const tokenData = await tokenRes.json();
-            localStorage.setItem("access", tokenData.access);
-            localStorage.setItem("refresh", tokenData.refresh);
+            const tokens = await tokenRes.json();
+            login({ name: form.name, email: form.email }, { access: tokens.access, refresh: tokens.refresh });
+            router.push(safeReturnTo());
+          } else {
+            router.push("/login");
           }
-          login({ name: form.name, email: form.email });
-          router.push(safeReturnTo());
         } else {
-          // Map API field errors (arrays) to single strings
           const fieldErrors = {};
           ["name", "email", "password", "confirm_password"].forEach((key) => {
             if (data[key]) {
@@ -104,110 +127,6 @@ export default function LoginSignup() {
       setLoading(false);
     }
   };
-
-  const handleForgotSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({});
-    setLoading(true);
-
-    try {
-      const res = await fetch(`${API}/api/v1/auth/password-reset/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.resetEmail }),
-      });
-      const data = await res.json();
-
-      if (res.ok) {
-        setView("forgot-sent");
-      } else {
-        setErrors({
-          resetEmail: data.email ? (Array.isArray(data.email) ? data.email[0] : data.email) : "Something went wrong.",
-        });
-      }
-    } catch {
-      setErrors({ resetEmail: "Network error. Please check your connection." });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const backToLogin = () => {
-    setView("auth");
-    setTab("login");
-    setErrors({});
-    setForm((prev) => ({ ...prev, resetEmail: "" }));
-  };
-
-  if (view === "forgot") {
-    return (
-      <div className="ls-page">
-        <div className="ls-bg-blob ls-blob-1" />
-        <div className="ls-bg-blob ls-blob-2" />
-        <div className="ls-card">
-          <Link href="/" className="ls-logo">Noorrix Motors</Link>
-          <div className="ls-forgot-icon-wrap">
-            <FiMail className="ls-forgot-big-icon" />
-          </div>
-          <h1 className="ls-heading">Forgot Password?</h1>
-          <p className="ls-subheading">
-            Enter your email and we'll send you a reset link
-          </p>
-          <form onSubmit={handleForgotSubmit} className="ls-form">
-            <div className="ls-field">
-              <span className="ls-field-icon"><FiMail /></span>
-              <input
-                className={`ls-input${errors.resetEmail ? " ls-input-error" : ""}`}
-                type="email"
-                name="resetEmail"
-                placeholder="Email Address"
-                value={form.resetEmail}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            {errors.resetEmail && <p className="ls-error">{errors.resetEmail}</p>}
-            <button type="submit" className="ls-submit-btn" disabled={loading}>
-              {loading ? "Sending…" : "Send Reset Link"}
-              {!loading && <span className="ls-submit-arrow">→</span>}
-            </button>
-          </form>
-          <button className="ls-back-btn" onClick={backToLogin}>
-            <FiArrowLeft /> Back to Login
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (view === "forgot-sent") {
-    return (
-      <div className="ls-page">
-        <div className="ls-bg-blob ls-blob-1" />
-        <div className="ls-bg-blob ls-blob-2" />
-        <div className="ls-card ls-card-center">
-          <Link href="/" className="ls-logo">Noorrix Motors</Link>
-          <div className="ls-success-icon-wrap">
-            <FiCheckCircle className="ls-success-icon" />
-          </div>
-          <h1 className="ls-heading">Check Your Email</h1>
-          <p className="ls-subheading">
-            We've sent a password reset link to<br />
-            <span className="ls-reset-email">{form.resetEmail}</span>
-          </p>
-          <p className="ls-reset-note">
-            Didn't receive it? Check your spam folder or{" "}
-            <button className="ls-resend-btn" onClick={() => setView("forgot")}>
-              try again
-            </button>
-          </p>
-          <button className="ls-back-btn" onClick={backToLogin}>
-            <FiArrowLeft /> Back to Login
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="ls-page">
@@ -241,6 +160,12 @@ export default function LoginSignup() {
           </button>
         </div>
 
+        {resetSuccess && (
+          <div className="ls-error ls-error-general" style={{ color: "#4caf82", borderColor: "rgba(76,175,130,0.3)", background: "rgba(76,175,130,0.08)" }}>
+            <FiCheckCircle style={{ marginRight: 6, verticalAlign: "middle" }} />
+            Password reset successfully. Please sign in.
+          </div>
+        )}
         {errors.general && <p className="ls-error ls-error-general">{errors.general}</p>}
 
         <form onSubmit={handleSubmit} className="ls-form">
@@ -300,6 +225,8 @@ export default function LoginSignup() {
 
           {tab === "signup" && (
             <>
+              <PasswordHints password={form.password} />
+
               <div className="ls-field">
                 <span className="ls-field-icon"><FiLock /></span>
                 <input
@@ -326,7 +253,9 @@ export default function LoginSignup() {
 
           {tab === "login" && (
             <div className="ls-forgot">
-              <button type="button" onClick={() => setView("forgot")}>Forgot password?</button>
+              <button type="button" onClick={() => router.push("/forgot-password")}>
+                Forgot password?
+              </button>
             </div>
           )}
 
@@ -347,7 +276,7 @@ export default function LoginSignup() {
         <div className="ls-switch">
           {tab === "login" ? (
             <>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <button onClick={() => { setTab("signup"); setErrors({}); }}>Create one free →</button>
             </>
           ) : (

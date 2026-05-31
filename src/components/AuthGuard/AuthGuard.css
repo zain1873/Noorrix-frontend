@@ -1,0 +1,24 @@
+/* Full-page loading state shown while the auth token is being verified on mount */
+.auth-guard-loader {
+  height: 100vh;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-guard-loader::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border: 2px solid #222;
+  border-top-color: var(--theme-color, #ac1c7a);
+  border-radius: 50%;
+  animation: ag-spin 0.7s linear infinite;
+}
+
+@keyframes ag-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
