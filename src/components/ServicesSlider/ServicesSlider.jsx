@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import {
   FaExchangeAlt,
   FaCarSide,
@@ -111,9 +112,9 @@ export default function CarServices() {
             </div>
             <h3 className="cs-content-title">{current.description}</h3>
             <p className="cs-content-body">{current.content}</p>
-            <button className="cs-cta">
+            <Link href="/contact" className="cs-cta">
               Get a Quote <FaArrowRight />
-            </button>
+            </Link>
           </div>
 
           {/* RIGHT: Image */}
