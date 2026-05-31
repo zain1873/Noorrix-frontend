@@ -257,7 +257,7 @@ function About() {
                   <span className="about-story-feature-check">
                     <FaCheck />
                   </span>
-                  Finance Available
+                  Extensive Selection
                 </div>
                 <div className="about-story-feature-item">
                   <span className="about-story-feature-check">

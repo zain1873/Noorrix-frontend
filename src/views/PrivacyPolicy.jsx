@@ -22,7 +22,7 @@ const policySections = [
     icon: <FaUserSecret />,
     title: "Information You Provide to Us",
     content:
-      "This is information you provide by filling in forms on our site or by corresponding with us by telephone, email or otherwise. It includes information provided when you register to use our site, enquire about a vehicle or service, place an order, reserve a vehicle, apply for finance, request a valuation, arrange servicing or repairs, participate in promotions or surveys, or report a problem with our website. The information may include your name, address, email address, phone number, financial and payment information, date of birth, employment details, vehicle preferences, address history, photographs and personal descriptions.",
+      "This is information you provide by filling in forms on our site or by corresponding with us by telephone, email or otherwise. It includes information provided when you register to use our site, enquire about a vehicle or service, place an order, reserve a vehicle, request a valuation, arrange servicing or repairs, participate in promotions or surveys, or report a problem with our website. The information may include your name, address, email address, phone number, financial and payment information, date of birth, employment details, vehicle preferences, address history, photographs and personal descriptions.",
   },
   {
     icon: <FaDatabase />,
@@ -58,7 +58,7 @@ const policySections = [
     icon: <FaGavel />,
     title: "Disclosure of Your Information",
     content:
-      "We may share your personal information with any member of our group, and with selected third parties including business partners, suppliers, payment processors, vehicle warranty providers, analytics providers, hosting providers and delivery services. We may also share your data with credit reference agencies for finance assessments. We may disclose your personal information where required by law, to enforce our Terms of Use, or to protect the rights, property or safety of NOORRIX MOTORS LTD, our customers or others. We will not disclose your personal information to third parties for marketing purposes without your consent.",
+      "We may share your personal information with any member of our group, and with selected third parties including business partners, suppliers, payment processors, vehicle warranty providers, analytics providers, hosting providers and delivery services. We may disclose your personal information where required by law, to enforce our Terms of Use, or to protect the rights, property or safety of NOORRIX MOTORS LTD, our customers or others. We will not disclose your personal information to third parties for marketing purposes without your consent.",
   },
   {
     icon: <FaLock />,

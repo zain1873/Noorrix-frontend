@@ -8,7 +8,6 @@ import {
   FaHandshake,
   FaDesktop,
   FaSlidersH,
-  FaMoneyCheckAlt,
   FaMapMarkedAlt,
   FaCheckCircle,
   FaEnvelope,
@@ -34,7 +33,7 @@ const cookieSections = [
     icon: <FaInfoCircle />,
     title: "How We Use Cookies",
     content:
-      "Some areas of our website use cookies to support essential website functions and improve your browsing experience. Cookies may be used for security and privacy protection, website performance and functionality, finance application support, analytics, and personalisation. We use both session cookies (which expire when you close your browser) and persistent cookies (which remain on your device for a set period).",
+      "Some areas of our website use cookies to support essential website functions and improve your browsing experience. Cookies may be used for security and privacy protection, website performance and functionality, analytics, and personalisation. We use both session cookies (which expire when you close your browser) and persistent cookies (which remain on your device for a set period).",
   },
   {
     icon: <FaShieldAlt />,
@@ -52,7 +51,7 @@ const cookieSections = [
     icon: <FaHandshake />,
     title: "Third-Party Cookies",
     content:
-      "In addition to our own cookies, we may use cookies provided by trusted third-party services to improve website functionality, measure visitor activity, and support integrated features. Third-party services may include finance application providers, website analytics providers, embedded video services, interactive map services, and advertising and tracking platforms. These providers may collect anonymous information in accordance with their own privacy policies.",
+      "In addition to our own cookies, we may use cookies provided by trusted third-party services to improve website functionality, measure visitor activity, and support integrated features. Third-party services may include website analytics providers, embedded video services, interactive map services, and advertising and tracking platforms. These providers may collect anonymous information in accordance with their own privacy policies.",
   },
   {
     icon: <FaDesktop />,
@@ -65,12 +64,6 @@ const cookieSections = [
     title: "Managing Cookies",
     content:
       "Most web browsers allow you to control, disable, or delete cookies through browser settings. You may choose to block certain cookies, delete existing cookies, or receive notifications when cookies are placed. Please note that disabling cookies may affect certain website features, functionality, or user experience. For more information about managing cookies, visit your browser's support documentation or independent online cookie guidance websites.",
-  },
-  {
-    icon: <FaMoneyCheckAlt />,
-    title: "Finance Application Providers",
-    content:
-      "We may use third-party finance software providers to assist with finance applications and eligibility checks. These providers may use cookies to maintain secure application sessions, save user preferences, monitor website usage, and improve application functionality. Disabling certain cookies may affect the performance of finance-related website features.",
   },
   {
     icon: <FaMapMarkedAlt />,
@@ -86,8 +79,7 @@ const cookieTable = [
   { name: "viewed_vehicles", duration: "14 days", type: "Persistent", purpose: "Remembers recently viewed vehicles" },
   { name: "stock_counter", duration: "24 hours", type: "Session", purpose: "Tracks available vehicle stock display" },
   { name: "vehicle_preferences", duration: "7 days", type: "Persistent", purpose: "Saves selected vehicle filters" },
-  { name: "finance_session", duration: "1 hour", type: "Persistent", purpose: "Supports finance application process" },
-  { name: "website_tracking", duration: "1 hour", type: "Persistent", purpose: "Website analytics and usage monitoring" },
+{ name: "website_tracking", duration: "1 hour", type: "Persistent", purpose: "Website analytics and usage monitoring" },
   { name: "service_booking", duration: "Session", type: "Session", purpose: "Maintains service booking information" },
   { name: "favourites_list", duration: "Persistent", type: "Persistent", purpose: "Saves favourite vehicles" },
   { name: "content_refresh", duration: "Persistent", type: "Persistent", purpose: "Improves website content loading and caching" },

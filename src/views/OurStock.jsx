@@ -252,8 +252,7 @@ export default function OurStock() {
           <div className="stock-hero-stats">
             <div className="stock-hero-stat-item"><span className="stock-hero-stat-number">50<span>+</span></span><span className="stock-hero-stat-label">Vehicles In Stock</span></div>
             <div className="stock-hero-stat-item"><span className="stock-hero-stat-number">100<span>%</span></span><span className="stock-hero-stat-label">HPI Checked</span></div>
-            <div className="stock-hero-stat-item"><span className="stock-hero-stat-number">0<span>%</span></span><span className="stock-hero-stat-label">Finance Available</span></div>
-            <div className="stock-hero-stat-item"><span className="stock-hero-stat-number">1K<span>+</span></span><span className="stock-hero-stat-label">Happy Customers</span></div>
+<div className="stock-hero-stat-item"><span className="stock-hero-stat-number">1K<span>+</span></span><span className="stock-hero-stat-label">Happy Customers</span></div>
           </div>
         </div>
       </section>

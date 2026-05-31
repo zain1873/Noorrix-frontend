@@ -1,11 +1,5 @@
-import Finance from "@/views/Finance";
-
-export const metadata = {
-  title: "Car Finance | Noorrix Motors",
-  description:
-    "Flexible car finance options at Noorrix Motors. Apply online and drive away sooner.",
-};
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <Finance />;
+  redirect("/");
 }

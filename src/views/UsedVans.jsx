@@ -72,7 +72,7 @@ function UsedVans() {
             {[
               { title: "Thoroughly Inspected", desc: "Each van goes through a comprehensive HGV-standard safety check." },
               { title: "Service History", desc: "Full service history available on all our vans for your peace of mind." },
-              { title: "Finance Options", desc: "Flexible finance packages tailored to suit your business budget." },
+              { title: "Nationwide Delivery", desc: "We can arrange delivery of your van to any location across the UK." },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-xl p-8 text-center shadow-md hover:shadow-lg transition-shadow">
                 <h3 className="text-xl font-bold text-gray-800 mb-3">{item.title}</h3>

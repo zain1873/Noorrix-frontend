@@ -411,13 +411,6 @@ function DarkSpecCard({ car }) {
 
       {/* ── Price row ── */}
       <div className="dark-price-row">
-        <div className="dark-price-left">
-          <div className="dark-finance-label">Finance from</div>
-          <div className="dark-finance-amount">
-            {car.monthly}
-            <span className="dark-finance-suffix">P/M. HP</span>
-          </div>
-        </div>
         <div className="dark-price-right">
           <span className="dark-main-price">{car.total}</span>
         </div>

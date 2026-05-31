@@ -137,14 +137,6 @@ export default function SimilarCarsSlider() {
                   </div>
 
                   <div className="sc-price-row">
-                    <div className="sc-finance">
-                      <div className="sc-finance-label">From</div>
-                      <div className="sc-finance-amount">
-                        {car.finance}
-                        <span className="sc-finance-suffix">P/M.</span>
-                      </div>
-                    </div>
-                    <div className="sc-price-divider" />
                     <span className="sc-full-price">{car.price}</span>
                   </div>
                 </div>

@@ -7,7 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 export const metadata = {
   title: "Noorrix Motors | Quality Used Cars UK",
   description:
-    "Noorrix Motors — quality used cars, vans, finance, servicing, warranty and vehicle sourcing across the UK.",
+    "Noorrix Motors — quality used cars, vans, servicing, warranty and vehicle sourcing across the UK.",
 };
 
 export default function RootLayout({ children }) {

@@ -40,7 +40,7 @@ const policySections = [
     icon: <FaFileSignature />,
     title: "Acceptance of These Terms",
     content:
-      "By using our site to browse vehicles, reserve a vehicle, arrange a test drive, request finance examples, or enquire about our services, you confirm that you accept these Terms of Use and agree to comply with them. These terms apply to the exclusion of any other conditions that you may seek to impose or incorporate, whether by trade, custom, practice, or course of dealing. If you do not agree with these terms, you must not use our site. We recommend printing or saving a copy of these terms for future reference.",
+      "By using our site to browse vehicles, reserve a vehicle, arrange a test drive, or enquire about our services, you confirm that you accept these Terms of Use and agree to comply with them. These terms apply to the exclusion of any other conditions that you may seek to impose or incorporate, whether by trade, custom, practice, or course of dealing. If you do not agree with these terms, you must not use our site. We recommend printing or saving a copy of these terms for future reference.",
   },
   {
     icon: <MdOutlinePolicy />,
@@ -58,7 +58,7 @@ const policySections = [
     icon: <FaGlobeEurope />,
     title: "UK Users Only",
     content:
-      "This website is primarily intended for individuals residing in the United Kingdom. We do not guarantee that the content or services available through our site are suitable for users located outside the UK. You may submit enquiries, reserve vehicles, or request information from outside the United Kingdom; however, vehicle deliveries, test drives, servicing appointments, and certain other services may only be available within selected UK locations. Finance quotations may not be available to customers residing outside the United Kingdom.",
+      "This website is primarily intended for individuals residing in the United Kingdom. We do not guarantee that the content or services available through our site are suitable for users located outside the UK. You may submit enquiries, reserve vehicles, or request information from outside the United Kingdom; however, vehicle deliveries, test drives, servicing appointments, and certain other services may only be available within selected UK locations.",
   },
   {
     icon: <FaCar />,
@@ -94,7 +94,7 @@ const policySections = [
     icon: <FaBalanceScale />,
     title: "Liability & Responsibility",
     content:
-      "Nothing within these Terms of Use excludes or limits our liability where it would be unlawful to do so. This includes liability for death or personal injury caused by our negligence, the negligence of our employees, agents, contractors, or subcontractors, and liability arising from fraud or fraudulent misrepresentation. Different limitations and exclusions may apply in relation to the supply of vehicles, products, workshop services, warranties, or finance agreements, as outlined within our separate Terms and Conditions of Sale.",
+      "Nothing within these Terms of Use excludes or limits our liability where it would be unlawful to do so. This includes liability for death or personal injury caused by our negligence, the negligence of our employees, agents, contractors, or subcontractors, and liability arising from fraud or fraudulent misrepresentation. Different limitations and exclusions may apply in relation to the supply of vehicles, products, workshop services, or warranties, as outlined within our separate Terms and Conditions of Sale.",
   },
   {
     icon: <FaLock />,
