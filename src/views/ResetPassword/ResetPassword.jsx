@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { FiLock, FiEye, FiEyeOff, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import "../LoginSignup/LoginSignup.css";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ResetPassword() {
   const searchParams = useSearchParams();
@@ -28,8 +28,6 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
-    setLoading(true);
 
     try {
       const res = await fetch(`${API}/api/v1/auth/password-reset/confirm/`, {
@@ -41,6 +39,8 @@ export default function ResetPassword() {
 
       if (res.ok) {
         setSuccess(true);
+    setErrors({});
+    setLoading(true);
       } else {
         const fieldErrors = {};
         ["new_password", "confirm_password", "token"].forEach((key) => {

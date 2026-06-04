@@ -6,7 +6,7 @@ import { FiMail, FiArrowLeft } from "react-icons/fi";
 import "../LoginSignup/LoginSignup.css";
 import "./ForgotPassword.css";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ForgotPassword() {
   const router = useRouter();
