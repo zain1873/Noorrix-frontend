@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const DRF_URL = process.env.NEXT_PUBLIC_API_URL;
+const DRF_URL = process.env.NEXT_PUBLIC_API_URL?.trim();
 
 export async function POST(request) {
   if (!DRF_URL) {
@@ -29,7 +29,9 @@ export async function POST(request) {
       return NextResponse.json({ success: false, errors }, { status: 400 });
     }
 
-    const res = await fetch(`${DRF_URL}/api/contact/`, {
+    const backendUrl = `${DRF_URL}/api/contact/`;
+    console.log("[contact route] calling:", backendUrl);
+    const res = await fetch(backendUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -41,7 +43,18 @@ export async function POST(request) {
       }),
     });
 
-    const data = await res.json();
+    const rawText = await res.text();
+    console.log("[contact route] backend status:", res.status, "body:", rawText.substring(0, 300));
+
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      return NextResponse.json(
+        { success: false, message: "Backend returned unexpected response." },
+        { status: 500 }
+      );
+    }
 
     if (!res.ok) {
       return NextResponse.json(
