@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const DRF_URL = process.env.DJANGO_API_URL || "http://localhost:8000";
+const DRF_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(request) {
   try {
@@ -43,7 +43,8 @@ export async function POST(request) {
     }
 
     return NextResponse.json({ success: true, message: data.message || "Your message has been sent. We'll be in touch shortly." });
-  } catch {
+  } catch (err) {
+    console.error("[contact route] error:", err);
     return NextResponse.json(
       { success: false, message: "Failed to send message. Please try again or call us directly." },
       { status: 500 }

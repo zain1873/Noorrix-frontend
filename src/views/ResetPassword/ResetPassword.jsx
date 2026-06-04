@@ -28,6 +28,8 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
+    setLoading(true);
 
     try {
       const res = await fetch(`${API}/api/v1/auth/password-reset/confirm/`, {
@@ -39,8 +41,6 @@ export default function ResetPassword() {
 
       if (res.ok) {
         setSuccess(true);
-    setErrors({});
-    setLoading(true);
       } else {
         const fieldErrors = {};
         ["new_password", "confirm_password", "token"].forEach((key) => {
