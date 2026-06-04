@@ -3,6 +3,14 @@ import { NextResponse } from "next/server";
 const DRF_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(request) {
+  if (!DRF_URL) {
+    console.error("[contact route] NEXT_PUBLIC_API_URL is not set");
+    return NextResponse.json(
+      { success: false, message: "Server misconfiguration. Please contact us directly." },
+      { status: 500 }
+    );
+  }
+
   try {
     const body = await request.json();
     const { name, email, phone, subject, message } = body;
