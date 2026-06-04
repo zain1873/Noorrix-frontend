@@ -6,7 +6,7 @@ import { FiMail, FiLock, FiUser, FiEye, FiEyeOff, FiCheckCircle } from "react-ic
 import { useAuth } from "@/context/AuthContext";
 import "./LoginSignup.css";
 
-const API = process.env.NEXT_PUBLIC_API_URL;
+// const API = process.env.NEXT_PUBLIC_API_URL;
 
 // Only allow same-site relative paths as a post-login redirect (avoids open redirects).
 function safeReturnTo() {
