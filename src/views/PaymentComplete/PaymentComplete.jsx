@@ -38,6 +38,9 @@ export default function PaymentComplete() {
       return;
     }
 
+    const POLL_INTERVAL_MS = 3000;
+    const MAX_POLL_TRIES = 40; // 40 × 3 s = 2 min
+
     let tries = 0;
     let timer;
     let cancelled = false;
@@ -50,15 +53,15 @@ export default function PaymentComplete() {
         if (p.status === "succeeded") return setStatus("succeeded");
         if (["failed", "canceled", "refunded"].includes(p.status)) return setStatus(p.status);
 
-        // pending / processing — retry up to ~9s for the webhook to land.
-        if (tries++ < 6) {
-          timer = setTimeout(check, 1500);
+        // pending / processing — keep polling until webhook lands or 2-min limit.
+        if (tries++ < MAX_POLL_TRIES) {
+          timer = setTimeout(check, POLL_INTERVAL_MS);
         } else {
           setStatus("pending");
         }
       } catch {
         if (cancelled) return;
-        if (tries++ < 6) timer = setTimeout(check, 1500);
+        if (tries++ < MAX_POLL_TRIES) timer = setTimeout(check, POLL_INTERVAL_MS);
         else setStatus("error");
       }
     };

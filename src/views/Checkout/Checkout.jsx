@@ -72,7 +72,9 @@ export default function Checkout({ amount, carId, carTitle, carPrice }) {
         currency: "gbp",
         description,
         successUrl: `${origin}/payment/complete`,
-        cancelUrl: carId ? `${origin}/checkout?amount=${deposit}&car=${carId}` : `${origin}/stock`,
+        cancelUrl: carId
+          ? `${origin}/payment/cancel?car=${carId}&amount=${deposit}`
+          : `${origin}/stock`,
       });
 
       // Persist so /payment/complete can confirm the real (webhook-verified) status.

@@ -196,7 +196,8 @@
 }
 
 .acc-contact-us-btn:hover {
-  background: #333;
+  background: var(--theme-color);
+  border: 1px solid var(--theme-color) !important;
 }
 
 /* Phone block — desktop */
