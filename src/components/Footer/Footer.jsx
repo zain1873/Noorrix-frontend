@@ -28,42 +28,61 @@ const NoorrixFooter = () => {
             <a href="#" aria-label="TikTok"><FaTiktok /></a>
           </div>
         </div>
-                {/* Column 3 — Company */}
-        <div className="footer-col-links">
-          <h4 className="footer-col-title">Company</h4>
-          <ul>
-            <li><Link href="/about">About Us</Link></li>
-            <li><Link href="/contact">Contact Us</Link></li>
-            <li><a href="/#faqs">FAQs</a></li>
-            <li><Link href="/blogs">Blogs</Link></li>
-          </ul>
-        </div>
+        {/* Center group — Company + Services + Contact + Newsletter */}
+        <div className="footer-center-group">
+          <div className="footer-center-cols">
 
-        {/* Column 2 — Services */}
-        <div className="footer-col-links">
-          <h4 className="footer-col-title">Services</h4>
-          <ul>
-            <li><Link href="/stock">Used Cars</Link></li>
-            <li><Link href="/stock">Our Stock</Link></li>
-            <li><Link href="/warranty">warrenty</Link></li>
-            <li><Link href="/dents-paints">Dents & paints</Link></li>
-   
-          </ul>
-        </div>
+            {/* Company */}
+            <div className="footer-col-links">
+              <h4 className="footer-col-title">Company</h4>
+              <ul>
+                <li><Link href="/about">About Us</Link></li>
+                <li><Link href="/contact">Contact Us</Link></li>
+                <li><a href="/#faqs">FAQs</a></li>
+                <li><Link href="/blogs">Blogs</Link></li>
+              </ul>
+            </div>
 
-        {/* Column 4 — Contact Info */}
-        <div className="footer-col-links">
-          <h4 className="footer-col-title">Contact Info</h4>
-          <div className="footer-contact-info">
-            <a href="https://maps.google.com/?q=1+Cauldwell+Walk+Bedford+MK42+9DT" target="_blank" rel="noopener noreferrer">
-              <p><FaMapMarkerAlt className="footer-icon" /> 1 Cauldwell Walk, Bedford MK42 9DT</p>
-            </a>
-            <p><FaEnvelope className="footer-icon" /> <a href="mailto:info@noorrixmotors.co.uk">info@noorrixmotors.co.uk</a></p>
-            <p><FaPhone className="footer-icon" /> <a href="tel:07435761085">07435761085</a></p>
+            {/* Services */}
+            <div className="footer-col-links">
+              <h4 className="footer-col-title">Services</h4>
+              <ul>
+                <li><Link href="/stock">Used Cars</Link></li>
+                <li><Link href="/stock">Our Stock</Link></li>
+                <li><Link href="/warranty">warrenty</Link></li>
+                <li><Link href="/dents-paints">Dents & paints</Link></li>
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div className="footer-col-links">
+              <h4 className="footer-col-title">Contact Info</h4>
+              <div className="footer-contact-info">
+                <a href="https://maps.google.com/?q=1+Cauldwell+Walk+Bedford+MK42+9DT" target="_blank" rel="noopener noreferrer">
+                  <p><FaMapMarkerAlt className="footer-icon" /> 1 Cauldwell Walk, Bedford MK42 9DT</p>
+                </a>
+                <p><FaEnvelope className="footer-icon" /> <a href="mailto:info@noorrixmotors.co.uk">info@noorrixmotors.co.uk</a></p>
+                <p><FaPhone className="footer-icon" /> <a href="tel:07435761085">07435761085</a></p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Newsletter fills the bottom space */}
+          <div className="footer-newsletter-inline">
+            <span className="footer-email-label">Newsletter</span>
+            <div className="footer-subscribe-form">
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                className="footer-subscribe-input"
+              />
+              <button type="button" className="footer-subscribe-btn">Subscribe</button>
+            </div>
           </div>
         </div>
 
-        {/* Column 5 — Opening Hours */}
+        {/* Opening Hours */}
         <div className="footer-col-links">
           <h4 className="footer-col-title">Opening Hours</h4>
           <ul className="footer-hours-list">
@@ -88,19 +107,7 @@ const NoorrixFooter = () => {
           </div>
         </div>
 
-      </div>
 
-      {/* Newsletter bar */}
-      <div className="footer-email-bar">
-        <span className="footer-email-label">Newsletter</span>
-        <div className="footer-subscribe-form">
-          <input
-            type="email"
-            placeholder="Enter your email address"
-            className="footer-subscribe-input"
-          />
-          <button type="button" className="footer-subscribe-btn">Subscribe</button>
-        </div>
       </div>
 
       {/* Legal bottom */}
