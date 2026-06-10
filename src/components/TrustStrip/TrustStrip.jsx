@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./TrustStrip.css";
 
 /* ─── Data ───────────────────────────────────────────────────── */
@@ -110,17 +110,16 @@ export default function TrustStrip() {
         {/* Strip */}
         <div className="ts-strip" role="list">
           {TRUST_ITEMS.map((item, i) => (
-            <>
+            <React.Fragment key={item.id}>
               <TrustItem
-                key={item.id}
                 item={item}
                 index={i}
                 visible={visible}
               />
               {i < TRUST_ITEMS.length - 1 && (
-                <div key={`divider-${item.id}`} className="ts-divider" aria-hidden="true" />
+                <div className="ts-divider" aria-hidden="true" />
               )}
-            </>
+            </React.Fragment>
           ))}
         </div>
 
