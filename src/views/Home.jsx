@@ -13,7 +13,7 @@ import NoorrixFooter from "../components/Footer/Footer";
 import BrowseByBudget from "../components/Browsebybudget/Budget";
 import WhatsAppButton from "../components/WhatsApp/WhatsAppButton";
 import PopularSearches from "../components/PoppularSearched/popularSearched";
-function Home() {
+function Home({ faqs = [] }) {
   return (
     <>
       <Navbar />
@@ -24,8 +24,8 @@ function Home() {
       <WhyChooseUs/>
       <BrowseByBudget/>
       <Testimonial/>
-      <Faqs/>
-      
+      <Faqs faqs={faqs} />
+
       {/* <StockSubscribeBanner/> */}
       <NoorrixFooter/>
     </>

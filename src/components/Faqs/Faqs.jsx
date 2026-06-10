@@ -5,62 +5,8 @@ import { FiPlus } from "react-icons/fi";
 import "./Faqs.css";
 const carLogo = "/assets/images/car-logo-svg.png";
 
-const faqs = [
-  {
-    id: 1,
-    question: "The expense windows adapted sir. Wrong widen drawn.",
-    answer:
-      "Offending belonging promotion provision an be oh consulted ourselves it. Blessing welcomed ladyship she met humoured sir breeding her.",
-  },
-  {
-    id: 2,
-    question: "Six curiosity day assurance bed necessary?",
-    answer:
-      "Attention he extremity unwilling on otherwise. Conviction up partiality as delightful is discovered.",
-  },
-  {
-    id: 3,
-    question: "Produce say the ten moments parties?",
-    answer:
-      "New plenty had defer you limited county settling principle. Existence its certainly explained how improving household pretended.",
-  },
-  {
-    id: 4,
-    question: "Simple innate summer fat appear basket his desire joy?",
-    answer:
-      "An especially invitation decisively possession reasonably terminated on. Calling not screened kindness one rapturous departure.",
-  },
-  {
-    id: 5,
-    question: "Outward clothes promise at gravity do excited?",
-    answer:
-      "Now pleasure provided judgment doubtful preserved bringing. Overcame in advantage suffering otherwise explained vicinity furniture.",
-  },
-  {
-    id: 6,
-    question: "Outward clothes promise at gravity do excited?",
-    answer:
-      "Now pleasure provided judgment doubtful preserved bringing. Overcame in advantage suffering otherwise explained vicinity furniture.",
-  },
-
-  {
-    id: 7,
-    question: "Outward clothes promise at gravity do excited?",
-    answer:
-      "Now pleasure provided judgment doubtful preserved bringing. Overcame in advantage suffering otherwise explained vicinity furniture.",
-  },
-
-  {
-    id: 8,
-    question: "Outward clothes promise at gravity do excited?",
-    answer:
-      "Now pleasure provided judgment doubtful preserved bringing. Overcame in advantage suffering otherwise explained vicinity furniture.",
-  },
-];
-
-
-export default function FAQ() {
-  const [openId, setOpenId] = useState(1);
+export default function FAQ({ faqs = [] }) {
+  const [openId, setOpenId] = useState(faqs[0]?.id ?? null);
 
   const toggle = (id) => {
     setOpenId((prev) => (prev === id ? null : id));
