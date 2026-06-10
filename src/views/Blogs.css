@@ -374,6 +374,10 @@
   line-height: 1.72;
   margin: 0 0 20px 0;
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .blog-card-link {
