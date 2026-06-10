@@ -35,7 +35,7 @@ function BlogDetail({ post }) {
         </div>
       </div>
 
-      {/* ── Hero Image ── */}
+      {/* ── Hero Banner ── */}
       <div className="blog-detail-hero">
         <img
           src={post.image_url}
@@ -43,34 +43,31 @@ function BlogDetail({ post }) {
           className="blog-detail-hero-img"
         />
         <div className="blog-detail-hero-overlay" />
+        <div className="blog-detail-hero-content">
+          <a href="/blogs" className="blog-detail-hero-back">
+            <FaArrowLeft size={12} /> Back to Blog
+          </a>
+          {post.category && (
+            <span className="blog-detail-hero-category">{post.category.name}</span>
+          )}
+          <h1 className="blog-detail-hero-title">{post.title}</h1>
+          <div className="blog-detail-hero-meta">
+            <span>
+              <FaCalendarAlt />
+              {formatDate(post.published_at)}
+            </span>
+            <span className="blog-detail-hero-divider" />
+            <span>
+              <FaClock />
+              {post.read_time} min read
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* ── Article ── */}
       <main className="blog-detail-main">
         <div className="blog-detail-container">
-
-          {/* Back link */}
-          <a href="/blogs" className="blog-detail-back">
-            <FaArrowLeft size={13} /> Back to Blog
-          </a>
-
-          {/* Header */}
-          <header className="blog-detail-header">
-            {post.category && (
-              <span className="blog-detail-category">{post.category.name}</span>
-            )}
-            <h1 className="blog-detail-title">{post.title}</h1>
-            <div className="blog-detail-meta">
-              <span>
-                <FaCalendarAlt className="blog-detail-meta-icon" />
-                {formatDate(post.published_at)}
-              </span>
-              <span>
-                <FaClock className="blog-detail-meta-icon" />
-                {post.read_time} min read
-              </span>
-            </div>
-          </header>
 
           {/* Excerpt */}
           <p className="blog-detail-excerpt">{post.excerpt}</p>
