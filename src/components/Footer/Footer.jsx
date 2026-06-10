@@ -35,7 +35,7 @@ const NoorrixFooter = () => {
             <li><Link href="/about">About Us</Link></li>
             <li><Link href="/contact">Contact Us</Link></li>
             <li><a href="/#faqs">FAQs</a></li>
-            <li><Link href="#">Blogs</Link></li>
+            <li><Link href="/blogs">Blogs</Link></li>
           </ul>
         </div>
 
