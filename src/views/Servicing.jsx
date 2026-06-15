@@ -170,9 +170,13 @@ function Servicing() {
               <FaCalendarAlt size={17} />
               Book a Service
             </a>
-            <a href="tel:+4407300503113" className="sv-hero-btn sv-hero-btn-secondary">
+            <a href="tel:07300503113" className="sv-hero-btn sv-hero-btn-secondary">
               <FaPhoneAlt size={17} />
-              Call Us Now
+              07300 503113
+            </a>
+            <a href="tel:07435761085" className="sv-hero-btn sv-hero-btn-secondary">
+              <FaPhoneAlt size={17} />
+              07435 761085
             </a>
           </div>
         </div>

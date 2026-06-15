@@ -77,7 +77,7 @@ export default function VehicleSourcing() {
             <a href="#sourcing-form" className="vs-hero-btn vs-hero-btn-primary">
               <FaSearch size={16} /> Start Your Search
             </a>
-            <a href="tel:07435761085" className="vs-hero-btn vs-hero-btn-secondary">
+            <a href="tel:07300503113" className="vs-hero-btn vs-hero-btn-secondary">
               <FaPhoneAlt size={16} /> Call Us Now
             </a>
           </div>
@@ -101,7 +101,8 @@ export default function VehicleSourcing() {
             </p>
             <p className="vs-info-text">
               Please contact one of our Sales Consultants on{" "}
-              <a href="tel:07435761085" className="vs-info-phone">07435 761 085</a>{" "}
+              <a href="tel:07300503113" className="vs-info-phone">07300 503113</a>{" "}
+              or <a href="tel:07435761085" className="vs-info-phone">07435 761085</a>{" "}
               or complete the sourcing request form below.
             </p>
             <p className="vs-info-text">

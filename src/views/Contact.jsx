@@ -25,8 +25,14 @@ const contactInfo = [
   },
   {
     icon: <FaPhoneAlt />,
+    title: "WhatsApp",
+    text: "07300 503113",
+    link: "https://wa.me/447300503113",
+  },
+  {
+    icon: <FaPhoneAlt />,
     title: "Call Us",
-    text: "07435761085",
+    text: "07435 761085",
     link: "tel:07435761085",
   },
   {
@@ -232,7 +238,10 @@ function Contact() {
                   <span className="contact-form-detail-icon">
                     <FaPhoneAlt />
                   </span>
-                  <a href="tel:07435761085" className="contact-form-detail-link">07435761085</a>
+                  <div>
+                    <a href="tel:07300503113" className="contact-form-detail-link">07300 503113</a> <span style={{fontSize:"0.8em",opacity:0.7}}>(WhatsApp)</span><br />
+                    <a href="tel:07435761085" className="contact-form-detail-link">07435 761085</a>
+                  </div>
                 </div>
                 <div className="contact-form-detail-item">
                   <span className="contact-form-detail-icon">

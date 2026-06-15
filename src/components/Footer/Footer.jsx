@@ -62,7 +62,8 @@ const NoorrixFooter = () => {
                   <p><FaMapMarkerAlt className="footer-icon" /> 16 Eastside, Cauldwell Walk, Bedford MK42 9DT</p>
                 </a>
                 <p><FaEnvelope className="footer-icon" /> <a href="mailto:info@noorrixmotors.co.uk">info@noorrixmotors.co.uk</a></p>
-                <p><FaPhone className="footer-icon" /> <a href="tel:07435761085">07435761085</a></p>
+                <p><FaPhone className="footer-icon" /> <a href="tel:07300503113">07300 503113</a></p>
+                <p><FaPhone className="footer-icon" /> <a href="tel:07435761085">07435 761085</a></p>
               </div>
             </div>
 

@@ -83,7 +83,8 @@ export default function PartExchange() {
             </p>
             <p className="pe-info-text">
               Please contact one of our Sales Consultants on{" "}
-              <a href="tel:07435761085" className="pe-info-phone">07435 761 085</a>{" "}
+              <a href="tel:07300503113" className="pe-info-phone">07300 503113</a>{" "}
+              or <a href="tel:07435761085" className="pe-info-phone">07435 761085</a>{" "}
               or complete our valuation form below.
             </p>
             <p className="pe-info-text">

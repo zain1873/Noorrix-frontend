@@ -308,7 +308,7 @@ function VehicleLocationSection() {
 
         <div className="vl-phone">
           <FaPhoneAlt size={13} />
-          <span>Phone# 07300503113</span>
+          <span>07300 503113 (WhatsApp) | 07435 761085</span>
         </div>
 
         <div className="vl-hours-list">
@@ -389,7 +389,7 @@ function VehicleDescriptionSection() {
       </div>
 
       <div className="vd-footer-notes">
-        <p>For more info on this vehicle call our showroom on 07300503113</p>
+        <p>For more info on this vehicle call our showroom on 07300 503113 or 07435 761085</p>
         <p>Every effort has been made to ensure the accuracy of the above information but errors may occur. Please check with a salesperson.</p>
       </div>
     </div>
@@ -482,10 +482,14 @@ function DarkSpecCard({ car }) {
       {/* ── Contact strip ── */}
       <div className="dark-contact-row">
         <a href="tel:07300503113" className="dark-contact-item">
-          <FaPhoneAlt size={12} /> 07300 503 113
+          <FaPhoneAlt size={12} /> 07300 503113
         </a>
         <span className="dark-contact-divider">|</span>
-        <a href="mailto:sales@affordablecarcentre.co.uk" className="dark-contact-item">
+        <a href="tel:07435761085" className="dark-contact-item">
+          <FaPhoneAlt size={12} /> 07435 761085
+        </a>
+        <span className="dark-contact-divider">|</span>
+        <a href="mailto:info@noorrixmotors.co.uk" className="dark-contact-item">
           <FaEnvelope size={12} /> sales@dealership.co.uk
         </a>
       </div>

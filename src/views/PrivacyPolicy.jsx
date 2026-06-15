@@ -12,6 +12,7 @@ import {
   FaLock,
   FaEye,
   FaFileAlt,
+  FaPhoneAlt,
 } from "react-icons/fa";
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
@@ -227,6 +228,17 @@ function PrivacyPolicy() {
           </p>
 
           <div className="pp-contact-cards">
+            <div className="pp-contact-card">
+              <div className="pp-contact-card-icon-wrap">
+                <FaPhoneAlt />
+              </div>
+              <strong className="pp-contact-card-label">Phone</strong>
+              <p className="pp-contact-card-value">
+                <a href="tel:07300503113" className="pp-contact-link">07300 503113</a> (WhatsApp)<br />
+                <a href="tel:07435761085" className="pp-contact-link">07435 761085</a>
+              </p>
+            </div>
+
             <div className="pp-contact-card">
               <div className="pp-contact-card-icon-wrap">
                 <FaEnvelope />

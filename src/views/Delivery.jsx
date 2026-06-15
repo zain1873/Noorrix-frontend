@@ -121,8 +121,11 @@ function Delivery() {
             <Link href="/contact" className="dl-hero-btn dl-hero-btn-primary">
               <FaTruckMoving size={16} /> Arrange Delivery
             </Link>
+            <a href="tel:07300503113" className="dl-hero-btn dl-hero-btn-secondary">
+              <FaPhoneAlt size={16} /> 07300 503113
+            </a>
             <a href="tel:07435761085" className="dl-hero-btn dl-hero-btn-secondary">
-              <FaPhoneAlt size={16} /> Call Us Now
+              <FaPhoneAlt size={16} /> 07435 761085
             </a>
           </div>
         </div>
