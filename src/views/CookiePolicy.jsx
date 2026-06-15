@@ -357,12 +357,12 @@ function CookiePolicy() {
                 <strong>Registered Address</strong>
                 <p>
                   <a
-                    href="https://maps.google.com/?q=1+Cauldwell+Walk+Bedford+MK429DT"
+                    href="https://maps.google.com/?q=16+Eastside+Cauldwell+Walk+Bedford+MK42+9DT"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="cp-contact-link"
                   >
-                    1 Cauldwell Walk, Bedford MK429DT
+                    16 Eastside, Cauldwell Walk, Bedford MK42 9DT
                   </a>
                 </p>
               </div>

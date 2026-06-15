@@ -71,7 +71,7 @@ function DentsPaints() {
               <FaSprayCan size={18} />
               Get a Free Quote
             </a>
-            <a href="tel:+4407930955645" className="dp-hero-btn dp-hero-btn-secondary">
+            <a href="tel:+4407300503113" className="dp-hero-btn dp-hero-btn-secondary">
               <FaPhoneAlt size={18} />
               Call Us Now
             </a>

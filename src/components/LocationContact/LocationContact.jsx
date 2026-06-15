@@ -29,7 +29,7 @@ const LocationContact = () => {
           <div className="location-map-wrapper">
             <iframe
               title="Noorrix Motors Location"
-              src="https://maps.google.com/maps?q=1+Cauldwell+Walk%2C+Bedford%2C+MK42+9DT%2C+UK&output=embed"
+              src="https://maps.google.com/maps?q=16+Eastside%2C+Cauldwell+Walk%2C+Bedford%2C+MK42+9DT%2C+UK&output=embed"
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -46,7 +46,7 @@ const LocationContact = () => {
               <div className="location-card-content">
                 <span className="location-card-label">Address</span>
                 <span className="location-card-value">
-                  1 Cauldwell Walk, Bedford, MK42 9DT
+                  16 Eastside, Cauldwell Walk, Bedford MK42 9DT
                 </span>
               </div>
             </div>
@@ -59,7 +59,7 @@ const LocationContact = () => {
               <div className="location-card-content">
                 <span className="location-card-label">Phone</span>
                 <span className="location-card-value">
-                  <a href="tel:+4407930955645">07930 955 645</a>
+                  <a href="tel:+4407300503113">07300 503 113</a>
                 </span>
               </div>
             </div>

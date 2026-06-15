@@ -56,9 +56,9 @@ function MobileContactDropdown({ open, onClose }) {
 
         <div className="mobile-contact-numbers">
           {/* Number 1 */}
-          <a href="tel:07930955645" className="mobile-contact-num-item">
+          <a href="tel:07300503113" className="mobile-contact-num-item">
             <FaPhoneVolume size={22} className="mobile-contact-num-icon" />
-            <span>07930955645</span>
+            <span>07300503113</span>
           </a>
 
           {/* Number 2 */}
@@ -350,9 +350,9 @@ export default function AffordableCarCentreHeader() {
 
             {/* Phone Numbers — desktop only */}
             <div className="acc-desktop-only acc-phone-block">
-              <a href="tel:07930955645" className="flex items-center gap-2 acc-phone-link">
+              <a href="tel:07300503113" className="flex items-center gap-2 acc-phone-link">
                 <FaPhoneVolume size={13} color="#fff" />
-                <span className="acc-contact-number">07930955645</span>
+                <span className="acc-contact-number">07300503113</span>
               </a>
               <a href="tel:07435761085" className="flex items-center gap-2 acc-phone-link">
                 <FaPhoneAlt size={13} color="#fff" />
@@ -362,7 +362,7 @@ export default function AffordableCarCentreHeader() {
 
             {/* WhatsApp — always visible */}
             <a
-              href="https://wa.me/447399999188"
+              href="https://wa.me/447300503113"
               target="_blank"
               rel="noopener noreferrer"
               className="acc-social-btn"

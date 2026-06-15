@@ -170,8 +170,8 @@ function PrivacyPolicy() {
           </p>
           <p className="pp-intro-paragraph">
             For the purposes of the Data Protection Act 2018, the data
-            controller is NOORRIX MOTORS LTD of 1 Cauldwell Walk, Bedford,
-            MK42 9DT, United Kingdom.
+            controller is NOORRIX MOTORS LTD of 16 Eastside, Cauldwell Walk,
+            Bedford MK42 9DT, United Kingdom.
           </p>
         </div>
       </section>
@@ -263,12 +263,12 @@ function PrivacyPolicy() {
               </strong>
               <p className="pp-contact-card-value">
                 <a
-                  href="https://maps.google.com/?q=1+Cauldwell+Walk+Bedford+MK429DT"
+                  href="https://maps.google.com/?q=16+Eastside+Cauldwell+Walk+Bedford+MK42+9DT"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="pp-contact-link"
                 >
-                  1 Cauldwell Walk, Bedford MK429DT
+                  16 Eastside, Cauldwell Walk, Bedford MK42 9DT
                 </a>
               </p>
             </div>

@@ -292,7 +292,7 @@ function VehicleLocationSection() {
   const handleDirections = () => {
     if (postcode.trim()) {
       window.open(
-        `https://www.google.com/maps/dir/${encodeURIComponent(postcode)}/1+Cauldwell+Walk,+Bedford,+MK42+9DT`,
+        `https://www.google.com/maps/dir/${encodeURIComponent(postcode)}/16+Eastside,+Cauldwell+Walk,+Bedford,+MK42+9DT`,
         "_blank"
       );
     }
@@ -303,12 +303,12 @@ function VehicleLocationSection() {
       <div className="vl-inner">
         <h2 className="vl-title">Vehicle location</h2>
         <p className="vl-address">
-          This vehicle is located at 1 Cauldwell Walk, Bedford, MK42 9DT
+          This vehicle is located at 16 Eastside, Cauldwell Walk, Bedford MK42 9DT
         </p>
 
         <div className="vl-phone">
           <FaPhoneAlt size={13} />
-          <span>Phone# 07930955645</span>
+          <span>Phone# 07300503113</span>
         </div>
 
         <div className="vl-hours-list">
@@ -389,7 +389,7 @@ function VehicleDescriptionSection() {
       </div>
 
       <div className="vd-footer-notes">
-        <p>For more info on this vehicle call our showroom on 07930955645</p>
+        <p>For more info on this vehicle call our showroom on 07300503113</p>
         <p>Every effort has been made to ensure the accuracy of the above information but errors may occur. Please check with a salesperson.</p>
       </div>
     </div>
@@ -481,8 +481,8 @@ function DarkSpecCard({ car }) {
 
       {/* ── Contact strip ── */}
       <div className="dark-contact-row">
-        <a href="tel:07930955645" className="dark-contact-item">
-          <FaPhoneAlt size={12} /> 07930 955 645
+        <a href="tel:07300503113" className="dark-contact-item">
+          <FaPhoneAlt size={12} /> 07300 503 113
         </a>
         <span className="dark-contact-divider">|</span>
         <a href="mailto:sales@affordablecarcentre.co.uk" className="dark-contact-item">

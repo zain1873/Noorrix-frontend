@@ -102,9 +102,9 @@ export default function VehicleSidebar() {
             <FaPhoneVolume size={15} />
             <span>07435 761 085</span>
           </a>
-          <a href="tel:07930955645" className="vs-sidebar-contact-item">
+          <a href="tel:07300503113" className="vs-sidebar-contact-item">
             <FaMobileAlt size={15} />
-            <span>07930 955 645</span>
+            <span>07300 503 113</span>
           </a>
           <a href="mailto:info@noorrixmotors.co.uk" className="vs-sidebar-contact-item">
             <FaEnvelope size={15} />

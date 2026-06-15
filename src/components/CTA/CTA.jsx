@@ -7,10 +7,10 @@ function CTA({
   title = "Get in Touch",
   description = "Contact our friendly team today for expert advice and a free, no-obligation quote.",
   primaryBtnText = "Get Free Estimate",
-  primaryBtnLink = "tel:07930955645",
+  primaryBtnLink = "tel:07300503113",
   primaryBtnIcon = <FaCalculator size={18} />,
   secondaryBtnText = "Book Inspection",
-  secondaryBtnLink = "tel:07930955645",
+  secondaryBtnLink = "tel:07300503113",
   secondaryBtnIcon = <FaClipboardList size={18} />,
   showSecondaryBtn = true,
 }) {

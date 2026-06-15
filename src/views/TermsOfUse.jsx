@@ -34,7 +34,7 @@ const policySections = [
     icon: <FaBuilding />,
     title: "About Us & Contact Details",
     content:
-      'www.noorrixmotors.co.uk is operated by NOORRIX MOTORS LTD. We are a company registered in England and Wales under company number 17150029. Our registered office and principal trading address is: 1 Cauldwell Walk, Bedford, MK429DT, United Kingdom. To contact us, please email info@noorrixmotors.co.uk, call our customer support team on 0743 5761085, or write to us at the address above.',
+      'www.noorrixmotors.co.uk is operated by NOORRIX MOTORS LTD. We are a company registered in England and Wales under company number 17150029. Our registered office and principal trading address is: 16 Eastside, Cauldwell Walk, Bedford MK42 9DT, United Kingdom. To contact us, please email info@noorrixmotors.co.uk, call our customer support team on 07300 503113, or write to us at the address above.',
   },
   {
     icon: <FaFileSignature />,
@@ -124,7 +124,7 @@ const policySections = [
     icon: <FaCommentDots />,
     title: "Complaints",
     content:
-      "If you are dissatisfied with any vehicle, service, repair, or aspect of our business, please contact us directly so that we may attempt to resolve the matter promptly through our complaints procedure. To contact us, please email info@noorrixmotors.co.uk, call our customer support team on 0743 5761085, or write to us at our registered address at 1 Cauldwell Walk, Bedford, MK42 9DT.",
+      "If you are dissatisfied with any vehicle, service, repair, or aspect of our business, please contact us directly so that we may attempt to resolve the matter promptly through our complaints procedure. To contact us, please email info@noorrixmotors.co.uk, call our customer support team on 07300 503113, or write to us at our registered address at 16 Eastside, Cauldwell Walk, Bedford MK42 9DT.",
   },
   {
     icon: <FaHandshake />,
@@ -373,12 +373,12 @@ function TermsOfUse() {
                 <strong>Registered Address</strong>
                 <p>
                   <a
-                    href="https://maps.google.com/?q=1+Cauldwell+Walk+Bedford+MK429DT"
+                    href="https://maps.google.com/?q=16+Eastside+Cauldwell+Walk+Bedford+MK42+9DT"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="tu-contact-link"
                   >
-                    1 Cauldwell Walk, Bedford MK429DT
+                    16 Eastside, Cauldwell Walk, Bedford MK42 9DT
                   </a>
                 </p>
               </div>

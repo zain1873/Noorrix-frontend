@@ -39,7 +39,7 @@ const FinalCTA = () => {
             <FaClipboardList size={18} />
             Book Inspection
           </a>
-          <a href="tel:+4407930955645" className="final-cta-btn final-cta-btn-secondary">
+          <a href="tel:+4407300503113" className="final-cta-btn final-cta-btn-secondary">
             <FaPhoneAlt size={18} />
             Contact Us
           </a>

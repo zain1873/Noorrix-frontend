@@ -21,13 +21,13 @@ const contactInfo = [
   {
     icon: <FaMapMarkerAlt />,
     title: "Our Location",
-    text: "1 Cauldwell Walk, Bedford, MK42 9DT, United Kingdom",
+    text: "16 Eastside, Cauldwell Walk, Bedford MK42 9DT, United Kingdom",
   },
   {
     icon: <FaPhoneAlt />,
     title: "Call Us",
-    text: "07930 955 645",
-    link: "tel:+4407930955645",
+    text: "07435761085",
+    link: "tel:07435761085",
   },
   {
     icon: <FaEnvelope />,
@@ -147,7 +147,7 @@ function Contact() {
               Send a Message
             </a>
             <a
-              href="tel:+4407930955645"
+              href="tel:+4407300503113"
               className="contact-hero-btn contact-hero-btn-secondary"
             >
               <FaPhoneAlt size={18} />
@@ -245,12 +245,12 @@ function Contact() {
                     <FaMapMarkerAlt />
                   </span>
                   <a
-                    href="https://maps.google.com/maps?q=1+Cauldwell+Walk%2C+Bedford%2C+MK42+9DT%2C+UK"
+                    href="https://maps.google.com/maps?q=16+Eastside%2C+Cauldwell+Walk%2C+Bedford%2C+MK42+9DT%2C+UK"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="contact-form-detail-link"
                   >
-                    1 Cauldwell Walk, Bedford MK42 9DT
+                    16 Eastside, Cauldwell Walk, Bedford MK42 9DT
                   </a>
                 </div>
                 <div className="contact-form-detail-item">
@@ -410,7 +410,7 @@ function Contact() {
             <iframe
               className="contact-map-iframe"
               title="Noorrix Motors Location"
-              src="https://maps.google.com/maps?q=1+Cauldwell+Walk%2C+Bedford%2C+MK42+9DT%2C+UK&output=embed"
+              src="https://maps.google.com/maps?q=16+Eastside%2C+Cauldwell+Walk%2C+Bedford%2C+MK42+9DT%2C+UK&output=embed"
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
