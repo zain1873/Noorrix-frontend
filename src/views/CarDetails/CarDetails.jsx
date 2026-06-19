@@ -9,6 +9,7 @@ import { gbp, money, miles, cc, ukDate } from "../../lib/format";
 import { FiChevronLeft, FiChevronRight, FiChevronDown, FiChevronUp, FiX } from "react-icons/fi";
 import { FaStar, FaPhoneAlt, FaEnvelope, FaHome } from "react-icons/fa";
 import HeartButton from "../../components/HeartButton/HeartButton";
+import BookingModal from "../../components/BookingModal/BookingModal";
 import { MdLocationOn, MdOutlineDirectionsCar, MdGridView, MdColorLens } from "react-icons/md";
 import { BsCalendar3, BsSpeedometer2, BsFuelPump, BsGear, BsCalendarCheck, BsShieldCheck, BsClock, BsCheckCircle } from "react-icons/bs";
 import { TbEngine } from "react-icons/tb";
@@ -304,7 +305,7 @@ function VehicleLocationSection({ car }) {
 
         <div className="vl-phone">
           <FaPhoneAlt size={13} />
-          <span>07300 503113 (WhatsApp) | 07435 761085</span>
+          <span>07300 503113 (WhatsApp)</span>
         </div>
 
         <div className="vl-hours-list">
@@ -325,23 +326,6 @@ function VehicleLocationSection({ car }) {
           ))}
         </div>
 
-        <div className="vl-directions-card">
-          <div className="vl-dir-text">
-            <div className="vl-dir-title">Get directions</div>
-            <div className="vl-dir-sub">Enter your location</div>
-          </div>
-          <div className="vl-dir-form">
-            <input
-              type="text"
-              className="vl-input"
-              placeholder="Postcode"
-              value={postcode}
-              onChange={(e) => setPostcode(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleDirections()}
-            />
-            <button className="vl-go-btn" onClick={handleDirections}>Go</button>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -388,7 +372,7 @@ function VehicleDescriptionSection({ car }) {
       </div>
 
       <div className="vd-footer-notes">
-        <p>For more info on this vehicle call our showroom on 07300 503113 or 07435 761085</p>
+        <p>For more info on this vehicle call our showroom on 07300 503113</p>
         <p>Every effort has been made to ensure the accuracy of the above information but errors may occur. Please check with a salesperson.</p>
       </div>
     </div>
@@ -424,6 +408,7 @@ function DarkSpecCard({ car }) {
   const router = useRouter();
   const { user } = useAuth();
   const deposit = Number(car.deposit_amount) || 200;
+  const [booking, setBooking] = useState(null); // null | "test_drive" | "appointment"
   return (
     <div className="dark-spec-card">
 
@@ -479,15 +464,29 @@ function DarkSpecCard({ car }) {
           Reserve now for {gbp(deposit)} <FiChevronRight size={16} />
         </button>
 
+        {/* Book a test drive + Book an appointment side by side */}
+        <div className="dark-btn-enquiry-row">
+          <button className="dark-btn-outline" onClick={() => setBooking("test_drive")}>
+            <AiOutlineCar size={14} /> Book test drive
+          </button>
+          <button className="dark-btn-outline" onClick={() => setBooking("appointment")}>
+            <BsCalendarCheck size={13} /> Book appointment
+          </button>
+        </div>
+
         {/* Make an enquiry + Part exchange side by side */}
         <div className="dark-btn-enquiry-row">
-          <button className="dark-btn-outline">
+          <button className="dark-btn-outline" onClick={() => router.push("/contact")}>
             <FaEnvelope size={12} /> Make an enquiry
           </button>
-          <button className="dark-btn-outline">
+          <button className="dark-btn-outline" onClick={() => router.push("/part-exchange")}>
             <MdOutlineDirectionsCar size={14} /> Part exchange
           </button>
         </div>
+
+        {booking && (
+          <BookingModal car={car} type={booking} onClose={() => setBooking(null)} />
+        )}
 
         {/* View video — links to YouTube */}
         <a
@@ -505,10 +504,6 @@ function DarkSpecCard({ car }) {
       <div className="dark-contact-row">
         <a href="tel:07300503113" className="dark-contact-item">
           <FaPhoneAlt size={12} /> 07300 503113
-        </a>
-        <span className="dark-contact-divider">|</span>
-        <a href="tel:07435761085" className="dark-contact-item">
-          <FaPhoneAlt size={12} /> 07435 761085
         </a>
         <span className="dark-contact-divider">|</span>
         <a href="mailto:info@noorrixmotors.co.uk" className="dark-contact-item">

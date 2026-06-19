@@ -98,10 +98,6 @@ export default function VehicleSidebar() {
         </h3>
         <p className="vs-sidebar-card-sub">Why not contact us directly?</p>
         <div className="vs-sidebar-contacts">
-          <a href="tel:07435761085" className="vs-sidebar-contact-item">
-            <FaPhoneVolume size={15} />
-            <span>07435 761 085</span>
-          </a>
           <a href="tel:07300503113" className="vs-sidebar-contact-item">
             <FaMobileAlt size={15} />
             <span>07300 503 113</span>

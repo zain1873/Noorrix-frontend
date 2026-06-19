@@ -61,12 +61,6 @@ function MobileContactDropdown({ open, onClose }) {
             <FaPhoneVolume size={22} className="mobile-contact-num-icon" />
             <span>07300503113</span>
           </a>
-
-          {/* Number 2 */}
-          <a href="tel:07435761085" className="mobile-contact-num-item">
-            <FaPhoneAlt size={22} className="mobile-contact-num-icon" />
-            <span>07435761085</span>
-          </a>
         </div>
 
         <button className="mobile-contact-close-btn" onClick={onClose}>
@@ -383,10 +377,6 @@ export default function AffordableCarCentreHeader() {
               <a href="tel:07300503113" className="flex items-center gap-2 acc-phone-link">
                 <FaPhoneVolume size={13} color="#fff" />
                 <span className="acc-contact-number">07300503113</span>
-              </a>
-              <a href="tel:07435761085" className="flex items-center gap-2 acc-phone-link">
-                <FaPhoneAlt size={13} color="#fff" />
-                <span className="acc-contact-number">07435761085</span>
               </a>
             </div>
 

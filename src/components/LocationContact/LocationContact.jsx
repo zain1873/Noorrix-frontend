@@ -59,8 +59,7 @@ const LocationContact = () => {
               <div className="location-card-content">
                 <span className="location-card-label">Phone</span>
                 <span className="location-card-value">
-                  <a href="tel:07300503113">07300 503113</a> (WhatsApp)<br />
-                  <a href="tel:07435761085">07435 761085</a>
+                  <a href="tel:07300503113">07300 503113</a> (WhatsApp)
                 </span>
               </div>
             </div>

@@ -30,12 +30,6 @@ const contactInfo = [
     link: "https://wa.me/447300503113",
   },
   {
-    icon: <FaPhoneAlt />,
-    title: "Call Us",
-    text: "07435 761085",
-    link: "tel:07435761085",
-  },
-  {
     icon: <FaEnvelope />,
     title: "Email Us",
     text: "info@noorrixmotors.co.uk",
@@ -239,8 +233,7 @@ function Contact() {
                     <FaPhoneAlt />
                   </span>
                   <div>
-                    <a href="tel:07300503113" className="contact-form-detail-link">07300 503113</a> <span style={{fontSize:"0.8em",opacity:0.7}}>(WhatsApp)</span><br />
-                    <a href="tel:07435761085" className="contact-form-detail-link">07435 761085</a>
+                    <a href="tel:07300503113" className="contact-form-detail-link">07300 503113</a> <span style={{fontSize:"0.8em",opacity:0.7}}>(WhatsApp)</span>
                   </div>
                 </div>
                 <div className="contact-form-detail-item">

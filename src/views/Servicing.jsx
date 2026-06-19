@@ -174,10 +174,6 @@ function Servicing() {
               <FaPhoneAlt size={17} />
               07300 503113
             </a>
-            <a href="tel:07435761085" className="sv-hero-btn sv-hero-btn-secondary">
-              <FaPhoneAlt size={17} />
-              07435 761085
-            </a>
           </div>
         </div>
       </section>

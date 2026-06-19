@@ -124,9 +124,6 @@ function Delivery() {
             <a href="tel:07300503113" className="dl-hero-btn dl-hero-btn-secondary">
               <FaPhoneAlt size={16} /> 07300 503113
             </a>
-            <a href="tel:07435761085" className="dl-hero-btn dl-hero-btn-secondary">
-              <FaPhoneAlt size={16} /> 07435 761085
-            </a>
           </div>
         </div>
       </section>

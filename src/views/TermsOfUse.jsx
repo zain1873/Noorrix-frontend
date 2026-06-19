@@ -361,8 +361,7 @@ function TermsOfUse() {
               <div>
                 <strong>Phone</strong>
                 <p>
-                  <a href="tel:07300503113" className="tu-contact-link">07300 503113</a> (WhatsApp)<br />
-                  <a href="tel:07435761085" className="tu-contact-link">07435 761085</a>
+                  <a href="tel:07300503113" className="tu-contact-link">07300 503113</a> (WhatsApp)
                 </p>
               </div>
             </div>
