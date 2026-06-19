@@ -297,35 +297,46 @@ function VehicleLocationSection({ car }) {
 
   return (
     <div className="vl-wrapper">
-      <div className="vl-inner">
-        <h2 className="vl-title">Vehicle location</h2>
-        <p className="vl-address">
-          This vehicle is located at {locAddress}
-        </p>
+      <div className="vl-columns">
+        <div className="vl-inner">
+          <h2 className="vl-title">Vehicle location</h2>
+          <p className="vl-address">
+            This vehicle is located at {locAddress}
+          </p>
 
-        <div className="vl-phone">
-          <FaPhoneAlt size={13} />
-          <span>07300 503113 (WhatsApp)</span>
+          <div className="vl-phone">
+            <FaPhoneAlt size={13} />
+            <span>07300 503113 (WhatsApp)</span>
+          </div>
+
+          <div className="vl-hours-list">
+            {VEHICLE_HOURS.map((item) => (
+              <div
+                key={item.day}
+                className={`vl-row ${item.day === today ? "vl-row--today" : ""}`}
+              >
+                <div className="vl-row-left">
+                  <BsClock className="vl-icon" />
+                  <span className="vl-day-name">{item.day}</span>
+                </div>
+                <div className="vl-row-right">
+                  <BsCheckCircle className="vl-icon" />
+                  <span className="vl-day-hours">{item.hours}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="vl-hours-list">
-          {VEHICLE_HOURS.map((item) => (
-            <div
-              key={item.day}
-              className={`vl-row ${item.day === today ? "vl-row--today" : ""}`}
-            >
-              <div className="vl-row-left">
-                <BsClock className="vl-icon" />
-                <span className="vl-day-name">{item.day}</span>
-              </div>
-              <div className="vl-row-right">
-                <BsCheckCircle className="vl-icon" />
-                <span className="vl-day-hours">{item.hours}</span>
-              </div>
-            </div>
-          ))}
+        <div className="vl-map">
+          <iframe
+            title="Showroom location map"
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(locAddress)}&output=embed`}
+          />
         </div>
-
       </div>
     </div>
   );
