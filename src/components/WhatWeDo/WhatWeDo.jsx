@@ -1,19 +1,19 @@
 "use client";
 import React from "react";
 import {
-  FaCar,
+  FaHammer,
   FaPaintBrush,
   FaSprayCan,
-  FaTruck,
-  FaWheelchair,
+  FaCarSide,
   FaFileInvoiceDollar,
 } from "react-icons/fa";
+import { GiCarWheel } from "react-icons/gi";
 import "./WhatWeDo.css";
 
 const services = [
   {
     number: "01",
-    icon: <FaCar />,
+    icon: <FaHammer />,
     title: "Dent Removal",
     description:
       "Paintless and conventional dent repair for all vehicle types.",
@@ -52,7 +52,7 @@ const services = [
   },
   {
     number: "04",
-    icon: <FaTruck />,
+    icon: <FaCarSide />,
     title: "Bumper Repair",
     description:
       "Repair cracked, scratched, or damaged bumpers.",
@@ -65,7 +65,7 @@ const services = [
   },
   {
     number: "05",
-    icon: <FaWheelchair />,
+    icon: <GiCarWheel />,
     title: "Alloy Wheel Restoration",
     description:
       "Restore damaged or faded alloy wheels.",
