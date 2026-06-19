@@ -3,9 +3,10 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth, getDisplayName } from "../../context/AuthContext";
+import { useFavourites } from "../../context/FavouritesContext";
 import "./Navbar.css";
 const logo = "/assets/images/noorix_logo.jpg";
-import { makeModels, toBrandSlug } from "../../data/cars";
+import { getFilters } from "../../lib/cars";
 import {
   FaBars,
   FaTimes,
@@ -117,9 +118,30 @@ const items = [
   );
 }
 
+// Slugify a make for /used-cars/:brand links (matches the backend's slug format).
+const brandSlug = (make) =>
+  make
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
 // ─── Brands Sub-Panel ─────────────────────────────────────────────────────────
 function BrandsPanel({ open, onBack }) {
-  const sortedMakes = Object.keys(makeModels).sort();
+  const [sortedMakes, setSortedMakes] = useState([]);
+
+  // Brand list comes from the live /api/filters/ inventory; fetched the first
+  // time the user opens the Used Cars panel.
+  useEffect(() => {
+    if (!open || sortedMakes.length) return;
+    let active = true;
+    getFilters().then((f) => {
+      if (active && Array.isArray(f?.makes)) setSortedMakes([...f.makes].sort());
+    });
+    return () => { active = false; };
+  }, [open, sortedMakes.length]);
+
   return (
     <div className={`services-panel${open ? " open" : ""}`}>
       <div className="services-header">
@@ -132,7 +154,7 @@ function BrandsPanel({ open, onBack }) {
       <div className="services-list brands-list">
         {sortedMakes.map((make) => (
           <Link
-            href={`/used-cars/${toBrandSlug(make)}`}
+            href={`/used-cars/${brandSlug(make)}`}
             className="services-list-item"
             key={make}
           >
@@ -153,6 +175,7 @@ function BrandsPanel({ open, onBack }) {
 function NavDrawer({ open, onClose }) {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [brandsOpen, setBrandsOpen] = useState(false);
+  const { count: favCount } = useFavourites();
 
   const handleClose = () => {
     setServicesOpen(false);
@@ -207,6 +230,11 @@ function NavDrawer({ open, onClose }) {
             <span>Services</span>
             <FaChevronDown size={12} className="nav-chevron" />
           </div>
+          <Link href="/favourites" className="drawer-nav-item">
+            <FaHeart size={18} className="nav-icon" />
+            <span>Favourites</span>
+            {favCount > 0 && <span className="drawer-fav-badge">{favCount}</span>}
+          </Link>
           <Link href="/about" className="drawer-nav-item">
             <FaInfoCircle size={18} className="nav-icon" />
             <span>About</span>
@@ -241,6 +269,7 @@ export default function AffordableCarCentreHeader() {
 
   const router = useRouter();
   const { user, logout } = useAuth();
+  const { count: favCount } = useFavourites();
 
   const handleLogout = () => {
     logout();
@@ -311,10 +340,11 @@ export default function AffordableCarCentreHeader() {
           {/* ─── Right Side ─────────────────────────────────────── */}
           <div className="flex items-center gap-3 px-4 sm:px-6">
 
-            {/* Heart — desktop only */}
-            <button className="acc-icon-outline-btn acc-desktop-only" aria-label="Saved">
+            {/* Favourites — desktop only */}
+            <Link href="/favourites" className="acc-icon-outline-btn acc-desktop-only" aria-label="Favourites">
               <FaHeart size={16} />
-            </button>
+              {favCount > 0 && <span className="acc-fav-badge">{favCount}</span>}
+            </Link>
 
             {/* Reviews — desktop only */}
             <button className="acc-reviews-btn acc-desktop-only">Reviews</button>

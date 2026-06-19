@@ -1,4 +1,5 @@
 import UsedCarsByBrand from "@/views/UsedCarsByBrand/UsedCarsByBrand";
+import { getCarsByBrand } from "@/lib/cars";
 
 export async function generateMetadata({ params }) {
   const { brand } = await params;
@@ -11,7 +12,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function Page() {
-  // UsedCarsByBrand reads the :brand via useParams() from next/navigation.
-  return <UsedCarsByBrand />;
+export default async function Page({ params }) {
+  const { brand } = await params;
+  const cars = await getCarsByBrand(brand);
+  return <UsedCarsByBrand brand={brand} cars={cars} />;
 }

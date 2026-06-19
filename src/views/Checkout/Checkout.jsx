@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FiArrowLeft, FiLock, FiShield, FiExternalLink } from "react-icons/fi";
+import { FiArrowLeft, FiLock, FiExternalLink } from "react-icons/fi";
 import { FaCcVisa, FaCcMastercard, FaCcAmex, FaCcPaypal, FaCcApplePay } from "react-icons/fa";
 
 import Navbar from "../../components/Navbar/Navbar";
@@ -75,6 +75,7 @@ export default function Checkout({ amount, carId, carTitle, carPrice }) {
         cancelUrl: carId
           ? `${origin}/payment/cancel?car=${carId}&amount=${deposit}`
           : `${origin}/stock`,
+        car: carId || undefined,
       });
 
       // Persist so /payment/complete can confirm the real (webhook-verified) status.
@@ -87,8 +88,16 @@ export default function Checkout({ amount, carId, carTitle, carPrice }) {
       // Hand off to Stripe's hosted checkout page.
       window.location.href = data.url;
     } catch (err) {
-      setError(err.message);
       setRedirecting(false);
+
+      // Race condition — someone else reserved/paid for this car first.
+      if (err.code === "CAR_UNAVAILABLE") {
+        setError("Sorry, this car was just reserved by someone else.");
+        setTimeout(() => router.push("/stock"), 2500);
+        return;
+      }
+
+      setError(err.message);
     }
   };
 
@@ -104,8 +113,8 @@ export default function Checkout({ amount, carId, carTitle, carPrice }) {
 
           <h1 className="checkout-heading">Reserve your vehicle</h1>
           <p className="checkout-subheading">
-            Secure this car with a fully refundable deposit. You'll be taken to Stripe's secure
-            checkout to complete payment.
+            Secure this car with a deposit. You'll be taken to Stripe's secure checkout to
+            complete payment.
           </p>
 
           <div className="checkout-grid">
@@ -128,13 +137,9 @@ export default function Checkout({ amount, carId, carTitle, carPrice }) {
               <div className="checkout-summary-divider" />
 
               <div className="checkout-summary-row checkout-summary-total">
-                <span className="checkout-summary-label">Refundable deposit</span>
+                <span className="checkout-summary-label">Deposit</span>
                 <span className="checkout-summary-value">{depositLabel || "—"}</span>
               </div>
-
-              <p className="checkout-refund-note">
-                <FiShield size={14} /> Your deposit is fully refundable.
-              </p>
 
               <div className="checkout-accepted">
                 <span className="checkout-accepted-label">We accept</span>

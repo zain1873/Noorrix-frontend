@@ -151,7 +151,6 @@
 
 /* ── Warranty Options ── */
 .wr-options {
-  background: var(--background-color);
   padding: 80px 24px;
 }
 
@@ -210,7 +209,7 @@
 .wr-options-title {
   font-size: 2.4rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--theme-color);
   line-height: 1.2;
   margin-bottom: 4px;
 }
@@ -309,7 +308,7 @@
 
 .wr-info-text {
   font-size: 0.95rem;
-  color: var(--muted-text);
+  color: #fff;
   line-height: 1.8;
 }
 

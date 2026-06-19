@@ -1,13 +1,14 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { stockData } from "../../data/cars";
+import { useRouter } from "next/navigation";
 import { useAuth, loginGate } from "../../context/AuthContext";
+import { gbp, money, miles, cc, ukDate } from "../../lib/format";
 
 // ---------- react-icons ----------
 import { FiChevronLeft, FiChevronRight, FiChevronDown, FiChevronUp, FiX } from "react-icons/fi";
-import { FaHeart, FaRegHeart, FaStar, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
+import { FaStar, FaPhoneAlt, FaEnvelope, FaHome } from "react-icons/fa";
+import HeartButton from "../../components/HeartButton/HeartButton";
 import { MdLocationOn, MdOutlineDirectionsCar, MdGridView, MdColorLens } from "react-icons/md";
 import { BsCalendar3, BsSpeedometer2, BsFuelPump, BsGear, BsCalendarCheck, BsShieldCheck, BsClock, BsCheckCircle } from "react-icons/bs";
 import { TbEngine } from "react-icons/tb";
@@ -130,9 +131,8 @@ function GalleryModal({ startIndex, onClose, slides }) {
 // ----------------------------------------------------------------
 // IMAGE SLIDER
 // ----------------------------------------------------------------
-function ImageSlider({ slides }) {
+function ImageSlider({ slides, car }) {
   const [current,     setCurrent    ] = useState(0);
-  const [loved,       setLoved      ] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
 
   const prev = () => setCurrent(i => (i - 1 + slides.length) % slides.length);
@@ -142,18 +142,15 @@ function ImageSlider({ slides }) {
     <>
       <div>
         <div className="image-slider-wrapper" style={{ width: "100%", maxWidth: "100%" }}>
-          <div className="image-badge-banner">
-            Very Clean Example<br />FSH
-          </div>
-
           <div className="photo-count-badge">
             <MdGridView size={14} />
             {slides.length}
           </div>
 
-          <button className="favourite-btn" onClick={() => setLoved(l => !l)}>
-            {loved ? <FaHeart color="#e8000f" size={18} /> : <FaRegHeart size={18} />}
-          </button>
+          <HeartButton car={car} />
+
+          {car.status === "reserved" && <span className="reserved-badge">Reserved</span>}
+          {car.status === "sold" && <span className="sold-badge">Sold</span>}
 
           <img
             className="main-slide"
@@ -214,17 +211,17 @@ function ImageSlider({ slides }) {
 // DESCRIPTION + CAR OVERVIEW SECTION (Image 1 - Light)
 // ----------------------------------------------------------------
 function DescriptionOverviewSection({ car }) {
-  const [expanded, setExpanded] = useState(false);
-  const descText = `This ${car.year} ${car.title} offers an exceptional blend of performance and efficiency. Featuring a ${car.cc} ${car.fuel.toLowerCase()} engine with ${car.transmission.toLowerCase()} gearbox, this ${car.bodyType.toLowerCase()} has covered ${car.miles} and comes with an MOT valid until ${car.mot}. A great opportunity to own a quality used vehicle from Noorrix Motors in Bedford.`;
-  const short = descText.slice(0, 200) + "…";
+  const descText =
+    car.description ||
+    `This ${car.year} ${car.title} offers an exceptional blend of performance and efficiency. Featuring a ${cc(car.engine_cc)} ${(car.fuel || "").toLowerCase()} engine with ${(car.transmission || "").toLowerCase()} gearbox, this ${(car.body_type || "").toLowerCase()} has covered ${miles(car.mileage)} and comes with an MOT valid until ${ukDate(car.mot_date)}. A great opportunity to own a quality used vehicle from Noorrix Motors in Bedford.`;
 
   const overviewItems = [
-    { icon: <BsCalendarCheck size={26} />,        label: "MOT date",  value: car.mot        },
-    { icon: <MdColorLens size={26} />,            label: "Colour",    value: car.colour     },
-    { icon: <BsShieldCheck size={26} />,          label: "Condition", value: "HPI Checked"  },
-    { icon: <AiOutlineCar size={26} />,           label: "Make",      value: car.make       },
-    { icon: <MdOutlineDirectionsCar size={26} />, label: "Model",     value: car.model      },
-    { icon: <BsFuelPump size={26} />,             label: "Fuel Type", value: car.fuel       },
+    { icon: <BsCalendarCheck size={26} />,        label: "MOT date",  value: ukDate(car.mot_date)               },
+    { icon: <MdColorLens size={26} />,            label: "Colour",    value: car.colour                         },
+    { icon: <BsShieldCheck size={26} />,          label: "Condition", value: car.history_check || "HPI Checked" },
+    { icon: <AiOutlineCar size={26} />,           label: "Make",      value: car.make                           },
+    { icon: <MdOutlineDirectionsCar size={26} />, label: "Model",     value: car.model                          },
+    { icon: <BsFuelPump size={26} />,             label: "Fuel Type", value: car.fuel                           },
   ];
 
   return (
@@ -232,10 +229,7 @@ function DescriptionOverviewSection({ car }) {
       <div className="do-inner">
         <div className="do-desc">
           <h3 className="do-desc-title">Description</h3>
-          <p className="do-desc-body">{expanded ? descText : short}</p>
-          <button className="do-read-more" onClick={() => setExpanded(v => !v)}>
-            {expanded ? "Read Less" : "Read More"}
-          </button>
+          <p className="do-desc-body" style={{ whiteSpace: "pre-line" }}>{descText}</p>
         </div>
         <div className="do-overview">
           <h3 className="do-overview-title">Car Overview</h3>
@@ -284,15 +278,17 @@ const VEHICLE_HOURS = [
   { day: "Sunday",    hours: "11:00 AM to 04:00 PM" },
 ];
 
-function VehicleLocationSection() {
+function VehicleLocationSection({ car }) {
   const [postcode, setPostcode] = useState("");
   const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   const today = days[new Date().getDay()];
 
+  const locAddress = car?.location?.address || "16 Eastside, Cauldwell Walk, Bedford MK42 9DT";
+
   const handleDirections = () => {
     if (postcode.trim()) {
       window.open(
-        `https://www.google.com/maps/dir/${encodeURIComponent(postcode)}/16+Eastside,+Cauldwell+Walk,+Bedford,+MK42+9DT`,
+        `https://www.google.com/maps/dir/${encodeURIComponent(postcode)}/${encodeURIComponent(locAddress)}`,
         "_blank"
       );
     }
@@ -303,7 +299,7 @@ function VehicleLocationSection() {
       <div className="vl-inner">
         <h2 className="vl-title">Vehicle location</h2>
         <p className="vl-address">
-          This vehicle is located at 16 Eastside, Cauldwell Walk, Bedford MK42 9DT
+          This vehicle is located at {locAddress}
         </p>
 
         <div className="vl-phone">
@@ -351,41 +347,44 @@ function VehicleLocationSection() {
   );
 }
 
-function VehicleDescriptionSection() {
-  const [expanded, setExpanded] = useState(false);
+function VehicleDescriptionSection({ car }) {
   const [openAccordion, setOpenAccordion] = useState(null);
 
-  const shortText = "This 2015 Honda Civic 1.6 iDTEC SE Plus boasts a clear vehicle history and a full service history, ensuring peace of mind for its next owner. This five door hatchback features a 1.6 litre diesel engine and meets Euro 6 emission standards. Notable features include Bluetooth connectivity, rear parking camera, USB input, and remote central locking.";
-  const fullText  = shortText + " Experience impressive fuel economy with this Honda Civic, the 1.6L iDTEC engine delivers exceptional efficiency that sets it apart from many similar vehicles. The comfortable interior features dual zone climate control ensuring comfort for all occupants, while the generous boot space provides ample room for luggage and everyday essentials.";
+  const fullText = car?.description || "";
+  const details  = car?.details || {};
 
   const toggleAccordion = (id) => setOpenAccordion(prev => prev === id ? null : id);
 
   return (
     <div className="vd-wrapper">
-      <h2 className="vd-title">Car Specification</h2>
-      <p className="vd-body">{expanded ? fullText : shortText.slice(0, 400) + "…"}</p>
-      <button className="vd-read-more" onClick={() => setExpanded(v => !v)}>
-        {expanded ? "Read Less −" : "Read More +"}
-      </button>
+      <div className="vd-columns">
+        <div className="vd-col-desc">
+          <h2 className="vd-title">Car Specification</h2>
+          <p className="vd-body" style={{ whiteSpace: "pre-line" }}>{fullText}</p>
+        </div>
 
-      <div className="vd-accordion">
-        {ACCORDION_ITEMS.map((item) => {
-          const isOpen = openAccordion === item.id;
-          return (
-            <div key={item.id} className="vd-accordion-item">
-              <button className="vd-accordion-header" onClick={() => toggleAccordion(item.id)}>
-                <span className="vd-acc-label">
-                  <span className="vd-acc-accent">{item.label}</span>{" "}
-                  <span className="vd-acc-white">{item.accent}</span>
-                </span>
-                {isOpen ? <FiChevronUp className="vd-acc-icon" /> : <FiChevronDown className="vd-acc-icon" />}
-              </button>
-              <div className={`vd-accordion-body ${isOpen ? "open" : ""}`}>
-                <p className="vd-acc-content">{ACCORDION_CONTENT[item.id]}</p>
-              </div>
-            </div>
-          );
-        })}
+        <div className="vd-col-accordion">
+          <div className="vd-accordion">
+            {ACCORDION_ITEMS.map((item) => {
+              const isOpen = openAccordion === item.id;
+              const content = details[item.id] ?? ACCORDION_CONTENT[item.id];
+              return (
+                <div key={item.id} className="vd-accordion-item">
+                  <button className="vd-accordion-header" onClick={() => toggleAccordion(item.id)}>
+                    <span className="vd-acc-label">
+                      <span className="vd-acc-accent">{item.label}</span>{" "}
+                      <span className="vd-acc-white">{item.accent}</span>
+                    </span>
+                    {isOpen ? <FiChevronUp className="vd-acc-icon" /> : <FiChevronDown className="vd-acc-icon" />}
+                  </button>
+                  <div className={`vd-accordion-body ${isOpen ? "open" : ""}`}>
+                    <p className="vd-acc-content">{content}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       <div className="vd-footer-notes">
@@ -397,11 +396,34 @@ function VehicleDescriptionSection() {
 }
 
 // ----------------------------------------------------------------
+// CAR FEATURES SECTION
+// ----------------------------------------------------------------
+function CarFeaturesSection({ car }) {
+  const features = Array.isArray(car.features) ? car.features : [];
+  if (!features.length) return null;
+
+  return (
+    <div className="cf-section">
+      <h3 className="cf-title">Car Features</h3>
+      <div className="cf-grid">
+        {features.map((feature, i) => (
+          <div className="cf-item" key={i}>
+            <span className="cf-icon"><HiCheckCircle size={14} /></span>
+            {feature}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------
 // DARK SPEC CARD  (replaces PriceCard + DealerCard + OutOfHoursPanel)
 // ----------------------------------------------------------------
 function DarkSpecCard({ car }) {
   const router = useRouter();
   const { user } = useAuth();
+  const deposit = Number(car.deposit_amount) || 200;
   return (
     <div className="dark-spec-card">
 
@@ -412,7 +434,7 @@ function DarkSpecCard({ car }) {
       {/* ── Price row ── */}
       <div className="dark-price-row">
         <div className="dark-price-right">
-          <span className="dark-main-price">{car.total}</span>
+          <span className="dark-main-price">{gbp(car.price)}</span>
         </div>
       </div>
 
@@ -424,7 +446,7 @@ function DarkSpecCard({ car }) {
         </div>
         <div className="dark-spec-icon-item">
           <div className="dark-spec-circle"><BsSpeedometer2 /></div>
-          <span className="dark-spec-label">{car.miles}</span>
+          <span className="dark-spec-label">{miles(car.mileage)}</span>
         </div>
         <div className="dark-spec-icon-item">
           <div className="dark-spec-circle"><RiPaintBrushLine /></div>
@@ -432,7 +454,7 @@ function DarkSpecCard({ car }) {
         </div>
         <div className="dark-spec-icon-item">
           <div className="dark-spec-circle"><TbEngine /></div>
-          <span className="dark-spec-label">{car.cc}</span>
+          <span className="dark-spec-label">{cc(car.engine_cc)}</span>
         </div>
         <div className="dark-spec-icon-item">
           <div className="dark-spec-circle"><BsGear /></div>
@@ -452,9 +474,9 @@ function DarkSpecCard({ car }) {
         {/* Reserve */}
         <button
           className="dark-btn-reserve"
-          onClick={() => router.push(loginGate(user, `/checkout?amount=99&car=${car.id}`))}
+          onClick={() => router.push(loginGate(user, `/checkout?amount=${deposit}&car=${car.id}`))}
         >
-          Reserve now for £99 <FiChevronRight size={16} />
+          Reserve now for {gbp(deposit)} <FiChevronRight size={16} />
         </button>
 
         {/* Make an enquiry + Part exchange side by side */}
@@ -469,7 +491,7 @@ function DarkSpecCard({ car }) {
 
         {/* View video — links to YouTube */}
         <a
-          href="https://www.youtube.com"
+          href={car.video_url || "https://www.youtube.com"}
           target="_blank"
           rel="noopener noreferrer"
           className="dark-btn-video"
@@ -501,12 +523,12 @@ function DarkSpecCard({ car }) {
 // ----------------------------------------------------------------
 // MAIN COMPONENT
 // ----------------------------------------------------------------
-export default function CarsListing() {
-  const { id } = useParams();
+export default function CarsListing({ car, similar = [] }) {
   const router = useRouter();
-  const car = stockData.find((c) => String(c.id) === String(id)) ?? stockData[0];
 
-  const slides = [car.img, car.img, car.img, car.img, car.img, car.img];
+  const slides = (Array.isArray(car.images) && car.images.length)
+    ? car.images
+    : (car.image_url ? [car.image_url] : []);
 
   return (
     <>
@@ -514,13 +536,15 @@ export default function CarsListing() {
       {/* ── Breadcrumb ── */}
       <div className="breadcrumb">
         <div className="breadcrumb-inner">
-          <Link href="/">Home</Link>
-          <span className="separator">›</span>
+          <Link href="/" className="breadcrumb-home">
+            <FaHome size={13} /> Home
+          </Link>
+          <FiChevronRight className="separator" size={13} />
           <Link href="/stock">Used Cars</Link>
-          <span className="separator">›</span>
+          <FiChevronRight className="separator" size={13} />
           <Link href={`/used-cars/${car.make.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>{car.make}</Link>
-          <span className="separator">›</span>
-          <span className="current">{car.model} · {car.year} · {car.colour}</span>
+          <FiChevronRight className="separator" size={13} />
+          <span className="current">{car.title}</span>
         </div>
       </div>
 
@@ -535,21 +559,28 @@ export default function CarsListing() {
 
           {/* ======== LEFT COLUMN ======== */}
           <div>
-            <ImageSlider slides={slides} />
+            <ImageSlider slides={slides} car={car} />
 
             <div className="location-row">
               <div className="location-left">
                 <MdLocationOn size={20} color="#888" />
                 <div>
                   <span className="label">Car location</span>
-                  Bedford{" "}
-                  <a href="#" className="location-link">(See distance)</a>
+                  {car.location?.name || "Bedford"}{" "}
+                  {/* <a href="#" className="location-link">(See distance)</a> */}
                 </div>
               </div>
-              <a href="#" className="view-map-btn">
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(car.location?.address || car.location?.name || "Bedford")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="view-map-btn"
+              >
                 View Map <FiChevronRight size={16} />
               </a>
             </div>
+
+            <CarFeaturesSection car={car} />
 
             <MessageDealerCard/>
           </div>
@@ -566,9 +597,9 @@ export default function CarsListing() {
 
           {/* ── NEW SECTIONS ADDED BELOW ── */}
             <DescriptionOverviewSection car={car} />
-            <VehicleDescriptionSection />
-            <VehicleLocationSection />
-            <SimilarCarsSlider />
+            <VehicleDescriptionSection car={car} />
+            <VehicleLocationSection car={car} />
+            <SimilarCarsSlider cars={similar} />
 
       <NoorrixFooter/>
     </>

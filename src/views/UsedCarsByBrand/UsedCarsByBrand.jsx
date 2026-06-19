@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Navbar from "../../components/Navbar/Navbar";
 import NoorrixFooter from "../../components/Footer/Footer";
-import { stockData, makeModels, toBrandSlug } from "../../data/cars";
 import { useAuth, loginGate } from "../../context/AuthContext";
+import { gbp, money, miles, cc, ukDate, carUrl } from "../../lib/format";
+import HeartButton from "../../components/HeartButton/HeartButton";
 import {
   FaCalendarAlt, FaTachometerAlt, FaCog, FaLeaf,
   FaGasPump, FaClone,
@@ -48,20 +49,21 @@ const brandLogos = {
   SEAT:         seatLogo,
 };
 
-export default function UsedCarsByBrand() {
-  const { brand } = useParams();
+/* Fallback display name when the brand has no cars in stock (slug → "Mercedes Benz"). */
+function prettifyBrand(slug) {
+  return decodeURIComponent(slug || "")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+export default function UsedCarsByBrand({ brand, cars = [] }) {
   const router = useRouter();
   const { user } = useAuth();
 
-  const matchedMake = Object.keys(makeModels).find(
-    (make) => toBrandSlug(make) === brand
-  );
-
-  const displayName = matchedMake ?? brand;
-  const cars = matchedMake
-    ? stockData.filter((car) => car.make === matchedMake)
-    : [];
-  const logo = brandLogos[matchedMake];
+  // The backend already resolved the brand slug to matching cars, so derive the
+  // real make from the results; fall back to a prettified slug for an empty brand.
+  const displayName = cars[0]?.make || prettifyBrand(brand);
+  const logo = brandLogos[cars[0]?.make] || brandLogos[displayName];
 
   return (
     <>
@@ -129,12 +131,15 @@ export default function UsedCarsByBrand() {
             {cars.map((car) => (
               <Link
                 key={car.id}
-                href={`/cars/${car.id}`}
+                href={carUrl(car)}
                 className="mazda-card"
                 style={{ cursor: "pointer", textDecoration: "none", display: "block" }}
               >
                 <div className="card-image-container">
-                  <img src={car.img} alt={car.title} className="card-image" />
+                  <img src={car.image_url} alt={car.title} className="card-image" />
+                  <HeartButton car={car} />
+                  {car.status === "reserved" && <span className="reserved-badge">Reserved</span>}
+                  {car.status === "sold" && <span className="sold-badge">Sold</span>}
                 </div>
                 <div className="card-content">
                   <h2 className="car-title">{car.title}</h2>
@@ -146,7 +151,7 @@ export default function UsedCarsByBrand() {
                     </div>
                     <div className="spec-item">
                       <FaTachometerAlt className="spec-icon" />
-                      <span className="spec-value">{car.cc}</span>
+                      <span className="spec-value">{cc(car.engine_cc)}</span>
                     </div>
                     <div className="spec-item">
                       <FaCog className="spec-icon" />
@@ -154,11 +159,11 @@ export default function UsedCarsByBrand() {
                     </div>
                     <div className="spec-item">
                       <FaClone className="spec-icon" />
-                      <span className="spec-value">{car.miles}</span>
+                      <span className="spec-value">{miles(car.mileage)}</span>
                     </div>
                     <div className="spec-item">
                       <FaLeaf className="spec-icon" />
-                      <span className="spec-value">{car.mot}</span>
+                      <span className="spec-value">{ukDate(car.mot_date)}</span>
                     </div>
                     <div className="spec-item">
                       <FaGasPump className="spec-icon" />
@@ -167,11 +172,11 @@ export default function UsedCarsByBrand() {
                   </div>
                   <div className="price-section">
                     <div className="monthly-price">
-                      <span className="price-amount">{car.monthly}</span>
+                      <span className="price-amount">{money(car.monthly)}</span>
                       <span className="price-label">Per month</span>
                     </div>
                     <div className="total-price">
-                      <span className="total-amount">{car.total}</span>
+                      <span className="total-amount">{gbp(car.price)}</span>
                       <span className="total-label">Total Price</span>
                     </div>
                   </div>
@@ -181,12 +186,9 @@ export default function UsedCarsByBrand() {
                     </button>
                     <button
                       className="btn btn-reserve"
-                      onClick={(e) => { e.preventDefault(); router.push(loginGate(user, `/checkout?amount=200&car=${car.id}`)); }}
+                      onClick={(e) => { e.preventDefault(); router.push(loginGate(user, `/checkout?amount=${Number(car.deposit_amount) || 200}&car=${car.id}`)); }}
                     >
-                      <span className="reserve-title">Reserve For £200</span>
-                      <span className="reserve-sub">
-                        Deposit fully refundable
-                      </span>
+                      <span className="reserve-title">Reserve For {gbp(Number(car.deposit_amount) || 200)}</span>
                     </button>
                   </div>
                 </div>

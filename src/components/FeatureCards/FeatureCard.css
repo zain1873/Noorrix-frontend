@@ -66,6 +66,64 @@
     transform: scale(1.08);
 }
 
+/* === Favourite (heart) button === */
+.favourite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.favourite-btn:hover {
+  background: #fff;
+  transform: scale(1.1);
+}
+
+.favourite-btn svg {
+  color: #999;
+  font-size: 18px;
+  transition: color 0.2s;
+}
+
+.favourite-btn:hover svg {
+  color: #e8000f;
+}
+
+/* === Reserved / Sold status badge === */
+.reserved-badge,
+.sold-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 5;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.reserved-badge {
+  background: var(--theme-color);
+}
+
+.sold-badge {
+  background: #555;
+}
+
 /* === AA Badge === */
 .aa-badge {
   position: absolute;
@@ -375,7 +433,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 9px 0 8px;
+  padding: 13px 0;
+  font-size: 15px;
   gap: 1px;
 }
 

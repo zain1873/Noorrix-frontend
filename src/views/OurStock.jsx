@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
 import {
@@ -10,25 +10,24 @@ import {
 } from "react-icons/fa";
 import "../components/FeatureCards/FeatureCard.css";
 import "./OurStock.css";
-import { stockData, makeModels } from "../data/cars";
 import { useAuth, loginGate } from "../context/AuthContext";
+import { gbp, money, miles, cc, ukDate, carUrl } from "../lib/format";
+import HeartButton from "../components/HeartButton/HeartButton";
 
-/* ─────────────────── Filter-only data ─────────────────── */
-const makes = Object.keys(makeModels);
+/* ── Fallback filter options (used until /api/filters/ provides live ones) ── */
+const DEFAULT_BODY_TYPES    = ["SUV", "Hatchback", "Saloon", "Estate", "Coupe", "Convertible", "MPV", "Van"];
+const DEFAULT_FUEL_TYPES    = ["Petrol", "Diesel", "Hybrid", "Electric", "Mild Hybrid"];
+const DEFAULT_TRANSMISSIONS = ["Automatic", "Manual", "CVT", "Semi-Automatic"];
+const DEFAULT_COLOURS       = ["Black", "White", "Silver", "Grey", "Blue", "Red", "Green", "Orange"];
 
-const bodyTypes     = ["SUV", "Hatchback", "Saloon", "Estate", "Coupe", "Convertible", "MPV", "Van"];
-const fuelTypes     = ["Petrol", "Diesel", "Hybrid", "Electric", "Mild Hybrid"];
-const transmissions = ["Automatic", "Manual", "CVT", "Semi-Automatic"];
-const colours       = ["Black", "White", "Silver", "Grey", "Blue", "Red", "Green", "Orange"];
-
-const priceOptions = [
+const DEFAULT_PRICE_OPTIONS = [
   { label: "Under £10,000",      min: 0,     max: 10000    },
   { label: "£10,000 – £15,000",  min: 10000, max: 15000    },
   { label: "£15,000 – £20,000",  min: 15000, max: 20000    },
   { label: "£20,000 – £30,000",  min: 20000, max: 30000    },
   { label: "£30,000+",           min: 30000, max: Infinity  },
 ];
-const mileageOptions = [
+const DEFAULT_MILEAGE_OPTIONS = [
   { label: "Under 20,000",       min: 0,      max: 20000    },
   { label: "20,000 – 50,000",    min: 20000,  max: 50000    },
   { label: "50,000 – 100,000",   min: 50000,  max: 100000   },
@@ -46,19 +45,56 @@ const filterConfig = [
   { key: "mileage",      label: "Mileage",      Icon: FaTachometerAlt },
 ];
 
-/* ─────────────────── Component ─────────────────── */
-export default function OurStock() {
-  const router = useRouter();
-  const { user } = useAuth();
+/* Convert API ranges ({max:null} = no upper bound) to numeric ranges; fall back to defaults. */
+function normRanges(ranges, fallback) {
+  return Array.isArray(ranges) && ranges.length
+    ? ranges.map((r) => ({ label: r.label, min: r.min ?? 0, max: r.max == null ? Infinity : r.max }))
+    : fallback;
+}
 
-  const [make,         setMake]         = useState("");
-  const [model,        setModel]        = useState("");
-  const [bodyType,     setBodyType]     = useState("");
-  const [fuelType,     setFuelType]     = useState("");
-  const [transmission, setTransmission] = useState("");
-  const [colour,       setColour]       = useState("");
-  const [priceLabel,   setPriceLabel]   = useState("");
-  const [priceRange,   setPriceRange]   = useState({ min: 0, max: Infinity });
+/* Reads price values arriving from the URL — e.g. Home hero filter → /stock?make=BMW&priceMax=15000 */
+function parsePriceFromParams(sp, priceOptions) {
+  const hasMin = sp.has("priceMin");
+  const hasMax = sp.has("priceMax");
+  if (!hasMin && !hasMax) return { label: "", range: { min: 0, max: Infinity } };
+  const min = hasMin ? Number(sp.get("priceMin")) : 0;
+  const max = hasMax ? Number(sp.get("priceMax")) : Infinity;
+  const preset = priceOptions.find((o) => o.min === min && o.max === max);
+  let label;
+  if (preset)       label = preset.label;
+  else if (!hasMin) label = `Up to £${max.toLocaleString()}`;
+  else if (!hasMax) label = `£${min.toLocaleString()}+`;
+  else              label = `£${min.toLocaleString()} – £${max.toLocaleString()}`;
+  return { label, range: { min, max } };
+}
+
+/* ─────────────────── Component ─────────────────── */
+export default function OurStock({ cars = [], filters = null }) {
+  const router       = useRouter();
+  const searchParams = useSearchParams();
+  const { user }     = useAuth();
+
+  /* ── Filter options: live from /api/filters/, else fallbacks ── */
+  const f = filters || {};
+  const makes          = f.makes || [];
+  const makeModels     = f.makeModels || {};
+  const bodyTypes      = f.bodyTypes || DEFAULT_BODY_TYPES;
+  const fuelTypes      = f.fuelTypes || DEFAULT_FUEL_TYPES;
+  const transmissions  = f.transmissions || DEFAULT_TRANSMISSIONS;
+  const colours        = f.colours || DEFAULT_COLOURS;
+  const priceOptions   = normRanges(f.priceRanges,   DEFAULT_PRICE_OPTIONS);
+  const mileageOptions = normRanges(f.mileageRanges, DEFAULT_MILEAGE_OPTIONS);
+
+  const initialPrice = parsePriceFromParams(searchParams, priceOptions);
+
+  const [make,         setMake]         = useState(() => searchParams.get("make")         || "");
+  const [model,        setModel]        = useState(() => searchParams.get("model")        || "");
+  const [bodyType,     setBodyType]     = useState(() => searchParams.get("bodyType")     || "");
+  const [fuelType,     setFuelType]     = useState(() => searchParams.get("fuel")         || "");
+  const [transmission, setTransmission] = useState(() => searchParams.get("transmission") || "");
+  const [colour,       setColour]       = useState(() => searchParams.get("colour")       || "");
+  const [priceLabel,   setPriceLabel]   = useState(initialPrice.label);
+  const [priceRange,   setPriceRange]   = useState(initialPrice.range);
   const [mileageLabel, setMileageLabel] = useState("");
   const [mileageRange, setMileageRange] = useState({ min: 0, max: Infinity });
 
@@ -67,18 +103,18 @@ export default function OurStock() {
 
   /* ── Derived ── */
   const filtered = useMemo(
-    () => stockData.filter((car) => {
+    () => cars.filter((car) => {
       if (make         && car.make         !== make)         return false;
       if (model        && car.model        !== model)        return false;
-      if (bodyType     && car.bodyType     !== bodyType)     return false;
+      if (bodyType     && car.body_type    !== bodyType)     return false;
       if (fuelType     && car.fuel         !== fuelType)     return false;
       if (transmission && car.transmission !== transmission) return false;
       if (colour       && car.colour       !== colour)       return false;
-      if (car.priceNum   < priceRange.min   || car.priceNum   > priceRange.max)   return false;
-      if (car.mileageNum < mileageRange.min || car.mileageNum > mileageRange.max) return false;
+      if (car.price   < priceRange.min   || car.price   > priceRange.max)   return false;
+      if (car.mileage < mileageRange.min || car.mileage > mileageRange.max) return false;
       return true;
     }),
-    [make, model, bodyType, fuelType, transmission, colour, priceRange, mileageRange]
+    [cars, make, model, bodyType, fuelType, transmission, colour, priceRange, mileageRange]
   );
 
   const activeCount = [make, model, bodyType, fuelType, transmission, colour, priceLabel, mileageLabel].filter(Boolean).length;
@@ -193,29 +229,29 @@ export default function OurStock() {
   };
 
   const getCount = (key, value) =>
-    stockData.filter((car) => {
+    cars.filter((car) => {
       if (key !== "make"         && make         && car.make         !== make)         return false;
       if (key !== "model"        && model        && car.model        !== model)        return false;
-      if (key !== "bodyType"     && bodyType     && car.bodyType     !== bodyType)     return false;
+      if (key !== "bodyType"     && bodyType     && car.body_type    !== bodyType)     return false;
       if (key !== "fuel"         && fuelType     && car.fuel         !== fuelType)     return false;
       if (key !== "transmission" && transmission && car.transmission !== transmission) return false;
       if (key !== "colour"       && colour       && car.colour       !== colour)       return false;
-      if (key !== "price"   && (car.priceNum   < priceRange.min   || car.priceNum   > priceRange.max))   return false;
-      if (key !== "mileage" && (car.mileageNum < mileageRange.min || car.mileageNum > mileageRange.max)) return false;
+      if (key !== "price"   && (car.price   < priceRange.min   || car.price   > priceRange.max))   return false;
+      if (key !== "mileage" && (car.mileage < mileageRange.min || car.mileage > mileageRange.max)) return false;
       switch (key) {
         case "make":         return car.make         === value;
         case "model":        return car.model        === value;
-        case "bodyType":     return car.bodyType     === value;
+        case "bodyType":     return car.body_type    === value;
         case "fuel":         return car.fuel         === value;
         case "transmission": return car.transmission === value;
         case "colour":       return car.colour       === value;
         case "price": {
           const o = priceOptions.find((x) => x.label === value);
-          return o ? car.priceNum >= o.min && car.priceNum <= o.max : false;
+          return o ? car.price >= o.min && car.price <= o.max : false;
         }
         case "mileage": {
           const o = mileageOptions.find((x) => x.label === value);
-          return o ? car.mileageNum >= o.min && car.mileageNum <= o.max : false;
+          return o ? car.mileage >= o.min && car.mileage <= o.max : false;
         }
         default: return false;
       }
@@ -368,36 +404,38 @@ export default function OurStock() {
         ) : (
           <div className="stock-cards-grid">
             {filtered.map((car) => (
-              <div key={car.id} className="mazda-card" onClick={() => router.push(`/cars/${car.id}`)} style={{ cursor: "pointer" }}>
+              <div key={car.id} className="mazda-card" onClick={() => router.push(carUrl(car))} style={{ cursor: "pointer" }}>
                 <div className="card-image-container">
-                  <img src={car.img} alt={car.title} className="card-image" />
+                  <img src={car.image_url} alt={car.title} className="card-image" />
+                  <HeartButton car={car} />
+                  {car.status === "reserved" && <span className="reserved-badge">Reserved</span>}
+                  {car.status === "sold" && <span className="sold-badge">Sold</span>}
                 </div>
                 <div className="card-content">
                   <h2 className="car-title">{car.title}</h2>
                   <p className="car-subtitle">{car.subtitle}</p>
                   <div className="specs-grid">
                     <div className="spec-item"><FaCalendarAlt  className="spec-icon" /><span className="spec-value">{car.year}</span></div>
-                    <div className="spec-item"><FaTachometerAlt className="spec-icon" /><span className="spec-value">{car.cc}</span></div>
+                    <div className="spec-item"><FaTachometerAlt className="spec-icon" /><span className="spec-value">{cc(car.engine_cc)}</span></div>
                     <div className="spec-item"><FaCog          className="spec-icon" /><span className="spec-value">{car.transmission}</span></div>
-                    <div className="spec-item"><FaClone        className="spec-icon" /><span className="spec-value">{car.miles}</span></div>
-                    <div className="spec-item"><FaLeaf         className="spec-icon" /><span className="spec-value">{car.mot}</span></div>
+                    <div className="spec-item"><FaClone        className="spec-icon" /><span className="spec-value">{miles(car.mileage)}</span></div>
+                    <div className="spec-item"><FaLeaf         className="spec-icon" /><span className="spec-value">{ukDate(car.mot_date)}</span></div>
                     <div className="spec-item"><FaGasPump      className="spec-icon" /><span className="spec-value">{car.fuel}</span></div>
                   </div>
                   <div className="price-section">
                     <div className="monthly-price">
-                      <span className="price-amount">{car.monthly}</span>
+                      <span className="price-amount">{money(car.monthly)}</span>
                       <span className="price-label">Per month</span>
                     </div>
                     <div className="total-price">
-                      <span className="total-amount">{car.total}</span>
+                      <span className="total-amount">{gbp(car.price)}</span>
                       <span className="total-label">Total Price</span>
                     </div>
                   </div>
                   <div className="action-buttons">
-                    <button className="btn btn-finance" onClick={(e) => { e.stopPropagation(); router.push(`/cars/${car.id}`); }}>View Details</button>
-                    <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push(loginGate(user, `/checkout?amount=200&car=${car.id}`)); }}>
-                      <span className="reserve-title">Reserve For £200</span>
-                      <span className="reserve-sub">Deposit fully refundable</span>
+                    <button className="btn btn-finance" onClick={(e) => { e.stopPropagation(); router.push(carUrl(car)); }}>View Details</button>
+                    <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push(loginGate(user, `/checkout?amount=${Number(car.deposit_amount) || 200}&car=${car.id}`)); }}>
+                      <span className="reserve-title">Reserve For {gbp(Number(car.deposit_amount) || 200)}</span>
                     </button>
                   </div>
                 </div>

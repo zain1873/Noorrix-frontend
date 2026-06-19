@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -14,8 +14,10 @@ import {
   FaGasPump,
   FaClone,
 } from "react-icons/fa";
-import { stockData } from "../../data/cars";
+import { getCars } from "../../lib/cars";
+import { gbp, money, miles, cc, ukDate, carUrl } from "../../lib/format";
 import { useAuth, loginGate } from "../../context/AuthContext";
+import HeartButton from "../HeartButton/HeartButton";
 import "./FeatureCard.css";
 
 
@@ -24,6 +26,13 @@ const FeatureCard = () => {
   const { user } = useAuth();
   const swiperRef = useRef(null);
   const containerRef = useRef(null);
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    getCars().then((data) => { if (active) setCars(Array.isArray(data) ? data : []); });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -48,7 +57,7 @@ const FeatureCard = () => {
         <h2 className="sec-title">Dealer's Top Picks</h2>
         <p>Only the best rides make our featured car list.</p>
       </div>
-
+      
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation
@@ -65,16 +74,19 @@ const FeatureCard = () => {
           1024: { slidesPerView: 4 },
         }}
       >
-        {stockData.map((car) => (
+        {cars.map((car) => (
           <SwiperSlide key={car.id}>
-            <div className="mazda-card" onClick={() => router.push(`/cars/${car.id}`)} style={{ cursor: "pointer" }}>
+            <div className="mazda-card" onClick={() => router.push(carUrl(car))} style={{ cursor: "pointer" }}>
               {/* Image Section */}
               <div className="card-image-container">
                 <img
-                  src={car.img}
+                  src={car.image_url}
                   alt={car.title}
                   className="card-image"
                 />
+                <HeartButton car={car} />
+                {car.status === "reserved" && <span className="reserved-badge">Reserved</span>}
+                {car.status === "sold" && <span className="sold-badge">Sold</span>}
               </div>
 
               {/* Content Section */}
@@ -91,7 +103,7 @@ const FeatureCard = () => {
                   </div>
                   <div className="spec-item">
                     <FaTachometerAlt className="spec-icon" />
-                    <span className="spec-value">{car.cc}</span>
+                    <span className="spec-value">{cc(car.engine_cc)}</span>
                   </div>
                   <div className="spec-item">
                     <FaCog className="spec-icon" />
@@ -99,11 +111,11 @@ const FeatureCard = () => {
                   </div>
                   <div className="spec-item">
                     <FaClone className="spec-icon" />
-                    <span className="spec-value">{car.miles}</span>
+                    <span className="spec-value">{miles(car.mileage)}</span>
                   </div>
                   <div className="spec-item">
                     <FaLeaf className="spec-icon" />
-                    <span className="spec-value">{car.mot}</span>
+                    <span className="spec-value">{ukDate(car.mot_date)}</span>
                   </div>
                   <div className="spec-item">
                     <FaGasPump className="spec-icon" />
@@ -114,11 +126,11 @@ const FeatureCard = () => {
                 {/* Price Section */}
                 <div className="price-section">
                   <div className="monthly-price">
-                    <span className="price-amount">{car.monthly}</span>
+                    <span className="price-amount">{money(car.monthly)}</span>
                     <span className="price-label">Per month</span>
                   </div>
                   <div className="total-price">
-                    <span className="total-amount">{car.total}</span>
+                    <span className="total-amount">{gbp(car.price)}</span>
                     <span className="total-label">Total Price</span>
                   </div>
                 </div>
@@ -137,10 +149,9 @@ const FeatureCard = () => {
 
                 {/* Action Buttons */}
                 <div className="action-buttons">
-                  <button className="btn btn-finance" onClick={(e) => { e.stopPropagation(); router.push(`/cars/${car.id}`); }}>View Details</button>
-                  <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push(loginGate(user, `/checkout?amount=200&car=${car.id}`)); }}>
-                    <span className="reserve-title">Reserve For £200</span>
-                    <span className="reserve-sub">Deposit fully refundable</span>
+                  <button className="btn btn-finance" onClick={(e) => { e.stopPropagation(); router.push(carUrl(car)); }}>View Details</button>
+                  <button className="btn btn-reserve" onClick={(e) => { e.stopPropagation(); router.push(loginGate(user, `/checkout?amount=${Number(car.deposit_amount) || 200}&car=${car.id}`)); }}>
+                    <span className="reserve-title">Reserve For {gbp(Number(car.deposit_amount) || 200)}</span>
                   </button>
                 </div>
               </div>

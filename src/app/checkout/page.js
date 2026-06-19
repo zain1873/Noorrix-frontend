@@ -1,5 +1,6 @@
 import Checkout from "@/views/Checkout/Checkout";
-import { stockData } from "@/data/cars";
+import { getCar } from "@/lib/cars";
+import { gbp } from "@/lib/format";
 
 export const metadata = {
   title: "Reserve Your Vehicle | Noorrix Motors",
@@ -11,14 +12,19 @@ export default async function Page({ searchParams }) {
   const { amount, car: carId } = await searchParams;
 
   // Look the car up so we can show the title/price in the order summary.
-  const car = carId ? stockData.find((c) => String(c.id) === String(carId)) : null;
+  const car = carId ? await getCar(carId) : null;
+
+  // The backend ignores the posted "amount" once a car id is given and charges
+  // car.deposit_amount instead — show that authoritative figure rather than
+  // whatever the link's query string happened to carry (which could be stale).
+  const depositAmount = car?.deposit_amount ?? amount;
 
   return (
     <Checkout
-      amount={amount}
+      amount={depositAmount}
       carId={carId || ""}
       carTitle={car?.title || ""}
-      carPrice={car?.total || ""}
+      carPrice={car ? gbp(car.price) : ""}
     />
   );
 }

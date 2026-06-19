@@ -3,6 +3,7 @@ import "../styles/global.css";
 import ScrollToHash from "@/components/ScrollToHash";
 import WhatsAppButton from "@/components/WhatsApp/WhatsAppButton";
 import { AuthProvider } from "@/context/AuthContext";
+import { FavouritesProvider } from "@/context/FavouritesContext";
 
 export const metadata = {
   title: "Noorrix Motors | Quality Used Cars UK",
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
         />
         <ScrollToHash />
         <AuthProvider>
-          {children}
+          <FavouritesProvider>
+            {children}
+          </FavouritesProvider>
         </AuthProvider>
         <WhatsAppButton />
       </body>

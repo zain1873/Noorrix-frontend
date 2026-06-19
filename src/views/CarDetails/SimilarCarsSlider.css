@@ -102,6 +102,30 @@
   transform: scale(1.04);
 }
 
+/* Reserved / Sold status badge */
+.reserved-badge,
+.sold-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.reserved-badge {
+  background: var(--theme-color);
+}
+
+.sold-badge {
+  background: #555;
+}
+
 /* AA badge */
 .sc-badge {
   position: absolute;

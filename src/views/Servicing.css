@@ -381,8 +381,7 @@
 
 /* ── Why Choose Us ── */
 .sv-why {
-  background: var(--background-color, #fffdf5);
-  padding: 90px 24px;
+ padding: 90px 24px;
 }
 
 .sv-why-inner {
@@ -471,7 +470,6 @@
 .sv-step {
   text-align: center;
   padding: 32px 20px;
-  background: var(--background-color, #fffdf5);
   border: 1px solid var(--border-color, #f0e8d0);
   border-radius: 16px;
   position: relative;
