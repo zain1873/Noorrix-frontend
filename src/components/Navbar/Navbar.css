@@ -232,6 +232,7 @@
 
 /* ─── MOBILE ICON BUTTONS ────────────────────────────────── */
 .acc-mobile-icon-btn {
+  position: relative;
   width: 38px;
   height: 38px;
   border-radius: 10px;

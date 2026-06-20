@@ -403,12 +403,14 @@ export default function AffordableCarCentreHeader() {
             </button>
 
             {/* Heart icon — mobile only */}
-            <button
+            <Link
+              href="/favourites"
               className="acc-mobile-icon-btn acc-mobile-only acc-mobile-heart hidden"
               aria-label="Saved"
             >
               <FaHeart size={17} color="#6c5ce7" />
-            </button>
+              {favCount > 0 && <span className="acc-fav-badge">{favCount}</span>}
+            </Link>
 
           </div>
         </div>

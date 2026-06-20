@@ -1007,12 +1007,6 @@ body {
   .dark-contact-row { gap: 4px; }
 }
 
-@media (max-width: 450px) {
-  .thumbnails-row {
-    width: 180px !important;
-  }
-}
-
 /* ===================================================
    ===== DESCRIPTION + CAR OVERVIEW SECTION (Light)
    =================================================== */

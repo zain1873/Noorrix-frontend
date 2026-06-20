@@ -143,6 +143,7 @@ function ImageSlider({ slides, car }) {
   const [current,     setCurrent    ] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
   const [paused,      setPaused     ] = useState(false);
+  const [isMobile,    setIsMobile   ] = useState(false);
   const thumbsRowRef = useRef(null);
   const thumbRefs = useRef([]);
 
@@ -150,16 +151,27 @@ function ImageSlider({ slides, car }) {
   const next = () => setCurrent(i => (i + 1) % slides.length);
 
   useEffect(() => {
-    if (paused || showGallery || slides.length <= 1) return;
+    const mq = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile || paused || showGallery || slides.length <= 1) return;
     const id = setInterval(() => {
       setCurrent(i => (i + 1) % slides.length);
     }, 3000);
     return () => clearInterval(id);
-  }, [paused, showGallery, slides.length]);
+  }, [isMobile, paused, showGallery, slides.length]);
 
   useEffect(() => {
     const el = thumbRefs.current[current];
-    if (el) el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const container = thumbsRowRef.current;
+    if (!el || !container) return;
+    const targetLeft = el.offsetLeft - (container.clientWidth - el.offsetWidth) / 2;
+    container.scrollTo({ left: targetLeft, behavior: "smooth" });
   }, [current]);
 
   return (
