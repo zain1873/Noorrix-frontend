@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth, loginGate } from "../../context/AuthContext";
@@ -81,7 +82,12 @@ function GalleryModal({ startIndex, onClose, slides }) {
     if (e.key === "Escape")     onClose();
   };
 
-  return (
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return createPortal(
     <div
       className="gallery-overlay"
       onClick={handleOverlayClick}
@@ -125,7 +131,8 @@ function GalleryModal({ startIndex, onClose, slides }) {
           </div>
         ))}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -135,14 +142,35 @@ function GalleryModal({ startIndex, onClose, slides }) {
 function ImageSlider({ slides, car }) {
   const [current,     setCurrent    ] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
+  const [paused,      setPaused     ] = useState(false);
+  const thumbsRowRef = useRef(null);
+  const thumbRefs = useRef([]);
 
   const prev = () => setCurrent(i => (i - 1 + slides.length) % slides.length);
   const next = () => setCurrent(i => (i + 1) % slides.length);
 
+  useEffect(() => {
+    if (paused || showGallery || slides.length <= 1) return;
+    const id = setInterval(() => {
+      setCurrent(i => (i + 1) % slides.length);
+    }, 3000);
+    return () => clearInterval(id);
+  }, [paused, showGallery, slides.length]);
+
+  useEffect(() => {
+    const el = thumbRefs.current[current];
+    if (el) el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, [current]);
+
   return (
     <>
       <div>
-        <div className="image-slider-wrapper" style={{ width: "100%", maxWidth: "100%" }}>
+        <div
+          className="image-slider-wrapper"
+          style={{ width: "100%", maxWidth: "100%" }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
           <div className="photo-count-badge">
             <MdGridView size={14} />
             {slides.length}
@@ -177,10 +205,11 @@ function ImageSlider({ slides, car }) {
           </button>
         </div>
 
-        <div className="thumbnails-row">
-          {slides.slice(0, 3).map((src, i) => (
+        <div className="thumbnails-row" ref={thumbsRowRef}>
+          {slides.map((src, i) => (
             <div
               key={i}
+              ref={el => (thumbRefs.current[i] = el)}
               className={`thumbnail ${current === i ? "active" : ""}`}
               onClick={() => setCurrent(i)}
             >
