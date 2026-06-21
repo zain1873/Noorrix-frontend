@@ -252,10 +252,17 @@ function ImageSlider({ slides, car }) {
 // ----------------------------------------------------------------
 // DESCRIPTION + CAR OVERVIEW SECTION (Image 1 - Light)
 // ----------------------------------------------------------------
+const DO_DESC_LIMIT = 260;
+
 function DescriptionOverviewSection({ car }) {
+  const [expanded, setExpanded] = useState(false);
+
   const descText =
     car.description ||
     `This ${car.year} ${car.title} offers an exceptional blend of performance and efficiency. Featuring a ${cc(car.engine_cc)} ${(car.fuel || "").toLowerCase()} engine with ${(car.transmission || "").toLowerCase()} gearbox, this ${(car.body_type || "").toLowerCase()} has covered ${miles(car.mileage)} and comes with an MOT valid until ${ukDate(car.mot_date)}. A great opportunity to own a quality used vehicle from Noorrix Motors in Bedford.`;
+
+  const isLong = descText.length > DO_DESC_LIMIT;
+  const shownText = !isLong || expanded ? descText : descText.slice(0, DO_DESC_LIMIT).trimEnd() + "…";
 
   const overviewItems = [
     { icon: <BsCalendarCheck size={26} />,        label: "MOT date",  value: ukDate(car.mot_date)               },
@@ -271,7 +278,12 @@ function DescriptionOverviewSection({ car }) {
       <div className="do-inner">
         <div className="do-desc">
           <h3 className="do-desc-title">Description</h3>
-          <p className="do-desc-body" style={{ whiteSpace: "pre-line" }}>{descText}</p>
+          <p className="do-desc-body" style={{ whiteSpace: "pre-line" }}>{shownText}</p>
+          {isLong && (
+            <button className="do-read-more" onClick={() => setExpanded(e => !e)}>
+              {expanded ? "Read less" : "Read more"}
+            </button>
+          )}
         </div>
         <div className="do-overview">
           <h3 className="do-overview-title">Car Overview</h3>
@@ -434,21 +446,72 @@ function VehicleDescriptionSection({ car }) {
 // ----------------------------------------------------------------
 // CAR FEATURES SECTION
 // ----------------------------------------------------------------
+const CF_PREVIEW_COUNT = 6;
+
+function FeaturesModal({ features, onClose }) {
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return createPortal(
+    <div className="cf-modal-overlay" onClick={handleOverlayClick}>
+      <div className="cf-modal-card">
+        <div className="cf-modal-header">
+          <h3 className="cf-modal-title">All Features ({features.length})</h3>
+          <button className="cf-modal-close" onClick={onClose}>
+            <FiX />
+          </button>
+        </div>
+        <div className="cf-modal-body">
+          <div className="cf-modal-grid">
+            {features.map((feature, i) => (
+              <div className="cf-item" key={i}>
+                <span className="cf-icon"><HiCheckCircle size={14} /></span>
+                {feature}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 function CarFeaturesSection({ car }) {
   const features = Array.isArray(car.features) ? car.features : [];
+  const [showAll, setShowAll] = useState(false);
   if (!features.length) return null;
+
+  const hasMore = features.length > CF_PREVIEW_COUNT;
+  const preview = hasMore ? features.slice(0, CF_PREVIEW_COUNT) : features;
 
   return (
     <div className="cf-section">
       <h3 className="cf-title">Car Features</h3>
       <div className="cf-grid">
-        {features.map((feature, i) => (
+        {preview.map((feature, i) => (
           <div className="cf-item" key={i}>
             <span className="cf-icon"><HiCheckCircle size={14} /></span>
             {feature}
           </div>
         ))}
       </div>
+
+      {hasMore && (
+        <button className="cf-view-all-btn" onClick={() => setShowAll(true)}>
+          View all {features.length} features <FiChevronRight size={15} />
+        </button>
+      )}
+
+      {showAll && (
+        <FeaturesModal features={features} onClose={() => setShowAll(false)} />
+      )}
     </div>
   );
 }
