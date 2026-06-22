@@ -164,7 +164,7 @@ body {
 }
 
 .sold-badge {
-  background: #555;
+  background: var(--theme-color);
 }
 
 /* Favourite heart */
@@ -976,7 +976,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  display:none;
+  /* display:none; */
 }
 
 .dark-btn-outline {
