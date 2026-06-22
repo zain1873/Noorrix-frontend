@@ -144,7 +144,7 @@
 }
 
 .sold-badge {
-  background: var(--theme-color);
+  background: red;
 }
 
 /* === AA Badge === */
