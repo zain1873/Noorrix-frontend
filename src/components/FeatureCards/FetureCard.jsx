@@ -27,10 +27,13 @@ const FeatureCard = () => {
   const swiperRef = useRef(null);
   const containerRef = useRef(null);
   const [cars, setCars] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
-    getCars().then((data) => { if (active) setCars(Array.isArray(data) ? data : []); });
+    getCars()
+      .then((data) => { if (active) setCars(Array.isArray(data) ? data : []); })
+      .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, []);
 
@@ -58,6 +61,11 @@ const FeatureCard = () => {
         <p>Only the best rides make our featured car list.</p>
       </div>
       
+      {loading ? (
+        <div className="feature-card-loader">
+          <span className="feature-card-spinner" />
+        </div>
+      ) : (
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation
@@ -159,6 +167,7 @@ const FeatureCard = () => {
           </SwiperSlide>
         ))}
       </Swiper>
+      )}
     </div>
   );
 };
