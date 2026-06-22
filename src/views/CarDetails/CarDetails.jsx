@@ -584,7 +584,7 @@ function DarkSpecCard({ car }) {
         </a>
         <span className="dark-contact-divider">|</span>
         <a href="mailto:info@noorrixmotors.co.uk" className="dark-contact-item">
-          <FaEnvelope size={12} /> sales@dealership.co.uk
+          <FaEnvelope size={12} /> info@noorrixmotors.co.uk
         </a>
       </div>
 
