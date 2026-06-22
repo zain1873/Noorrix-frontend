@@ -439,48 +439,12 @@ body {
   border-left: 4px solid var(--theme-color);
 }
 
-.cf-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px 18px;
-}
-
-.cf-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: #f8f7f9;
-  font-size: 14px;
-  font-weight: 500;
-  color: #222222;
-  transition: background 0.2s;
-}
-
-.cf-item:hover {
-  background: rgba(172, 28, 122, 0.07);
-}
-
-.cf-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--theme-color);
-  color: #fff;
-  flex-shrink: 0;
-}
-
 .cf-view-all-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   width: 100%;
-  margin-top: 16px;
   padding: 12px;
   border: 1.5px solid var(--theme-color);
   border-radius: 8px;
@@ -514,7 +478,7 @@ body {
   background: #fff;
   border-radius: 14px;
   width: 100%;
-  max-width: 640px;
+  max-width: 670px;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -562,10 +526,86 @@ body {
   overflow-y: auto;
 }
 
-.cf-modal-grid {
+.cf-acc-row {
+  border-bottom: 1px solid #ececec;
+}
+
+.cf-acc-row:first-of-type {
+  border-top: 1px solid #ececec;
+}
+
+.cf-acc-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.25s ease;
+}
+
+.cf-acc-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  transition: color 0.25s ease;
+}
+
+.cf-acc-header.open .cf-acc-label {
+  color: var(--theme-color);
+}
+
+.cf-acc-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #6b7280;
+  flex-shrink: 0;
+  transition: color 0.25s ease;
+}
+
+.cf-acc-header.open .cf-acc-right {
+  color: var(--theme-color);
+}
+
+.cf-acc-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.cf-acc-collapse.open {
+  grid-template-rows: 1fr;
+}
+
+.cf-acc-collapse-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cf-acc-list {
+  margin: 0;
+  padding: 0 2px 16px 18px;
+  list-style: disc;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px 18px;
+  gap: 6px 18px;
+}
+
+.cf-acc-list li {
+  font-size: 14px;
+  font-weight: 500;
+  color: #222222;
+  line-height: 1.4;
+}
+
+.cf-acc-list li::marker {
+  color: var(--theme-color);
 }
 
 /* ===== RIGHT PANEL ===== */
@@ -1038,10 +1078,7 @@ body {
   .specs-grid-detail {
     grid-template-columns: repeat(3, 1fr);
   }
-  .cf-grid {
-    grid-template-columns: 1fr;
-  }
-  .cf-modal-grid {
+  .cf-acc-list {
     grid-template-columns: 1fr;
   }
   .gallery-main {
@@ -1265,143 +1302,6 @@ body {
   }
   .do-desc-body {
     font-size: 15px;
-  }
-}
-
-/* ===================================================
-   ===== VEHICLE DESCRIPTION SECTION (Dark)
-   =================================================== */
-
-.vd-wrapper {
-  background: #111111;
-  padding: 36px 32px 28px;
-  margin-top: 16px;
-  color: #fff;
-}
-
-.vd-columns {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.vd-col-desc {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-}
-
-.vd-col-accordion {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-}
-
-.vd-accordion {
-  border-top: 1px solid #2a2a2a;
-}
-
-.vd-title {
-  font-size: 26px;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 20px;
-}
-
-.vd-body {
-  font-size: 14px;
-  line-height: 1.75;
-  color: #cccccc;
-  margin-bottom: 10px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.vd-accordion-item {
-  border-bottom: 1px solid #2a2a2a;
-}
-
-.vd-accordion-header {
-  width: 100%;
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 0;
-  font-family: inherit;
-  transition: opacity 0.2s;
-}
-
-.vd-accordion-header:hover {
-  opacity: 0.85;
-}
-
-.vd-acc-label {
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.vd-acc-accent {
-  color: var(--theme-color);
-}
-
-.vd-acc-white {
-  color: #ffffff;
-}
-
-.vd-acc-icon {
-  color: #888;
-  font-size: 18px;
-  flex-shrink: 0;
-  transition: color 0.2s;
-}
-
-.vd-accordion-header:hover .vd-acc-icon {
-  color: var(--theme-color);
-}
-
-.vd-accordion-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.35s ease, padding 0.2s;
-}
-
-.vd-accordion-body.open {
-  max-height: 300px;
-  padding-bottom: 16px;
-}
-
-.vd-acc-content {
-  font-size: 13px;
-  line-height: 1.7;
-  color: #aaaaaa;
-}
-
-.vd-footer-notes {
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid #2a2a2a;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.vd-footer-notes p {
-  font-size: 12px; 
-  color: #777;
-  line-height: 1.5;
-}
-
-@media (max-width: 600px) {
-  .vd-wrapper {
-    padding: 24px 16px 20px;
-  }
-  .vd-title {
-    font-size: 20px;
   }
 }
 
