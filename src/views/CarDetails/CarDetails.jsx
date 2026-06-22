@@ -303,23 +303,6 @@ function DescriptionOverviewSection({ car }) {
 }
 
 // ----------------------------------------------------------------
-// VEHICLE DESCRIPTION SECTION (Image 2 - Dark)
-// ----------------------------------------------------------------
-const ACCORDION_ITEMS = [
-  { id: "summary",     label: "VEHICLE",       accent: "SUMMARY"  },
-  { id: "performance", label: "PERFORMANCE &", accent: "ECONOMY"  },
-  { id: "interior",    label: "INTERIOR /",    accent: "EXTERIOR" },
-  { id: "safety",      label: "SAFETY /",      accent: "OTHER"    },
-];
-
-const ACCORDION_CONTENT = {
-  summary:     "This 2015 Honda Civic 1.6 iDTEC SE Plus is a five door hatchback featuring a 1.6 litre diesel engine meeting Euro 6 emission standards. It comes with a full service history and a valid MOT.",
-  performance: "Capable of impressive fuel economy with the 1.6L iDTEC engine. Features cruise control and a smooth manual gearbox ensuring a comfortable and efficient driving experience.",
-  interior:    "Notable features include Bluetooth connectivity, USB input, rear parking camera, remote central locking, rear electric windows, and power assisted steering.",
-  safety:      "This vehicle has been through a full safety inspection. All safety systems are operational and the vehicle has a clear history check with no previous accidents or structural damage recorded.",
-};
-
-// ----------------------------------------------------------------
 // VEHICLE LOCATION SECTION
 // ----------------------------------------------------------------
 const VEHICLE_HOURS = [
@@ -395,87 +378,80 @@ function VehicleLocationSection({ car }) {
   );
 }
 
-function VehicleDescriptionSection({ car }) {
-  const [openAccordion, setOpenAccordion] = useState(null);
+// ----------------------------------------------------------------
+// CAR FEATURES SECTION
+// ----------------------------------------------------------------
+const CATEGORY_ORDER = ["Exterior", "Interior", "Performance", "Size and dimensions", "Audio and Communications"];
 
-  const fullText = car?.description || "";
-  const details  = car?.details || {};
+function buildCategories(features) {
+  const grouped = features.reduce((acc, f) => {
+    (acc[f.category] ??= []).push(f.text);
+    return acc;
+  }, {});
 
-  const toggleAccordion = (id) => setOpenAccordion(prev => prev === id ? null : id);
+  return CATEGORY_ORDER
+    .map((name) => [name, grouped[name] || []])
+    .filter(([, items]) => items.length > 0);
+}
 
+function AccordionRow({ rowKey, label, items, isOpen, onToggle }) {
   return (
-    <div className="vd-wrapper">
-      <div className="vd-columns">
-        <div className="vd-col-desc">
-          <h2 className="vd-title">Car Specification</h2>
-          <p className="vd-body" style={{ whiteSpace: "pre-line" }}>{fullText}</p>
+    <div className="cf-acc-row">
+      <button className={`cf-acc-header ${isOpen ? "open" : ""}`} onClick={() => onToggle(rowKey)}>
+        <span className="cf-acc-label">{label}</span>
+        <span className="cf-acc-right">
+          {isOpen ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
+        </span>
+      </button>
+      <div className={`cf-acc-collapse ${isOpen ? "open" : ""}`}>
+        <div className="cf-acc-collapse-inner">
+          <ul className="cf-acc-list">
+            {items.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
         </div>
-
-        <div className="vd-col-accordion">
-          <div className="vd-accordion">
-            {ACCORDION_ITEMS.map((item) => {
-              const isOpen = openAccordion === item.id;
-              const content = details[item.id] ?? ACCORDION_CONTENT[item.id];
-              return (
-                <div key={item.id} className="vd-accordion-item">
-                  <button className="vd-accordion-header" onClick={() => toggleAccordion(item.id)}>
-                    <span className="vd-acc-label">
-                      <span className="vd-acc-accent">{item.label}</span>{" "}
-                      <span className="vd-acc-white">{item.accent}</span>
-                    </span>
-                    {isOpen ? <FiChevronUp className="vd-acc-icon" /> : <FiChevronDown className="vd-acc-icon" />}
-                  </button>
-                  <div className={`vd-accordion-body ${isOpen ? "open" : ""}`}>
-                    <p className="vd-acc-content">{content}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      <div className="vd-footer-notes">
-        <p>For more info on this vehicle call our showroom on 07300 503113</p>
-        <p>Every effort has been made to ensure the accuracy of the above information but errors may occur. Please check with a salesperson.</p>
       </div>
     </div>
   );
 }
 
-// ----------------------------------------------------------------
-// CAR FEATURES SECTION
-// ----------------------------------------------------------------
-const CF_PREVIEW_COUNT = 6;
-
 function FeaturesModal({ features, onClose }) {
+  const [openRow, setOpenRow] = useState(null);
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) onClose();
   };
+
+  const toggleRow = (key) => setOpenRow((prev) => (prev === key ? null : key));
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
 
+  const categories = buildCategories(features);
+
   return createPortal(
     <div className="cf-modal-overlay" onClick={handleOverlayClick}>
       <div className="cf-modal-card">
         <div className="cf-modal-header">
-          <h3 className="cf-modal-title">All Features ({features.length})</h3>
+          <h3 className="cf-modal-title">All Features &amp; Spec</h3>
           <button className="cf-modal-close" onClick={onClose}>
             <FiX />
           </button>
         </div>
         <div className="cf-modal-body">
-          <div className="cf-modal-grid">
-            {features.map((feature, i) => (
-              <div className="cf-item" key={i}>
-                <span className="cf-icon"><HiCheckCircle size={14} /></span>
-                {feature}
-              </div>
-            ))}
-          </div>
+          {categories.map(([name, items]) => (
+            <AccordionRow
+              key={name}
+              rowKey={name}
+              label={name}
+              items={items}
+              isOpen={openRow === name}
+              onToggle={toggleRow}
+            />
+          ))}
         </div>
       </div>
     </div>,
@@ -488,26 +464,12 @@ function CarFeaturesSection({ car }) {
   const [showAll, setShowAll] = useState(false);
   if (!features.length) return null;
 
-  const hasMore = features.length > CF_PREVIEW_COUNT;
-  const preview = hasMore ? features.slice(0, CF_PREVIEW_COUNT) : features;
-
   return (
     <div className="cf-section">
       <h3 className="cf-title">Car Features</h3>
-      <div className="cf-grid">
-        {preview.map((feature, i) => (
-          <div className="cf-item" key={i}>
-            <span className="cf-icon"><HiCheckCircle size={14} /></span>
-            {feature}
-          </div>
-        ))}
-      </div>
-
-      {hasMore && (
-        <button className="cf-view-all-btn" onClick={() => setShowAll(true)}>
-          View all {features.length} features <FiChevronRight size={15} />
-        </button>
-      )}
+      <button className="cf-view-all-btn" onClick={() => setShowAll(true)}>
+        View all spec &amp; features <FiChevronRight size={15} />
+      </button>
 
       {showAll && (
         <FeaturesModal features={features} onClose={() => setShowAll(false)} />
@@ -707,7 +669,6 @@ export default function CarsListing({ car, similar = [] }) {
 
           {/* ── NEW SECTIONS ADDED BELOW ── */}
             <DescriptionOverviewSection car={car} />
-            <VehicleDescriptionSection car={car} />
             <VehicleLocationSection car={car} />
             <SimilarCarsSlider cars={similar} />
 
