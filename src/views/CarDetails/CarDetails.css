@@ -590,22 +590,31 @@ body {
 
 .cf-acc-list {
   margin: 0;
-  padding: 0 2px 16px 18px;
-  list-style: disc;
+  padding: 0 2px 16px 2px;
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 6px 18px;
 }
 
 .cf-acc-list li {
+  position: relative;
+  padding-left: 16px;
   font-size: 14px;
   font-weight: 500;
   color: #222222;
   line-height: 1.4;
 }
 
-.cf-acc-list li::marker {
-  color: var(--theme-color);
+.cf-acc-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--theme-color);
 }
 
 /* ===== RIGHT PANEL ===== */
