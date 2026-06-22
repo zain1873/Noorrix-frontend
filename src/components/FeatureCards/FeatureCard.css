@@ -27,6 +27,29 @@
   margin-bottom: 50px;
 }
 
+/* === Loader === */
+.feature-card-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.feature-card-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--theme-color);
+  border-radius: 50%;
+  animation: feature-card-spin 0.8s linear infinite;
+}
+
+@keyframes feature-card-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* === Card === */
 .mazda-card {
   background: #ffffff;
