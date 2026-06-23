@@ -27,6 +27,7 @@ const miniLogo = "/assets/images/cars-logos/MINI-01.png";
 const renaultLogo = "/assets/images/cars-logos/Renault-01.png";
 const seatLogo = "/assets/images/cars-logos/SEAT-01.png";
 const vauxhallLogo = "/assets/images/cars-logos/vauxhall-01.png";
+const MercedesLogo = "/assets/images/cars-logos/MERCEDES-01.png";
 
 const tabs = ["Make", "Body Type", "Fuel", "Gearbox", "Trending"];
 
@@ -49,6 +50,7 @@ const makeItems = [
   { label: "Renault", logo: renaultLogo },
   { label: "SEAT", logo: seatLogo },
   { label: "Vauxhall", logo: vauxhallLogo },
+  { label: "Mercedes", logo: MercedesLogo },
 ];
 
 const bodyTypeItems = [
