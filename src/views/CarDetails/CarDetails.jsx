@@ -252,17 +252,10 @@ function ImageSlider({ slides, car }) {
 // ----------------------------------------------------------------
 // DESCRIPTION + CAR OVERVIEW SECTION (Image 1 - Light)
 // ----------------------------------------------------------------
-const DO_DESC_LIMIT = 260;
-
 function DescriptionOverviewSection({ car }) {
-  const [expanded, setExpanded] = useState(false);
-
   const descText =
     car.description ||
     `This ${car.year} ${car.title} offers an exceptional blend of performance and efficiency. Featuring a ${cc(car.engine_cc)} ${(car.fuel || "").toLowerCase()} engine with ${(car.transmission || "").toLowerCase()} gearbox, this ${(car.body_type || "").toLowerCase()} has covered ${miles(car.mileage)} and comes with an MOT valid until ${ukDate(car.mot_date)}. A great opportunity to own a quality used vehicle from Noorrix Motors in Bedford.`;
-
-  const isLong = descText.length > DO_DESC_LIMIT;
-  const shownText = !isLong || expanded ? descText : descText.slice(0, DO_DESC_LIMIT).trimEnd() + "…";
 
   const overviewItems = [
     { icon: <BsCalendarCheck size={26} />,        label: "MOT date",  value: ukDate(car.mot_date)               },
@@ -278,12 +271,7 @@ function DescriptionOverviewSection({ car }) {
       <div className="do-inner">
         <div className="do-desc">
           <h3 className="do-desc-title">Description</h3>
-          <p className="do-desc-body" style={{ whiteSpace: "pre-line" }}>{shownText}</p>
-          {isLong && (
-            <button className="do-read-more" onClick={() => setExpanded(e => !e)}>
-              {expanded ? "Read less" : "Read more"}
-            </button>
-          )}
+          <p className="do-desc-body" style={{ whiteSpace: "pre-line" }}>{descText}</p>
         </div>
         <div className="do-overview">
           <h3 className="do-overview-title">Car Overview</h3>
