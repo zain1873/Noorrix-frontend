@@ -7,6 +7,8 @@
 // failure, so a page still renders (empty state) — and `next build` never crashes —
 // if the backend is unreachable at build time or runtime.
 
+import { brandSlug } from "./format";
+
 const BASE = process.env.NEXT_PUBLIC_API_URL;
 
 async function getJSON(path, { revalidate = 60, fallback = null } = {}) {
@@ -22,9 +24,17 @@ async function getJSON(path, { revalidate = 60, fallback = null } = {}) {
 /** All available cars — the stock list. */
 export const getCars = () => getJSON(`/api/cars/`, { fallback: [] });
 
-/** Cars filtered by brand slug (e.g. "mercedes-benz") — Used Cars by Brand page. */
-export const getCarsByBrand = (brand) =>
-  getJSON(`/api/cars/?brand=${encodeURIComponent(brand)}`, { fallback: [] });
+/**
+ * Cars filtered by brand slug (e.g. "mercedes-benz") — Used Cars by Brand page.
+ * Matches by slug *prefix* rather than an exact string, so a `make` that has a
+ * model name tacked on in the admin (e.g. "MINI Hatch", "Mercedes-Benz C Class")
+ * still matches the bare brand slug ("mini", "mercedes-benz").
+ */
+export const getCarsByBrand = async (brand) => {
+  const cars = await getCars();
+  const target = brand.toLowerCase();
+  return cars.filter((car) => brandSlug(car.make || "").startsWith(target));
+};
 
 /** Single car, full detail (any status). Returns null if not found. */
 export const getCar = (id) => getJSON(`/api/cars/${id}/`, { fallback: null });

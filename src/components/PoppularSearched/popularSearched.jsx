@@ -50,7 +50,7 @@ const makeItems = [
   { label: "Renault", logo: renaultLogo },
   { label: "SEAT", logo: seatLogo },
   { label: "Vauxhall", logo: vauxhallLogo },
-  { label: "Mercedes", logo: MercedesLogo },
+  { label: "Mercedes-Benz", logo: MercedesLogo },
 ];
 
 const bodyTypeItems = [
