@@ -7,6 +7,7 @@ import { useFavourites } from "../../context/FavouritesContext";
 import "./Navbar.css";
 const logo = "/assets/images/noorix_logo.jpg";
 import { getFilters } from "../../lib/cars";
+import { brandSlug } from "../../lib/format";
 import {
   FaBars,
   FaTimes,
@@ -111,15 +112,6 @@ const items = [
     </div>
   );
 }
-
-// Slugify a make for /used-cars/:brand links (matches the backend's slug format).
-const brandSlug = (make) =>
-  make
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
 
 // ─── Brands Sub-Panel ─────────────────────────────────────────────────────────
 function BrandsPanel({ open, onBack }) {

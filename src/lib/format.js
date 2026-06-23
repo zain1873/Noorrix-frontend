@@ -10,6 +10,16 @@ export const cc    = (n) => (n == null ? "" : `${Number(n).toLocaleString("en-GB
 export const ukDate = (iso) =>                                                                    // "2026-06-01" -> "01/06/2026"
   iso ? new Date(iso).toLocaleDateString("en-GB") : null;
 
+// Slugify a make for /used-cars/:brand links (matches the backend's slug format).
+// "Land Rover" -> "land-rover", "Citroën" -> "citroen"
+export const brandSlug = (make) =>
+  make
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
 // Car detail page URL — leads with the numeric id (so the route only ever needs
 // to parse the leading digits) and appends a readable slug from the title.
 // "14" -> "/cars/14-honda-city"
