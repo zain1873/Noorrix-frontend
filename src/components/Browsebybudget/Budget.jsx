@@ -6,6 +6,7 @@ import "./Budjet.css";
 
 const BUDGET_BANDS = [
   { label: "Under £3k", max: 3000 },
+  { label: "Under £4k", max: 4000 },
   { label: "Under £5k", max: 5000 },
   { label: "Under £10k", max: 10000 },
 ];
