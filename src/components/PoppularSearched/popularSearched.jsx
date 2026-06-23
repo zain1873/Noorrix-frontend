@@ -1,9 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { FiTrendingUp } from "react-icons/fi";
 import { FaGasPump, FaOilCan, FaPlug, FaLeaf, FaSeedling, FaCog } from "react-icons/fa";
 import { MdElectricBolt } from "react-icons/md";
 import { GiGearStick, GiGears } from "react-icons/gi";
+import { getCars } from "../../lib/cars";
+import { brandSlug, carUrl } from "../../lib/format";
 import "./popularSearched.css";
 
 const volkswagenLogo = "/assets/images/cars-logos/volkswagen-01.png";
@@ -74,17 +77,8 @@ const gearboxItems = [
   { label: "Semi-Auto", Icon: GiGears },
 ];
 
-const trendingItems = [
-  { label: "Tesla Model 3", img: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=120&h=60&fit=crop&auto=format" },
-  { label: "Ford Puma", img: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=120&h=60&fit=crop&auto=format" },
-  { label: "Nissan Qashqai", img: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=120&h=60&fit=crop&auto=format" },
-  { label: "VW Golf", img: "https://images.unsplash.com/photo-1541443131876-44b03de101c5?w=120&h=60&fit=crop&auto=format" },
-  { label: "BMW 3 Series", img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=120&h=60&fit=crop&auto=format" },
-  { label: "Audi A3", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=120&h=60&fit=crop&auto=format" },
-];
-
 const MakeCard = ({ item }) => (
-  <button className="search-card make-card" aria-label={item.label}>
+  <Link href={`/used-cars/${brandSlug(item.label)}`} className="search-card make-card" aria-label={item.label}>
     <img
       src={item.logo}
       alt={item.label}
@@ -92,11 +86,11 @@ const MakeCard = ({ item }) => (
       onError={(e) => { e.target.style.display = "none"; }}
     />
     <span className="make-label">{item.label}</span>
-  </button>
+  </Link>
 );
 
 const BodyTypeCard = ({ item }) => (
-  <button className="search-card body-card" aria-label={item.label}>
+  <Link href={`/stock?bodyType=${encodeURIComponent(item.label)}`} className="search-card body-card" aria-label={item.label}>
     <img
       src={item.img}
       alt={item.label}
@@ -104,37 +98,44 @@ const BodyTypeCard = ({ item }) => (
       onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=120&h=60&fit=crop"; }}
     />
     <span className="body-label">{item.label}</span>
-  </button>
+  </Link>
 );
 
 const FuelCard = ({ item }) => (
-  <button className="search-card fuel-card" aria-label={item.label}>
+  <Link href={`/stock?fuel=${encodeURIComponent(item.label)}`} className="search-card fuel-card" aria-label={item.label}>
     <item.Icon className="fuel-icon" />
     <span className="fuel-label">{item.label}</span>
-  </button>
+  </Link>
 );
 
 const GearboxCard = ({ item }) => (
-  <button className="search-card gearbox-card" aria-label={item.label}>
+  <Link href={`/stock?transmission=${encodeURIComponent(item.label)}`} className="search-card gearbox-card" aria-label={item.label}>
     <item.Icon className="fuel-icon" />
     <span className="fuel-label">{item.label}</span>
-  </button>
+  </Link>
 );
 
-const TrendingCard = ({ item }) => (
-  <button className="search-card body-card" aria-label={item.label}>
+const TrendingCard = ({ car }) => (
+  <Link href={carUrl(car)} className="search-card body-card" aria-label={car.title}>
     <img
-      src={item.img}
-      alt={item.label}
+      src={car.image_url}
+      alt={car.title}
       className="body-img"
       onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=120&h=60&fit=crop"; }}
     />
-    <span className="body-label">{item.label}</span>
-  </button>
+    <span className="body-label">{car.title}</span>
+  </Link>
 );
 
 export default function PopularSearches() {
   const [activeTab, setActiveTab] = useState("Make");
+  const [trendingCars, setTrendingCars] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    getCars().then((data) => { if (active) setTrendingCars(Array.isArray(data) ? data : []); });
+    return () => { active = false; };
+  }, []);
 
   const renderCards = () => {
     switch (activeTab) {
@@ -147,7 +148,7 @@ export default function PopularSearches() {
       case "Gearbox":
         return gearboxItems.map((item) => <GearboxCard key={item.label} item={item} />);
       case "Trending":
-        return trendingItems.map((item) => <TrendingCard key={item.label} item={item} />);
+        return trendingCars.map((car) => <TrendingCard key={car.id} car={car} />);
       default:
         return null;
     }
