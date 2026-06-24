@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   FaTruckMoving,
@@ -21,7 +21,7 @@ const services = [
   {
     icon: FaMapMarkerAlt,
     title: "Local Delivery",
-    desc: "Fast and free local delivery within our service area. We bring the car directly to you for a test drive or final handover.",
+    desc: "Fast and free local delivery within 100 miles. We bring the car directly to you for a test drive or final handover.",
   },
   {
     icon: FaTruckMoving,
@@ -82,6 +82,13 @@ const steps = [
 ];
 
 function Delivery() {
+  const [form, setForm] = useState({
+    name: "", phone: "", email: "", vehicle: "", address: "", preferredDate: "", notes: "",
+  });
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleSubmit = (e) => e.preventDefault();
+
   return (
     <>
       <Navbar />
@@ -118,9 +125,9 @@ function Delivery() {
             Reliable, fully insured vehicle delivery anywhere in the UK. We bring your car directly to you — no trips, no hassle, no compromise.
           </p>
           <div className="dl-hero-buttons">
-            <Link href="/contact" className="dl-hero-btn dl-hero-btn-primary">
+            <a href="#delivery-form" className="dl-hero-btn dl-hero-btn-primary">
               <FaTruckMoving size={16} /> Arrange Delivery
-            </Link>
+            </a>
             <a href="tel:07300503113" className="dl-hero-btn dl-hero-btn-secondary">
               <FaPhoneAlt size={16} /> 07300 503113
             </a>
@@ -224,6 +231,111 @@ function Delivery() {
         </div>
       </section>
 
+      {/* Delivery Request Form */}
+      <section className="dl-form-section" id="delivery-form">
+        <div className="dl-form-inner">
+          <div style={{ textAlign: "center" }}>
+            <span className="dl-section-tag">Get Started</span>
+            <h2 className="dl-section-title">
+              Request Your <span>Delivery</span>
+            </h2>
+            <p className="dl-section-subtitle" style={{ margin: "0 auto" }}>
+              Tell us where and when, and we'll take care of the rest.
+            </p>
+          </div>
+          <div className="dl-accent-bar" style={{ margin: "16px auto 40px" }} />
+
+          <div className="dl-form-wrapper">
+            <form className="dl-form" onSubmit={handleSubmit}>
+              <div className="dl-form-row">
+                <div className="dl-form-group">
+                  <label className="dl-form-label">Full Name</label>
+                  <input
+                    className="dl-form-input"
+                    type="text"
+                    name="name"
+                    placeholder="Your full name"
+                    value={form.name}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="dl-form-group">
+                  <label className="dl-form-label">Phone Number</label>
+                  <input
+                    className="dl-form-input"
+                    type="tel"
+                    name="phone"
+                    placeholder="Your phone number"
+                    value={form.phone}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="dl-form-row">
+                <div className="dl-form-group">
+                  <label className="dl-form-label">Email Address</label>
+                  <input
+                    className="dl-form-input"
+                    type="email"
+                    name="email"
+                    placeholder="Your email address"
+                    value={form.email}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="dl-form-group">
+                  <label className="dl-form-label">Vehicle</label>
+                  <input
+                    className="dl-form-input"
+                    type="text"
+                    name="vehicle"
+                    placeholder="e.g. BMW 3 Series, or your reservation reference"
+                    value={form.vehicle}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="dl-form-row">
+                <div className="dl-form-group">
+                  <label className="dl-form-label">Delivery Address</label>
+                  <input
+                    className="dl-form-input"
+                    type="text"
+                    name="address"
+                    placeholder="Address or postcode"
+                    value={form.address}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="dl-form-group">
+                  <label className="dl-form-label">Preferred Date</label>
+                  <input
+                    className="dl-form-input"
+                    type="date"
+                    name="preferredDate"
+                    value={form.preferredDate}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="dl-form-group">
+                <label className="dl-form-label">Additional Notes</label>
+                <textarea
+                  className="dl-form-textarea"
+                  name="notes"
+                  placeholder="Anything else we should know..."
+                  value={form.notes}
+                  onChange={handleChange}
+                />
+              </div>
+              <button type="submit" className="dl-form-submit">
+                REQUEST DELIVERY
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Banner */}
       <section className="dl-cta">
         <div
@@ -241,9 +353,9 @@ function Delivery() {
             Contact us today to arrange fully insured delivery of your new vehicle. Flexible scheduling, anywhere in the UK.
           </p>
           <div className="dl-cta-buttons">
-            <Link href="/contact" className="dl-cta-btn dl-cta-btn-primary">
+            <a href="#delivery-form" className="dl-cta-btn dl-cta-btn-primary">
               <FaTruckMoving size={16} /> Arrange Delivery
-            </Link>
+            </a>
             <Link href="/cars" className="dl-cta-btn dl-cta-btn-secondary">
               <FaCar size={16} /> Browse Stock
             </Link>

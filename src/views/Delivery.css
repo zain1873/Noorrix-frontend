@@ -370,6 +370,113 @@
   line-height: 1.6;
 }
 
+/* ── Delivery Request Form ── */
+.dl-form-section {
+  background: #f8f8fb;
+  padding: 80px 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.dl-form-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.dl-form-wrapper {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--theme-color);
+  border-radius: 10px;
+  padding: 32px 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.dl-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dl-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.dl-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dl-form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dl-form-input,
+.dl-form-textarea {
+  padding: 11px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #333;
+  font-family: inherit;
+  background: #fafafa;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.dl-form-textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.dl-form-input:focus,
+.dl-form-textarea:focus {
+  border-color: var(--theme-color);
+  box-shadow: 0 0 0 3px rgba(172, 28, 122, 0.08);
+  background: #fff;
+}
+
+.dl-form-input::placeholder,
+.dl-form-textarea::placeholder {
+  color: #aaa;
+}
+
+.dl-form-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--theme-color);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.dl-form-submit:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .dl-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dl-form-wrapper {
+    padding: 24px 18px;
+  }
+}
+
 /* ── CTA ── */
 .dl-cta {
   position: relative;

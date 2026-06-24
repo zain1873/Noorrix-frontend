@@ -85,8 +85,8 @@
 .card-image-zoom {
 
 }
-.mazda-card:hover img {
-    transform: scale(1.08);
+.mazda-card:hover img.card-image {
+    transform: scale(1.02);
 }
 
 /* === Favourite (heart) button === */
@@ -358,64 +358,6 @@
   font-size: 11px;
   color: #777;
   margin-top: 1px;
-}
-
-/* === Rating Badges === */
-.rating-badges {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.badge {
-  display: flex;
-  align-items: center;
-  border: 1.5px solid #ddd;
-  border-radius: 5px;
-  overflow: hidden;
-  height: 30px;
-}
-
-.badge-source {
-  padding: 0 8px;
-  font-size: 11px;
-  font-weight: 700;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.autotrader-source {
-  background: #ffffff;
-  color: #e85626;
-  border-right: 1.5px solid #ddd;
-}
-
-.gurus-source {
-  background: #ffffff;
-  color: #00a862;
-  border-right: 1.5px solid #ddd;
-}
-
-.badge-label {
-  padding: 0 8px;
-  font-size: 11px;
-  font-weight: 600;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.great {
-  color: #00875a;
-  background: #f0faf5;
-}
-
-.good {
-  color: #00875a;
-  background: #f0faf5;
 }
 
 /* === Buttons === */
