@@ -81,6 +81,10 @@
   color: var(--theme-color);
 }
 
+.stars svg.star-empty {
+  color: #d8d4e6;
+}
+
 /* Badge */
 .testimonial-badge {
   display: flex;
@@ -128,6 +132,16 @@
   object-fit: cover;
   border: 2px solid #e0e3f8;
   flex-shrink: 0;
+}
+
+.author-avatar--initial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .author-info {
@@ -196,9 +210,18 @@
   font-weight: 700;
 }
 
-/* ─── Section heading ─── */
+/* ─── Section heading row (title left, CTA right) ─── */
+.testimonials-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
 .section-heading {
-    margin-bottom: 40px;
+  margin-bottom: 0;
+  min-width: 0;
 }
 
 .section-heading h2 {
@@ -216,6 +239,42 @@
   margin: 0;
 }
 
+.leave-review-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  padding: 13px 26px;
+  background: var(--theme-color);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(172, 28, 122, 0.35);
+  transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.leave-review-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(172, 28, 122, 0.45);
+}
+
+.leave-review-btn:active {
+  transform: translateY(0);
+}
+
+.leave-review-icon {
+  font-size: 13px;
+}
+
+.testimonials-section--empty {
+  min-height: 320px;
+}
+
 /* ─── Responsive padding tweaks ─── */
 @media (max-width: 639px) {
   .testimonials-section {
@@ -229,6 +288,19 @@
   .testimonials-swiper .swiper-button-prev,
   .testimonials-swiper .swiper-button-next {
     display: none;
+  }
+
+  .testimonials-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .leave-review-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 20px;
   }
 }
 
