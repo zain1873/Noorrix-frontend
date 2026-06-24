@@ -1,9 +1,11 @@
 "use client";
 // Testimonials.jsx
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { FaStar, FaCommentAlt } from "react-icons/fa";
+import { FaStar, FaRegStar, FaCommentAlt, FaPen } from "react-icons/fa";
+import { getTestimonials } from "../../lib/testimonials";
+import ReviewModal from "./ReviewModal";
 
 // Swiper core styles
 import "swiper/css";
@@ -12,54 +14,40 @@ import "swiper/css/pagination";
 
 import "./Testimonials.css";
 
-const testimonials = [
-  {
-    id: 1,
-    text: "Dude, your stuff is the bomb! House rent is the real deal! I STRONGLY recommend house rent to EVERYONE interested in running a successful online business!",
-    author: "Lana Bernier",
-    title: "Senior Paradigm Strategist",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80",
-  },
-  {
-    id: 2,
-    text: '"I like Infinity Estate more and more each day because it makes my life a lot easier. We can\'t understand how we\'ve been living without Infinity Estate. Infinity Estate has got everything I need. The service was excellent."',
-    author: "Mrs. Van Hartmann",
-    title: "Legacy Usability Manager",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80",
-  },
-  {
-    id: 3,
-    text: "You've saved our business! Infinity Estate has got everything I need. We were treated like royalty. It's really wonderful.",
-    author: "Philip Deckow",
-    title: "District Assurance Officer",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80",
-  },
-  {
-    id: 4,
-    text: "Absolutely fantastic experience from start to finish. The team was professional, responsive, and went above and beyond to make sure we found exactly what we were looking for.",
-    author: "Sarah Mitchell",
-    title: "Chief Marketing Officer",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&q=80",
-  },
-  {
-    id: 5,
-    text: "I've worked with many real estate platforms before, but nothing compares to this. The UI is clean, the listings are accurate, and the customer support is world-class.",
-    author: "James Fowler",
-    title: "VP of Operations",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80",
-  },
-  {
-    id: 6,
-    text: "We closed on our dream home within two weeks of using this platform. The automated alerts and personalized recommendations made all the difference. Highly recommended!",
-    author: "Angela Torres",
-    title: "Regional Sales Director",
-    avatar: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=80&q=80",
-  },
-];
+const AVATAR_COLOURS = ["#ac1c7a", "#1c6fac", "#1c9c5b", "#c2750c", "#7a3fc2", "#c22f4a"];
+const avatarColour = (name) => {
+  const code = (name || "?").trim().charCodeAt(0) || 0;
+  return AVATAR_COLOURS[code % AVATAR_COLOURS.length];
+};
+
+function StarRating({ rating }) {
+  return (
+    <div className="stars">
+      {[...Array(5)].map((_, i) =>
+        i < rating
+          ? <FaStar key={i} />
+          : <FaRegStar key={i} className="star-empty" />
+      )}
+    </div>
+  );
+}
 
 export default function Testimonials() {
   const swiperRef = useRef(null);
   const containerRef = useRef(null);
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    getTestimonials().then((data) => {
+      if (!active) return;
+      setTestimonials(data);
+      setLoading(false);
+    });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,6 +65,31 @@ export default function Testimonials() {
     return () => observer.disconnect();
   }, []);
 
+  // Nothing approved yet (and we're done loading) — don't show fake placeholder content.
+  if (!loading && testimonials.length === 0) {
+    return (
+      <section className="testimonials-section testimonials-section--empty" ref={containerRef}>
+        <div className="testimonials-bg" />
+        <div className="testimonials-overlay" />
+        <div className="testimonials-content">
+          <div className="testimonials-header-row">
+            <div className="section-heading sec-title">
+              <h2>What Our Clients Say</h2>
+              <p>Be the first to share your experience with us</p>
+            </div>
+            <button className="leave-review-btn" onClick={() => setShowForm(true)}>
+              <FaPen className="leave-review-icon" />
+              Leave a Review
+            </button>
+          </div>
+        </div>
+        {showForm && <ReviewModal onClose={() => setShowForm(false)} />}
+      </section>
+    );
+  }
+
+  if (loading) return null;
+
   return (
     <section className="testimonials-section" ref={containerRef}>
       {/* Background */}
@@ -87,9 +100,15 @@ export default function Testimonials() {
       {/* Content */}
       <div className="testimonials-content">
         {/* Heading */}
-        <div className="section-heading sec-title">
-          <h2 className="">What Our Clients Say</h2>
-          <p>Real stories from real customers who love our service</p>
+        <div className="testimonials-header-row">
+          <div className="section-heading sec-title">
+            <h2 className="">What Our Clients Say</h2>
+            <p>Real stories from real customers who love our service</p>
+          </div>
+          <button className="leave-review-btn" onClick={() => setShowForm(true)}>
+            <FaPen className="leave-review-icon" />
+            Leave a Review
+          </button>
         </div>
 
         {/* Swiper Slider */}
@@ -125,31 +144,37 @@ export default function Testimonials() {
               <div className="testimonial-card">
                 {/* Top Row */}
                 <div className="card-top">
-                  <div className="stars">
-                    {[...Array(5)].map((_, i) => (
-                      <FaStar key={i} />
-                    ))}
-                  </div>
+                  <StarRating rating={t.rating} />
                   <div className="testimonial-badge">
                     <FaCommentAlt className="badge-icon" />
-                    <span>Testimonial</span>
+                    <span>Reviews</span>
                   </div>
                 </div>
 
                 {/* Review */}
-                <p className="review-text">{t.text}</p>
+                <p className="review-text">{t.review}</p>
 
                 {/* Author */}
                 <div className="author-row">
-                  <img
-                    src={t.avatar}
-                    alt={t.author}
-                    className="author-avatar"
-                    loading="lazy"
-                  />
+                  {t.photo_url ? (
+                    <img
+                      src={t.photo_url}
+                      alt={t.name}
+                      className="author-avatar"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div
+                      className="author-avatar author-avatar--initial"
+                      style={{ background: avatarColour(t.name) }}
+                      aria-hidden="true"
+                    >
+                      {(t.name || "?").trim().charAt(0).toUpperCase()}
+                    </div>
+                  )}
                   <div className="author-info">
-                    <span className="author-name">{t.author}</span>
-                    <span className="author-title">{t.title}</span>
+                    <span className="author-name">{t.name}</span>
+                    {t.role && <span className="author-title">{t.role}</span>}
                   </div>
                 </div>
               </div>
@@ -157,6 +182,8 @@ export default function Testimonials() {
           ))}
         </Swiper>
       </div>
+
+      {showForm && <ReviewModal onClose={() => setShowForm(false)} />}
     </section>
   );
 }
