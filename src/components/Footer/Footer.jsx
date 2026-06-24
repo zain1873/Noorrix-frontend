@@ -1,12 +1,45 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok, FaLinkedinIn } from "react-icons/fa";
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaRegClock } from "react-icons/fa";
 import { FaCcVisa, FaCcMastercard, FaCcAmex, FaCcPaypal, FaCcApplePay } from "react-icons/fa";
+import { isValidEmail, subscribeNewsletter } from "../../lib/newsletter";
 const logo = "/assets/images/noorix_logo.jpg";
 import "./Footer.css";
 
 const NoorrixFooter = () => {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [message, setMessage] = useState("");
+
+  const handleSubscribe = async () => {
+    if (status === "loading") return;
+
+    if (!isValidEmail(email)) {
+      setStatus("error");
+      setMessage("Enter a valid email address.");
+      return;
+    }
+
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      const successMessage = await subscribeNewsletter(email);
+      setStatus("success");
+      setMessage(successMessage);
+      setEmail("");
+    } catch (err) {
+      setStatus("error");
+      setMessage(err.message);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleSubscribe();
+  };
+
   return (
     <footer className="footer-root">
       {/* 3-column main section */}
@@ -71,13 +104,31 @@ const NoorrixFooter = () => {
           {/* Newsletter fills the bottom space */}
           <div className="footer-newsletter-inline">
             <span className="footer-email-label">Newsletter</span>
-            <div className="footer-subscribe-form">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="footer-subscribe-input"
-              />
-              <button type="button" className="footer-subscribe-btn">Subscribe</button>
+            <div className="footer-subscribe-col">
+              <div className="footer-subscribe-form">
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  className="footer-subscribe-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={status === "loading"}
+                />
+                <button
+                  type="button"
+                  className="footer-subscribe-btn"
+                  onClick={handleSubscribe}
+                  disabled={status === "loading"}
+                >
+                  {status === "loading" ? "Subscribing…" : "Subscribe"}
+                </button>
+              </div>
+              {message && (
+                <p className={`footer-subscribe-message ${status === "success" ? "footer-subscribe-message--success" : "footer-subscribe-message--error"}`}>
+                  {message}
+                </p>
+              )}
             </div>
           </div>
         </div>

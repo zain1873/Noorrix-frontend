@@ -530,7 +530,7 @@ function DarkSpecCard({ car }) {
         </button>
 
         {/* Book a test drive + Book an appointment side by side */}
-        <div className="dark-btn-enquiry-row">
+        <div className="dark-btn-enquiry-row enquiry-btns">
           <button className="dark-btn-outline" onClick={() => setBooking("test_drive")}>
             <AiOutlineCar size={14} /> Book test drive
           </button>

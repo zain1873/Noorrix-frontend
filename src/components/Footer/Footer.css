@@ -233,11 +233,38 @@
   white-space: nowrap;
 }
 
+.footer-subscribe-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
 .footer-subscribe-form {
   display: flex;
   align-items: center;
   gap: 0;
   flex: 1;
+}
+
+.footer-subscribe-message {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.footer-subscribe-message--success {
+  color: #3ddc84;
+}
+
+.footer-subscribe-message--error {
+  color: #ff6b6b;
+}
+
+.footer-subscribe-input:disabled,
+.footer-subscribe-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .footer-subscribe-input {
