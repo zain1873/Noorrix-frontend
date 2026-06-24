@@ -15,6 +15,7 @@ import {
   FaClone,
 } from "react-icons/fa";
 import { getCars } from "../../lib/cars";
+import AutoTraderBadge from "../AutoTraderBadge/AutoTraderBadge";
 import { gbp, money, miles, cc, ukDate, carUrl } from "../../lib/format";
 import { useAuth, loginGate } from "../../context/AuthContext";
 import HeartButton from "../HeartButton/HeartButton";
@@ -95,6 +96,7 @@ const FeatureCard = () => {
                 <HeartButton car={car} />
                 {car.status === "reserved" && <span className="reserved-badge">Reserved</span>}
                 {car.status === "sold" && <span className="sold-badge">Sold</span>}
+                <AutoTraderBadge />
               </div>
 
               {/* Content Section */}
@@ -142,18 +144,6 @@ const FeatureCard = () => {
                     <span className="total-label">Total Price</span>
                   </div>
                 </div>
-
-                {/* Rating Badges */}
-                {/* <div className="rating-badges">
-                  <div className="badge autotrader-badge">
-                    <span className="badge-source autotrader-source">≡AutoTrader</span>
-                    <span className="badge-label great">Great Price</span>
-                  </div>
-                  <div className="badge gurus-badge">
-                    <span className="badge-source gurus-source">CarGurus·</span>
-                    <span className="badge-label good">Good Price</span>
-                  </div>
-                </div> */}
 
                 {/* Action Buttons */}
                 <div className="action-buttons">

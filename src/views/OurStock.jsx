@@ -13,6 +13,7 @@ import "./OurStock.css";
 import { useAuth, loginGate } from "../context/AuthContext";
 import { gbp, money, miles, cc, ukDate, carUrl } from "../lib/format";
 import HeartButton from "../components/HeartButton/HeartButton";
+import AutoTraderBadge from "../components/AutoTraderBadge/AutoTraderBadge";
 
 /* ── Fallback filter options (used until /api/filters/ provides live ones) ── */
 const DEFAULT_BODY_TYPES    = ["SUV", "Hatchback", "Saloon", "Estate", "Coupe", "Convertible", "MPV", "Van"];
@@ -410,6 +411,7 @@ export default function OurStock({ cars = [], filters = null }) {
                   <HeartButton car={car} />
                   {car.status === "reserved" && <span className="reserved-badge">Reserved</span>}
                   {car.status === "sold" && <span className="sold-badge">Sold</span>}
+                  <AutoTraderBadge />
                 </div>
                 <div className="card-content">
                   <h2 className="car-title">{car.title}</h2>
