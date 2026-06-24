@@ -30,11 +30,38 @@
   letter-spacing: -0.2px;
 }
 
+.subscribe-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .subscribe-form {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+}
+
+.subscribe-message {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.subscribe-message--success {
+  color: #1e8e3e;
+}
+
+.subscribe-message--error {
+  color: #d33;
+}
+
+.subscribe-input:disabled,
+.subscribe-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .subscribe-input {
@@ -91,6 +118,7 @@
     padding: 20px 20px 24px;
   }
 
+  .subscribe-form-col,
   .subscribe-form {
     width: 100%;
   }
