@@ -10,6 +10,7 @@ import {
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
 import VehicleSidebar from "../components/VehicleSidebar/VehicleSidebar";
+import { submitVehicleSourcing } from "../lib/vehicleSourcing";
 import "./VehicleSourcing.css";
 
 const budgetOptions = [
@@ -22,21 +23,54 @@ const budgetOptions = [
   "No Maximum",
 ];
 
-export default function VehicleSourcing() {
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    make: "",
-    model: "",
-    year: "",
-    mileage: "",
-    budget: "",
-    notes: "",
-  });
+const INITIAL_FORM = {
+  name: "",
+  phone: "",
+  email: "",
+  make: "",
+  model: "",
+  year: "",
+  mileage: "",
+  budget: "",
+  notes: "",
+};
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const handleSubmit = (e) => e.preventDefault();
+export default function VehicleSourcing() {
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) setFieldErrors((prev) => ({ ...prev, [name]: null }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (status === "loading") return;
+
+    setStatus("loading");
+    setFieldErrors({});
+    setMessage("");
+
+    try {
+      const successMessage = await submitVehicleSourcing(form);
+      setStatus("success");
+      setMessage(successMessage);
+      setForm(INITIAL_FORM);
+    } catch (err) {
+      setStatus("error");
+      const errors = err.fieldErrors || {};
+      if (Object.keys(errors).length > 0) {
+        setFieldErrors(errors);
+        setMessage("");
+      } else {
+        setMessage(err.message || "Something went wrong. Please try again.");
+      }
+    }
+  };
 
   return (
     <>
@@ -111,118 +145,144 @@ export default function VehicleSourcing() {
             {/* Sourcing Form */}
             <div className="vs-form-wrapper" id="sourcing-form">
               <h4 className="vs-form-title">Vehicle Sourcing Form</h4>
-              <form className="vs-form" onSubmit={handleSubmit}>
-                <div className="vs-form-row">
-                  <div className="vs-form-group">
-                    <label className="vs-form-label">Full Name</label>
-                    <input
-                      className="vs-form-input"
-                      type="text"
-                      name="name"
-                      placeholder="Your full name"
-                      value={form.name}
-                      onChange={handleChange}
-                    />
+
+              {status === "success" ? (
+                <p className="vs-form-success">{message}</p>
+              ) : (
+                <form className="vs-form" onSubmit={handleSubmit}>
+                  {status === "error" && message && (
+                    <p className="vs-form-toast">{message}</p>
+                  )}
+                  <div className="vs-form-row">
+                    <div className="vs-form-group">
+                      <label className="vs-form-label">Full Name</label>
+                      <input
+                        className="vs-form-input"
+                        type="text"
+                        name="name"
+                        placeholder="Your full name"
+                        value={form.name}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.name && <p className="vs-field-error">{fieldErrors.name[0]}</p>}
+                    </div>
+                    <div className="vs-form-group">
+                      <label className="vs-form-label">Phone Number</label>
+                      <input
+                        className="vs-form-input"
+                        type="tel"
+                        name="phone"
+                        placeholder="Your phone number"
+                        value={form.phone}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.phone && <p className="vs-field-error">{fieldErrors.phone[0]}</p>}
+                    </div>
                   </div>
                   <div className="vs-form-group">
-                    <label className="vs-form-label">Phone Number</label>
+                    <label className="vs-form-label">Email Address</label>
                     <input
                       className="vs-form-input"
-                      type="tel"
-                      name="phone"
-                      placeholder="Your phone number"
-                      value={form.phone}
+                      type="email"
+                      name="email"
+                      placeholder="Your email address"
+                      value={form.email}
                       onChange={handleChange}
+                      disabled={status === "loading"}
                     />
+                    {fieldErrors.email && <p className="vs-field-error">{fieldErrors.email[0]}</p>}
                   </div>
-                </div>
-                <div className="vs-form-group">
-                  <label className="vs-form-label">Email Address</label>
-                  <input
-                    className="vs-form-input"
-                    type="email"
-                    name="email"
-                    placeholder="Your email address"
-                    value={form.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="vs-form-row">
+                  <div className="vs-form-row">
+                    <div className="vs-form-group">
+                      <label className="vs-form-label">Desired Make</label>
+                      <input
+                        className="vs-form-input"
+                        type="text"
+                        name="make"
+                        placeholder="e.g. BMW"
+                        value={form.make}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.make && <p className="vs-field-error">{fieldErrors.make[0]}</p>}
+                    </div>
+                    <div className="vs-form-group">
+                      <label className="vs-form-label">Desired Model</label>
+                      <input
+                        className="vs-form-input"
+                        type="text"
+                        name="model"
+                        placeholder="e.g. 3 Series"
+                        value={form.model}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.model && <p className="vs-field-error">{fieldErrors.model[0]}</p>}
+                    </div>
+                  </div>
+                  <div className="vs-form-row">
+                    <div className="vs-form-group">
+                      <label className="vs-form-label">Year</label>
+                      <input
+                        className="vs-form-input"
+                        type="text"
+                        name="year"
+                        placeholder="e.g. 2020"
+                        value={form.year}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.year && <p className="vs-field-error">{fieldErrors.year[0]}</p>}
+                    </div>
+                    <div className="vs-form-group">
+                      <label className="vs-form-label">Max Mileage</label>
+                      <input
+                        className="vs-form-input"
+                        type="text"
+                        name="mileage"
+                        placeholder="e.g. 40,000"
+                        value={form.mileage}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.mileage && <p className="vs-field-error">{fieldErrors.mileage[0]}</p>}
+                    </div>
+                  </div>
                   <div className="vs-form-group">
-                    <label className="vs-form-label">Desired Make</label>
-                    <input
-                      className="vs-form-input"
-                      type="text"
-                      name="make"
-                      placeholder="e.g. BMW"
-                      value={form.make}
+                    <label className="vs-form-label">Budget</label>
+                    <select
+                      className="vs-form-select"
+                      name="budget"
+                      value={form.budget}
                       onChange={handleChange}
-                    />
+                      disabled={status === "loading"}
+                    >
+                      <option value="">Select your budget</option>
+                      {budgetOptions.map((opt) => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                    {fieldErrors.budget && <p className="vs-field-error">{fieldErrors.budget[0]}</p>}
                   </div>
                   <div className="vs-form-group">
-                    <label className="vs-form-label">Desired Model</label>
-                    <input
-                      className="vs-form-input"
-                      type="text"
-                      name="model"
-                      placeholder="e.g. 3 Series"
-                      value={form.model}
+                    <label className="vs-form-label">Additional Requirements</label>
+                    <textarea
+                      className="vs-form-textarea"
+                      name="notes"
+                      placeholder="Colour preference, trim level, must-have features..."
+                      value={form.notes}
                       onChange={handleChange}
+                      disabled={status === "loading"}
                     />
+                    {fieldErrors.notes && <p className="vs-field-error">{fieldErrors.notes[0]}</p>}
                   </div>
-                </div>
-                <div className="vs-form-row">
-                  <div className="vs-form-group">
-                    <label className="vs-form-label">Year</label>
-                    <input
-                      className="vs-form-input"
-                      type="text"
-                      name="year"
-                      placeholder="e.g. 2020"
-                      value={form.year}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="vs-form-group">
-                    <label className="vs-form-label">Max Mileage</label>
-                    <input
-                      className="vs-form-input"
-                      type="text"
-                      name="mileage"
-                      placeholder="e.g. 40,000"
-                      value={form.mileage}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="vs-form-group">
-                  <label className="vs-form-label">Budget</label>
-                  <select
-                    className="vs-form-select"
-                    name="budget"
-                    value={form.budget}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select your budget</option>
-                    {budgetOptions.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="vs-form-group">
-                  <label className="vs-form-label">Additional Requirements</label>
-                  <textarea
-                    className="vs-form-textarea"
-                    name="notes"
-                    placeholder="Colour preference, trim level, must-have features..."
-                    value={form.notes}
-                    onChange={handleChange}
-                  />
-                </div>
-                <button type="submit" className="vs-form-submit">
-                  SUBMIT SOURCING REQUEST
-                </button>
-              </form>
+                  <button type="submit" className="vs-form-submit" disabled={status === "loading"}>
+                    {status === "loading" ? "SUBMITTING…" : "SUBMIT SOURCING REQUEST"}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
 

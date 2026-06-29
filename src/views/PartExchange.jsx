@@ -13,15 +13,49 @@ import {
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
 import VehicleSidebar from "../components/VehicleSidebar/VehicleSidebar";
+import { submitPartExchange } from "../lib/partExchange";
 import "./PartExchange.css";
 
-export default function PartExchange() {
-  const [form, setForm] = useState({
-    name: "", phone: "", email: "", make: "", model: "", year: "", mileage: "",
-  });
+const INITIAL_FORM = {
+  name: "", phone: "", email: "", make: "", model: "", year: "", mileage: "",
+};
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const handleSubmit = (e) => e.preventDefault();
+export default function PartExchange() {
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) setFieldErrors((prev) => ({ ...prev, [name]: null }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (status === "loading") return;
+
+    setStatus("loading");
+    setFieldErrors({});
+    setMessage("");
+
+    try {
+      const successMessage = await submitPartExchange(form);
+      setStatus("success");
+      setMessage(successMessage);
+      setForm(INITIAL_FORM);
+    } catch (err) {
+      setStatus("error");
+      const errors = err.fieldErrors || {};
+      if (Object.keys(errors).length > 0) {
+        setFieldErrors(errors);
+        setMessage("");
+      } else {
+        setMessage(err.message || "Something went wrong. Please try again.");
+      }
+    }
+  };
 
   return (
     <>
@@ -93,94 +127,116 @@ export default function PartExchange() {
             {/* Valuation Form */}
             <div className="pe-form-wrapper" id="valuation-form">
               <h4 className="pe-form-title">Vehicle Valuation Form</h4>
-              <form className="pe-form" onSubmit={handleSubmit}>
-                <div className="pe-form-row">
-                  <div className="pe-form-group">
-                    <label className="pe-form-label">Full Name</label>
-                    <input
-                      className="pe-form-input"
-                      type="text"
-                      name="name"
-                      placeholder="Your full name"
-                      value={form.name}
-                      onChange={handleChange}
-                    />
+
+              {status === "success" ? (
+                <p className="pe-form-success">{message}</p>
+              ) : (
+                <form className="pe-form" onSubmit={handleSubmit}>
+                  {status === "error" && message && (
+                    <p className="pe-form-toast">{message}</p>
+                  )}
+                  <div className="pe-form-row">
+                    <div className="pe-form-group">
+                      <label className="pe-form-label">Full Name</label>
+                      <input
+                        className="pe-form-input"
+                        type="text"
+                        name="name"
+                        placeholder="Your full name"
+                        value={form.name}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.name && <p className="pe-field-error">{fieldErrors.name[0]}</p>}
+                    </div>
+                    <div className="pe-form-group">
+                      <label className="pe-form-label">Phone Number</label>
+                      <input
+                        className="pe-form-input"
+                        type="tel"
+                        name="phone"
+                        placeholder="Your phone number"
+                        value={form.phone}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.phone && <p className="pe-field-error">{fieldErrors.phone[0]}</p>}
+                    </div>
                   </div>
                   <div className="pe-form-group">
-                    <label className="pe-form-label">Phone Number</label>
+                    <label className="pe-form-label">Email Address</label>
                     <input
                       className="pe-form-input"
-                      type="tel"
-                      name="phone"
-                      placeholder="Your phone number"
-                      value={form.phone}
+                      type="email"
+                      name="email"
+                      placeholder="Your email address"
+                      value={form.email}
                       onChange={handleChange}
+                      disabled={status === "loading"}
                     />
+                    {fieldErrors.email && <p className="pe-field-error">{fieldErrors.email[0]}</p>}
                   </div>
-                </div>
-                <div className="pe-form-group">
-                  <label className="pe-form-label">Email Address</label>
-                  <input
-                    className="pe-form-input"
-                    type="email"
-                    name="email"
-                    placeholder="Your email address"
-                    value={form.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="pe-form-row">
-                  <div className="pe-form-group">
-                    <label className="pe-form-label">Vehicle Make</label>
-                    <input
-                      className="pe-form-input"
-                      type="text"
-                      name="make"
-                      placeholder="e.g. Ford"
-                      value={form.make}
-                      onChange={handleChange}
-                    />
+                  <div className="pe-form-row">
+                    <div className="pe-form-group">
+                      <label className="pe-form-label">Vehicle Make</label>
+                      <input
+                        className="pe-form-input"
+                        type="text"
+                        name="make"
+                        placeholder="e.g. Ford"
+                        value={form.make}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.make && <p className="pe-field-error">{fieldErrors.make[0]}</p>}
+                    </div>
+                    <div className="pe-form-group">
+                      <label className="pe-form-label">Vehicle Model</label>
+                      <input
+                        className="pe-form-input"
+                        type="text"
+                        name="model"
+                        placeholder="e.g. Focus"
+                        value={form.model}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.model && <p className="pe-field-error">{fieldErrors.model[0]}</p>}
+                    </div>
                   </div>
-                  <div className="pe-form-group">
-                    <label className="pe-form-label">Vehicle Model</label>
-                    <input
-                      className="pe-form-input"
-                      type="text"
-                      name="model"
-                      placeholder="e.g. Focus"
-                      value={form.model}
-                      onChange={handleChange}
-                    />
+                  <div className="pe-form-row">
+                    <div className="pe-form-group">
+                      <label className="pe-form-label">Year</label>
+                      <input
+                        className="pe-form-input"
+                        type="text"
+                        name="year"
+                        placeholder="e.g. 2020"
+                        value={form.year}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.year && <p className="pe-field-error">{fieldErrors.year[0]}</p>}
+                    </div>
+                    <div className="pe-form-group">
+                      <label className="pe-form-label">Mileage</label>
+                      <input
+                        className="pe-form-input"
+                        type="text"
+                        name="mileage"
+                        placeholder="e.g. 35,000"
+                        value={form.mileage}
+                        onChange={handleChange}
+                        disabled={status === "loading"}
+                      />
+                      {fieldErrors.mileage && <p className="pe-field-error">{fieldErrors.mileage[0]}</p>}
+                    </div>
                   </div>
-                </div>
-                <div className="pe-form-row">
-                  <div className="pe-form-group">
-                    <label className="pe-form-label">Year</label>
-                    <input
-                      className="pe-form-input"
-                      type="text"
-                      name="year"
-                      placeholder="e.g. 2020"
-                      value={form.year}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="pe-form-group">
-                    <label className="pe-form-label">Mileage</label>
-                    <input
-                      className="pe-form-input"
-                      type="text"
-                      name="mileage"
-                      placeholder="e.g. 35,000"
-                      value={form.mileage}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <button type="submit" className="pe-form-submit">
-                  GET MY VALUATION
-                </button>
-              </form>
+                  <button type="submit" className="pe-form-submit" disabled={status === "loading"}>
+                    {status === "loading" ? "SUBMITTING…" : "GET MY VALUATION"}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
 

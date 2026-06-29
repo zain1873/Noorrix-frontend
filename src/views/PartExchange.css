@@ -209,7 +209,6 @@
   background: #fff;
   border: 1px solid var(--border-color);
   border-top: 3px solid var(--theme-color);
-  border-radius: 10px;
   padding: 32px 28px;
   margin-top: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
@@ -274,6 +273,39 @@
   color: #aaa;
 }
 
+.pe-form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pe-field-error {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+.pe-form-toast {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: #fdecea;
+  color: #c0392b;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pe-form-success {
+  padding: 18px 16px;
+  border-radius: 8px;
+  background: #eafaf1;
+  color: #1e8e3e;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
 .pe-form-submit {
   width: 100%;
   padding: 14px;
@@ -292,6 +324,12 @@
 .pe-form-submit:hover {
   background: #931568;
   transform: translateY(-1px);
+}
+
+.pe-form-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* ── CTA ── */
