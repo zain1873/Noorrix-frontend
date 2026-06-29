@@ -1,49 +1,50 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { FaSearch, FaPhoneAlt, FaPhoneVolume, FaMobileAlt, FaEnvelope } from "react-icons/fa";
+import { getFilters } from "../../lib/cars";
 import "./VehicleSidebar.css";
 
-const makeModels = {
-  Toyota: ["Aygo", "Yaris", "Corolla", "Prius", "C-HR", "RAV4", "Land Cruiser"],
-  Honda: ["Jazz", "Civic", "HR-V", "CR-V", "Accord"],
-  BMW: ["1 Series", "2 Series", "3 Series", "4 Series", "5 Series", "X1", "X3", "X5", "M3", "M4"],
-  "Mercedes-Benz": ["A-Class", "C-Class", "E-Class", "S-Class", "GLA", "GLC", "GLE"],
-  Ford: ["Fiesta", "Focus", "Puma", "Kuga", "Mustang", "Ranger"],
-  Audi: ["A1", "A3", "A4", "A5", "A6", "Q3", "Q5", "Q7", "TT"],
-  Volkswagen: ["Polo", "Golf", "Golf GTI", "Passat", "Tiguan", "T-Roc"],
-  Hyundai: ["i10", "i20", "i30", "IONIQ 5", "Kona", "Tucson"],
-  Kia: ["Picanto", "Ceed", "Sportage", "Sorento", "EV6"],
-  Nissan: ["Micra", "Juke", "Qashqai", "X-Trail", "Leaf"],
-  "Land Rover": ["Defender", "Discovery", "Discovery Sport", "Range Rover", "Range Rover Sport"],
-  Jaguar: ["XE", "XF", "F-Type", "E-Pace", "F-Pace"],
-  Vauxhall: ["Corsa", "Astra", "Mokka", "Grandland"],
-  Porsche: ["911", "Cayenne", "Macan", "Panamera", "Taycan"],
-  Tesla: ["Model 3", "Model Y", "Model S", "Model X"],
-  Volvo: ["XC40", "XC60", "XC90", "V60", "S60"],
-  Mini: ["Hatch", "Convertible", "Clubman", "Countryman"],
-  Mazda: ["2", "3", "6", "MX-5", "CX-30", "CX-5"],
-  Peugeot: ["208", "308", "2008", "3008", "5008"],
-  Renault: ["Clio", "Megane", "Captur", "Kadjar"],
-};
-
 const priceOptions = [
-  "Under £5,000",
-  "Under £10,000",
-  "Under £15,000",
-  "Under £20,000",
-  "Under £30,000",
-  "Under £50,000",
-  "No Maximum",
+  { label: "Under £5,000", max: 5000 },
+  { label: "Under £10,000", max: 10000 },
+  { label: "Under £15,000", max: 15000 },
+  { label: "Under £20,000", max: 20000 },
+  { label: "Under £30,000", max: 30000 },
+  { label: "Under £50,000", max: 50000 },
+  { label: "No Maximum", max: null },
 ];
 
 export default function VehicleSidebar() {
   const router = useRouter();
+  const [makeModels, setMakeModels] = useState({});
   const [searchMake, setSearchMake] = useState("");
   const [searchModel, setSearchModel] = useState("");
   const [searchPrice, setSearchPrice] = useState("");
 
+  // Same /api/filters/ source as HeroFilter/Filter.jsx, so this sidebar can
+  // only ever offer makes/models that are actually in stock.
+  useEffect(() => {
+    let active = true;
+    getFilters().then((f) => {
+      if (!active || !f) return;
+      setMakeModels(f.makeModels || {});
+    });
+    return () => { active = false; };
+  }, []);
+
   const availableModels = searchMake ? (makeModels[searchMake] ?? []) : [];
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchMake) params.set("make", searchMake);
+    if (searchModel) params.set("model", searchModel);
+    const priceBand = priceOptions.find((p) => p.label === searchPrice);
+    if (priceBand?.max != null) params.set("priceMax", String(priceBand.max));
+
+    const qs = params.toString();
+    router.push(qs ? `/stock?${qs}` : "/stock");
+  };
 
   return (
     <div className="vs-sidebar">
@@ -82,11 +83,11 @@ export default function VehicleSidebar() {
           >
             <option value="">Maximum price</option>
             {priceOptions.map((p) => (
-              <option key={p} value={p}>{p}</option>
+              <option key={p.label} value={p.label}>{p.label}</option>
             ))}
           </select>
         </div>
-        <button className="vs-sidebar-search-btn" onClick={() => router.push("/stock")}>
+        <button className="vs-sidebar-search-btn" onClick={handleSearch}>
           SEARCH
         </button>
       </div>
