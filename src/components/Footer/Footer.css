@@ -307,6 +307,37 @@
   opacity: 0.85;
 }
 
+@media (max-width: 480px) {
+  .footer-subscribe-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .footer-subscribe-col {
+    width: 100%;
+  }
+  .footer-newsletter-inline {
+    margin-top: 0;
+  }
+
+  .footer-subscribe-input {
+    border-right: 1px solid #333;
+    border-radius: 4px;
+  }
+
+  .footer-subscribe-btn {
+    border-radius: 4px;
+  }
+
+  .footer-hours-list li {
+    gap: 8px;
+  }
+
+  .footer-hours-time {
+    font-size: 12px;
+  }
+}
+
 /* ─── Payment inline (inside Opening Hours column) ─── */
 .footer-payment-inline {
   margin-top: 18px;
