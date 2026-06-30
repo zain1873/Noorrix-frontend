@@ -144,10 +144,7 @@ const FeatureCard = () => {
                     <span className="call-to-book-icon">
                       <FaPhoneAlt size={13} />
                     </span>
-                    <span className="call-to-book-text">
-                      <span className="call-to-book-label">Call to Book</span>
-                      <span className="call-to-book-number">07300 503113</span>
-                    </span>
+                    <span className="call-to-book-label">Call to Book</span>
                   </a>
                   <div className="total-price">
                     <span className="total-amount">{gbp(car.price)}</span>
