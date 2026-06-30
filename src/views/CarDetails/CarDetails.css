@@ -960,6 +960,7 @@ body {
   gap: 8px;
   box-shadow: 0 6px 16px rgba(172,28,122,0.35);
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  display: none;
 }
 
 .dark-btn-reserve:hover {

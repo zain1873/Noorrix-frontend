@@ -401,6 +401,7 @@
   padding: 13px 0;
   font-size: 15px;
   gap: 1px;
+  display: none;
 }
 
 .btn-reserve:hover {
