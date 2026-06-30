@@ -164,7 +164,7 @@ body {
 }
 
 .sold-badge {
-  background: red;
+  background: var(--theme-color);
 }
 
 /* Favourite heart */

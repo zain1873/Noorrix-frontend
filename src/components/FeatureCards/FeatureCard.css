@@ -144,7 +144,7 @@
 }
 
 .sold-badge {
-  background: red;
+  background: var(--theme-color);
 }
 
 /* === AA Badge === */
@@ -326,6 +326,7 @@
 .monthly-price {
   display: flex;
   flex-direction: column;
+  /* visibility: hidden; */
 }
 
 .price-amount {
@@ -348,16 +349,66 @@
 }
 
 .total-amount {
-  font-size: 17px;
+  font-size: 24px;
   font-weight: 700;
   color: #1a1a1a;
   line-height: 1.1;
 }
 
 .total-label {
-  font-size: 11px;
+  font-size: 10px;
   color: #777;
   margin-top: 1px;
+}
+
+.call-to-book {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+  background: rgba(172, 28, 122, 0.07);
+  border: 1px solid rgba(172, 28, 122, 0.16);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.call-to-book:hover {
+  background: rgba(172, 28, 122, 0.13);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(172, 28, 122, 0.15);
+}
+
+.call-to-book-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--theme-color);
+  color: #fff;
+}
+
+.call-to-book-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.call-to-book-label {
+  font-size: 8px;
+  font-weight: 600;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.call-to-book-number {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--theme-color);
 }
 
 /* === Buttons === */
