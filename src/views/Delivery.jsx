@@ -15,6 +15,7 @@ import {
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
 import AboutSection from "../components/AboutSection/AboutSection";
+import { submitDelivery } from "../lib/delivery";
 import "./Delivery.css";
 
 const services = [
@@ -81,13 +82,46 @@ const steps = [
   },
 ];
 
-function Delivery() {
-  const [form, setForm] = useState({
-    name: "", phone: "", email: "", vehicle: "", address: "", preferredDate: "", notes: "",
-  });
+const INITIAL_FORM = {
+  name: "", phone: "", email: "", vehicle: "", address: "", postcode: "", preferredDate: "", notes: "",
+};
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const handleSubmit = (e) => e.preventDefault();
+function Delivery() {
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) setFieldErrors((prev) => ({ ...prev, [name]: null }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (status === "loading") return;
+
+    setStatus("loading");
+    setFieldErrors({});
+    setMessage("");
+
+    try {
+      const successMessage = await submitDelivery(form);
+      setStatus("success");
+      setMessage(successMessage);
+      setForm(INITIAL_FORM);
+    } catch (err) {
+      setStatus("error");
+      const errors = err.fieldErrors || {};
+      if (Object.keys(errors).length > 0) {
+        setFieldErrors(errors);
+        setMessage("");
+      } else {
+        setMessage(err.message || "Something went wrong. Please try again.");
+      }
+    }
+  };
 
   return (
     <>
@@ -246,66 +280,96 @@ function Delivery() {
           <div className="dl-accent-bar" style={{ margin: "16px auto 40px" }} />
 
           <div className="dl-form-wrapper">
-            <form className="dl-form" onSubmit={handleSubmit}>
-              <div className="dl-form-row">
-                <div className="dl-form-group">
-                  <label className="dl-form-label">Full Name</label>
-                  <input
-                    className="dl-form-input"
-                    type="text"
-                    name="name"
-                    placeholder="Your full name"
-                    value={form.name}
-                    onChange={handleChange}
-                  />
+            {status === "success" ? (
+              <p className="dl-form-success">{message}</p>
+            ) : (
+              <form className="dl-form" onSubmit={handleSubmit}>
+                {status === "error" && message && (
+                  <p className="dl-form-toast">{message}</p>
+                )}
+                <div className="dl-form-row">
+                  <div className="dl-form-group">
+                    <label className="dl-form-label">Full Name</label>
+                    <input
+                      className="dl-form-input"
+                      type="text"
+                      name="name"
+                      placeholder="Your full name"
+                      value={form.name}
+                      onChange={handleChange}
+                      disabled={status === "loading"}
+                    />
+                    {fieldErrors.name && <p className="dl-field-error">{fieldErrors.name[0]}</p>}
+                  </div>
+                  <div className="dl-form-group">
+                    <label className="dl-form-label">Phone Number</label>
+                    <input
+                      className="dl-form-input"
+                      type="tel"
+                      name="phone"
+                      placeholder="Your phone number"
+                      value={form.phone}
+                      onChange={handleChange}
+                      disabled={status === "loading"}
+                    />
+                    {fieldErrors.phone && <p className="dl-field-error">{fieldErrors.phone[0]}</p>}
+                  </div>
                 </div>
-                <div className="dl-form-group">
-                  <label className="dl-form-label">Phone Number</label>
-                  <input
-                    className="dl-form-input"
-                    type="tel"
-                    name="phone"
-                    placeholder="Your phone number"
-                    value={form.phone}
-                    onChange={handleChange}
-                  />
+                <div className="dl-form-row">
+                  <div className="dl-form-group">
+                    <label className="dl-form-label">Email Address</label>
+                    <input
+                      className="dl-form-input"
+                      type="email"
+                      name="email"
+                      placeholder="Your email address"
+                      value={form.email}
+                      onChange={handleChange}
+                      disabled={status === "loading"}
+                    />
+                    {fieldErrors.email && <p className="dl-field-error">{fieldErrors.email[0]}</p>}
+                  </div>
+                  <div className="dl-form-group">
+                    <label className="dl-form-label">Vehicle</label>
+                    <input
+                      className="dl-form-input"
+                      type="text"
+                      name="vehicle"
+                      placeholder="e.g. BMW 3 Series, or your reservation reference"
+                      value={form.vehicle}
+                      onChange={handleChange}
+                      disabled={status === "loading"}
+                    />
+                    {fieldErrors.vehicle && <p className="dl-field-error">{fieldErrors.vehicle[0]}</p>}
+                  </div>
                 </div>
-              </div>
-              <div className="dl-form-row">
-                <div className="dl-form-group">
-                  <label className="dl-form-label">Email Address</label>
-                  <input
-                    className="dl-form-input"
-                    type="email"
-                    name="email"
-                    placeholder="Your email address"
-                    value={form.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="dl-form-group">
-                  <label className="dl-form-label">Vehicle</label>
-                  <input
-                    className="dl-form-input"
-                    type="text"
-                    name="vehicle"
-                    placeholder="e.g. BMW 3 Series, or your reservation reference"
-                    value={form.vehicle}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div className="dl-form-row">
-                <div className="dl-form-group">
-                  <label className="dl-form-label">Delivery Address</label>
-                  <input
-                    className="dl-form-input"
-                    type="text"
-                    name="address"
-                    placeholder="Address or postcode"
-                    value={form.address}
-                    onChange={handleChange}
-                  />
+                <div className="dl-form-row">
+                  <div className="dl-form-group">
+                    <label className="dl-form-label">Delivery Address</label>
+                    <input
+                      className="dl-form-input"
+                      type="text"
+                      name="address"
+                      placeholder="Street address"
+                      value={form.address}
+                      onChange={handleChange}
+                      disabled={status === "loading"}
+                    />
+                    {fieldErrors.address && <p className="dl-field-error">{fieldErrors.address[0]}</p>}
+                  </div>
+                  <div className="dl-form-group">
+                    <label className="dl-form-label">Postal Code</label>
+                    <input
+                      className="dl-form-input"
+                      type="text"
+                      name="postcode"
+                      placeholder="e.g. SW1A 1AA"
+                      value={form.postcode}
+                      onChange={handleChange}
+                      disabled={status === "loading"}
+                    />
+                    {fieldErrors.postcode && <p className="dl-field-error">{fieldErrors.postcode[0]}</p>}
+                  </div>
                 </div>
                 <div className="dl-form-group">
                   <label className="dl-form-label">Preferred Date</label>
@@ -315,23 +379,27 @@ function Delivery() {
                     name="preferredDate"
                     value={form.preferredDate}
                     onChange={handleChange}
+                    disabled={status === "loading"}
                   />
+                  {fieldErrors.preferredDate && <p className="dl-field-error">{fieldErrors.preferredDate[0]}</p>}
                 </div>
-              </div>
-              <div className="dl-form-group">
-                <label className="dl-form-label">Additional Notes</label>
-                <textarea
-                  className="dl-form-textarea"
-                  name="notes"
-                  placeholder="Anything else we should know..."
-                  value={form.notes}
-                  onChange={handleChange}
-                />
-              </div>
-              <button type="submit" className="dl-form-submit">
-                REQUEST DELIVERY
-              </button>
-            </form>
+                <div className="dl-form-group">
+                  <label className="dl-form-label">Additional Notes</label>
+                  <textarea
+                    className="dl-form-textarea"
+                    name="notes"
+                    placeholder="Anything else we should know..."
+                    value={form.notes}
+                    onChange={handleChange}
+                    disabled={status === "loading"}
+                  />
+                  {fieldErrors.notes && <p className="dl-field-error">{fieldErrors.notes[0]}</p>}
+                </div>
+                <button type="submit" className="dl-form-submit" disabled={status === "loading"}>
+                  {status === "loading" ? "SUBMITTING…" : "REQUEST DELIVERY"}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
