@@ -653,8 +653,11 @@
   
 }
 
-@media (max-width: 768px) {
- 
+@media (max-width: 500px) {
+  .logo {
+  width: 160px;
+  height: 90px;
+}
 }
 /* Login Button — Navbar */
 .acc-login-btn {
