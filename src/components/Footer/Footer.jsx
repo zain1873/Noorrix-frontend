@@ -137,13 +137,13 @@ const NoorrixFooter = () => {
         <div className="footer-col-links">
           <h4 className="footer-col-title">Opening Hours</h4>
           <ul className="footer-hours-list">
-            <li><span className="footer-hours-day">Mon</span><span className="footer-hours-time">10:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
-            <li><span className="footer-hours-day">Tue</span><span className="footer-hours-time">10:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
-            <li><span className="footer-hours-day">Wed</span><span className="footer-hours-time">10:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
-            <li><span className="footer-hours-day">Thu</span><span className="footer-hours-time">10:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
-            <li><span className="footer-hours-day">Fri</span><span className="footer-hours-time">10:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
-            <li><span className="footer-hours-day">Sat</span><span className="footer-hours-time">10:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
-            <li><span className="footer-hours-day">Sun</span><span className="footer-hours-time">10:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
+            <li><span className="footer-hours-day">Mon</span><span className="footer-hours-time">9:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
+            <li><span className="footer-hours-day">Tue</span><span className="footer-hours-time">9:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
+            <li><span className="footer-hours-day">Wed</span><span className="footer-hours-time">9:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
+            <li><span className="footer-hours-day">Thu</span><span className="footer-hours-time">9:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
+            <li><span className="footer-hours-day">Fri</span><span className="footer-hours-time">9:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
+            <li><span className="footer-hours-day">Sat</span><span className="footer-hours-time">9:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
+            <li><span className="footer-hours-day">Sun</span><span className="footer-hours-time">9:00 AM – 6:00 PM</span><FaRegClock className="footer-hours-icon" /></li>
           </ul>
           <p className="footer-hours-note">After Hours Viewing Available On Request</p>
           <div className="footer-payment-inline">

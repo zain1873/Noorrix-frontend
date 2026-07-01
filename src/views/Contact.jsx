@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
+import StatsCounter from "../components/StatsCounter/StatsCounter";
 import "./Contact.css";
 
 // ─── Contact Info Data ─────────────────────────────────────────────
@@ -420,6 +421,10 @@ function Contact() {
           </div>
         </div>
       </section>
+
+
+      <StatsCounter />
+
 
       {/* ═════════════════════════════════════════════════════════════════════
           FINAL CTA BANNER
