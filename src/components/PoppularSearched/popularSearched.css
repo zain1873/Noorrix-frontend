@@ -7,16 +7,19 @@
 
 /* ─── Tabs ────────────────────────────────────────────────────────────── */
 .tabs-wrapper {
-  border-bottom: 1.5px solid #e5e7eb;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .tabs-list {
-  display: flex;
-  gap: 0;
+  display: inline-flex;
+  gap: 6px;
   flex-wrap: nowrap;
   overflow-x: auto;
   scrollbar-width: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 5px;
 }
 
 .tabs-list::-webkit-scrollbar {
@@ -26,32 +29,34 @@
 .tab-btn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 12px 18px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: #fff;
+  gap: 6px;
+  padding: 9px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #bbb;
   background: none;
   border: none;
-  border-bottom: 2.5px solid transparent;
+  border-radius: 999px;
   cursor: pointer;
   white-space: nowrap;
-  transition: color 0.2s ease;
-  position: relative;
-  bottom: -1.5px;
-  margin-bottom: 0;
+  transition: color 0.2s ease, background 0.2s ease;
+  letter-spacing: 0.2px;
 }
 
 .tab-btn:hover {
   color: #fff;
-  background-color: #a03c7d;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .tab-btn--active {
   color: #fff;
   font-weight: 700;
-  border-bottom: 2.5px solid #111;
-  background-color: var(--theme-color);
+  background: var(--theme-color);
+  box-shadow: 0 4px 14px rgba(172, 28, 122, 0.4);
+}
+
+.tab-btn--active:hover {
+  background: #931568;
 }
 
 .trending-icon {
@@ -60,7 +65,7 @@
 }
 
 .tabs-underline {
-  display: none; /* border-bottom on wrapper handles this */
+  display: none;
 }
 
 /* ─── Cards Container ─────────────────────────────────────────────────── */
@@ -235,8 +240,8 @@
   }
 
   .tab-btn {
-    padding: 10px 14px;
-    font-size: 0.875rem;
+    padding: 8px 16px;
+    font-size: 0.85rem;
   }
 
 
@@ -264,8 +269,8 @@
   }
 
   .tab-btn {
-    padding: 9px 12px;
-    font-size: 0.8125rem;
+    padding: 7px 13px;
+    font-size: 0.8rem;
   }
 
   .body-card {
@@ -305,7 +310,7 @@
 /* Small mobile (≤400px) */
 @media (max-width: 400px) {
   .tab-btn {
-    padding: 8px 9px;
+    padding: 6px 11px;
     font-size: 0.75rem;
   }
 

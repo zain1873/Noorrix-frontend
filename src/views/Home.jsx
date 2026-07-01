@@ -13,6 +13,8 @@ import NoorrixFooter from "../components/Footer/Footer";
 import BrowseByBudget from "../components/Browsebybudget/Budget";
 import WhatsAppButton from "../components/WhatsApp/WhatsAppButton";
 import PopularSearches from "../components/PoppularSearched/popularSearched";
+import StatsCounter from "../components/StatsCounter/StatsCounter";
+
 function Home({ faqs = [] }) {
   return (
     <>
@@ -22,6 +24,7 @@ function Home({ faqs = [] }) {
       <PopularSearches/>
       <ServicesSlider/>
       <WhyChooseUs/>
+      <StatsCounter/>
       <BrowseByBudget/>
       <Testimonial/>
       <Faqs faqs={faqs} />

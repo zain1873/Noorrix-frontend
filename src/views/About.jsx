@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
+import StatsCounter from "../components/StatsCounter/StatsCounter";
 import "./About.css";
 
 // ─── Values Data ─────────────────────────────────────────────────────────────
@@ -190,6 +191,7 @@ function About() {
           </div>
         </div>
       </section>
+      
 
       {/* ═════════════════════════════════════════════════════════════════════
           OUR STORY SECTION
@@ -240,6 +242,8 @@ function About() {
                 needs and budget.
               </p>
 
+            
+            
               <div className="about-story-features">
                 <div className="about-story-feature-item">
                   <span className="about-story-feature-check">
@@ -271,6 +275,7 @@ function About() {
         </div>
       </section>
 
+
       {/* ═════════════════════════════════════════════════════════════════════
           VALUES & MISSION SECTION
       ══════════════════════════════════════════════════════════════════════ */}
@@ -301,6 +306,11 @@ function About() {
           </div>
         </div>
       </section>
+
+      <StatsCounter/>
+      
+
+
 
       {/* ═════════════════════════════════════════════════════════════════════
           OUR JOURNEY / TIMELINE

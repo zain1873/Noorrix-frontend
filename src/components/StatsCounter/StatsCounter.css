@@ -1,0 +1,150 @@
+/* === Stats Counter Section === */
+.sc-section {
+  background: #0d0d0d;
+  padding: 64px 32px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.sc-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Heading ── */
+.sc-heading {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.sc-title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 14px;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.sc-title span {
+  color: var(--theme-color);
+}
+
+.sc-subtitle {
+  font-size: clamp(13px, 1.5vw, 15px);
+  color: #888;
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Stats row ── */
+.sc-grid {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+}
+
+.sc-stat-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+/* ── Single stat ── */
+.sc-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px;
+}
+
+.sc-number {
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 900;
+  color: var(--theme-color);
+  line-height: 1;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sc-label {
+  font-size: clamp(12px, 1.2vw, 14px);
+  color: #aaa;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+/* ── Dividers ── */
+.sc-divider {
+  width: 1px;
+  min-height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--theme-color) 30%,
+    var(--theme-color) 70%,
+    transparent
+  );
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sc-section {
+    padding: 48px 24px;
+  }
+
+  .sc-heading {
+    margin-bottom: 40px;
+  }
+
+  .sc-grid {
+    flex-wrap: wrap;
+    gap: 32px 0;
+  }
+
+  .sc-stat-wrap {
+    flex: 0 0 50%;
+    justify-content: center;
+  }
+
+  /* hide vertical dividers on mobile — layout is 2×2 grid */
+  .sc-divider {
+    display: none;
+  }
+
+  .sc-stat {
+    padding: 0 16px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 28px;
+  }
+
+  /* remove bottom border from last two items */
+  .sc-stat-wrap:nth-child(5) .sc-stat,
+  .sc-stat-wrap:nth-child(7) .sc-stat {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sc-section {
+    padding: 40px 16px;
+  }
+
+  .sc-stat-wrap {
+    flex: 0 0 100%;
+  }
+
+  .sc-stat-wrap:last-child .sc-stat {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}

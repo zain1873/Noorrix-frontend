@@ -54,14 +54,14 @@ const makeItems = [
 ];
 
 const bodyTypeItems = [
-  { label: "Hatchback", img: "https://images.unsplash.com/photo-1541443131876-44b03de101c5?w=120&h=60&fit=crop&auto=format" },
-  { label: "Estate", img: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=120&h=60&fit=crop&auto=format" },
-  { label: "SUV", img: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=120&h=60&fit=crop&auto=format" },
-  { label: "Saloon", img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=120&h=60&fit=crop&auto=format" },
-  { label: "Coupe", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=120&h=60&fit=crop&auto=format" },
-  { label: "People Carrier", img: "https://images.unsplash.com/photo-1626668893632-6f3a4466d22f?w=120&h=60&fit=crop&auto=format" },
-  { label: "Convertible", img: "https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=120&h=60&fit=crop&auto=format" },
-  { label: "Pick-Up", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=120&h=60&fit=crop&auto=format" },
+  { label: "Hatchback",     img: "/assets/images/body%20types/hatchback-01.png" },
+  { label: "Estate",        img: "/assets/images/body%20types/estate.jpg" },
+  { label: "SUV",           img: "/assets/images/body%20types/SUZ.jpg" },
+  { label: "Saloon",        img: "/assets/images/body%20types/SALOON.jpg" },
+  { label: "Coupe",         img: "/assets/images/body%20types/coupe.jpg" },
+  { label: "People Carrier",img: "/assets/images/body%20types/pepole%20carrier.jpg" },
+  { label: "Convertible",   img: "/assets/images/body%20types/convertible.jpg" },
+  { label: "Pick-Up",       img: "/assets/images/body%20types/pickup.jpg" },
 ];
 
 const fuelItems = [
