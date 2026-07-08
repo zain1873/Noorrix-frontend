@@ -1,0 +1,1020 @@
+/* ============================================
+   Appointment Page Styles
+   ============================================ */
+
+/* ── Hero ── */
+.ap-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a;
+}
+
+.ap-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.ap-hero:hover .ap-hero-bg {
+  transform: scale(1);
+}
+
+.ap-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+  z-index: 2;
+}
+
+.ap-hero-top-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--theme-color);
+  z-index: 5;
+}
+
+.ap-hero-glow {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 180px;
+  background: radial-gradient(ellipse, rgba(172, 28, 122, 0.12), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ap-hero-container {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px 100px;
+  width: 100%;
+}
+
+.ap-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color);
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 6px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ap-hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 16px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 680px;
+}
+
+.ap-hero-title span {
+  color: var(--theme-color);
+}
+
+.ap-hero-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.ap-hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.ap-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ap-hero-btn-primary {
+  background: var(--theme-color);
+  color: #fff;
+}
+
+.ap-hero-btn-primary:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+.ap-hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.ap-hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+/* ── Services Grid Section ── */
+.ap-services {
+  background: #fff;
+  padding: 80px 24px;
+}
+
+.ap-services-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ap-section-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color);
+  background: rgba(172, 28, 122, 0.07);
+  padding: 5px 16px;
+  border-radius: 50px;
+  margin-bottom: 14px;
+}
+
+.ap-section-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.ap-section-title span {
+  color: var(--theme-color);
+}
+
+.ap-section-subtitle {
+  font-size: 1rem;
+  color: var(--muted-text);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: 16px;
+}
+
+.ap-accent-bar {
+  width: 56px;
+  height: 4px;
+  background: var(--theme-color);
+  border-radius: 2px;
+  margin-bottom: 48px;
+}
+
+.ap-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.ap-service-card {
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 36px 28px;
+  text-align: center;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.ap-service-card:hover {
+  box-shadow: 0 8px 32px rgba(172, 28, 122, 0.1);
+  transform: translateY(-4px);
+}
+
+.ap-service-icon {
+  width: 68px;
+  height: 68px;
+  background: rgba(172, 28, 122, 0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: var(--theme-color);
+  transition: background 0.2s ease;
+}
+
+.ap-service-card:hover .ap-service-icon {
+  background: var(--theme-color);
+  color: #fff;
+}
+
+.ap-service-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+}
+
+.ap-service-card p {
+  font-size: 0.92rem;
+  color: var(--muted-text);
+  line-height: 1.7;
+}
+
+/* ── Benefits Section ── */
+.ap-benefits {
+  padding: 80px 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.ap-benefits-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ap-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ap-benefit-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--theme-color);
+  border-radius: 10px;
+  padding: 22px 20px;
+  transition: box-shadow 0.2s ease;
+}
+
+.ap-benefit-card:hover {
+  box-shadow: 0 4px 20px rgba(172, 28, 122, 0.08);
+}
+
+.ap-benefit-icon {
+  color: var(--theme-color);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.ap-benefit-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.ap-benefit-card p {
+  font-size: 0.9rem;
+  color: var(--muted-text);
+  line-height: 1.6;
+}
+
+/* ── How It Works ── */
+.ap-process {
+  background: #fff;
+  padding: 80px 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.ap-process-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ap-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+  position: relative;
+}
+
+.ap-steps::before {
+  content: "";
+  position: absolute;
+  top: 36px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--theme-color), rgba(172, 28, 122, 0.15));
+  z-index: 0;
+}
+
+.ap-step {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.ap-step-number {
+  width: 72px;
+  height: 72px;
+  background: var(--theme-color);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  box-shadow: 0 4px 16px rgba(172, 28, 122, 0.3);
+}
+
+.ap-step h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.ap-step p {
+  font-size: 0.88rem;
+  color: var(--muted-text);
+  line-height: 1.6;
+}
+
+/* ── Appointment Request Form(s) ── */
+.ap-form-section {
+  background: #f8f8fb;
+  padding: 80px 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.ap-form-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* Wider container so two form cards fit side by side */
+.ap-form-inner--wide {
+  max-width: 1000px;
+}
+
+.ap-form-wrapper {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--theme-color);
+  border-radius: 10px;
+  padding: 32px 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Two-form grid: Test Drive + Appointment, side by side */
+.ap-forms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.ap-form-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--theme-color);
+  border-radius: 10px;
+  padding: 28px 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.ap-form-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.ap-form-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(172, 28, 122, 0.08);
+  color: var(--theme-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ap-form-card-head h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 4px;
+}
+
+.ap-form-card-head p {
+  font-size: 0.85rem;
+  color: var(--muted-text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ap-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ap-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ap-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ap-form-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ap-form-input,
+.ap-form-textarea {
+  padding: 11px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #333;
+  font-family: inherit;
+  background: #fafafa;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+select.ap-form-input {
+  cursor: pointer;
+}
+
+.ap-form-textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.ap-form-input:focus,
+.ap-form-textarea:focus {
+  border-color: var(--theme-color);
+  box-shadow: 0 0 0 3px rgba(172, 28, 122, 0.08);
+  background: #fff;
+}
+
+.ap-form-input::placeholder,
+.ap-form-textarea::placeholder {
+  color: #aaa;
+}
+
+.ap-form-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--theme-color);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.ap-form-submit:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+.ap-form-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ap-field-error {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #c0392b;
+}
+
+.ap-form-toast {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: #fdecea;
+  color: #c0392b;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.ap-form-success {
+  padding: 18px 16px;
+  border-radius: 8px;
+  background: #eafaf1;
+  color: #1e8e3e;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .ap-forms-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ap-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ap-form-wrapper {
+    padding: 24px 18px;
+  }
+}
+
+/* ── CTA ── */
+.ap-cta {
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a;
+}
+
+.ap-cta-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.ap-cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.87) 0%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 2;
+}
+
+.ap-cta-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 200px;
+  background: radial-gradient(ellipse, rgba(172, 28, 122, 0.15), transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ap-cta-container {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.ap-cta-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--theme-color);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 6px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ap-cta-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  max-width: 600px;
+}
+
+.ap-cta-title span {
+  color: var(--theme-color);
+}
+
+.ap-cta-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+.ap-cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.ap-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 30px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ap-cta-btn-primary {
+  background: var(--theme-color);
+  color: #fff;
+}
+
+.ap-cta-btn-primary:hover {
+  background: #931568;
+  transform: translateY(-1px);
+}
+
+.ap-cta-btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.ap-cta-btn-secondary:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .ap-services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ap-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ap-steps::before {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .ap-hero-title {
+    font-size: 2.4rem;
+  }
+
+  .ap-section-title {
+    font-size: 2rem;
+  }
+
+  .ap-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .ap-hero-title {
+    font-size: 1.9rem;
+  }
+
+  .ap-hero-container,
+  .ap-cta-container {
+    padding: 80px 20px;
+  }
+
+  .ap-services,
+  .ap-benefits,
+  .ap-process {
+    padding: 56px 20px;
+  }
+
+  .ap-services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ap-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .ap-cta-title {
+    font-size: 2rem;
+  }
+}
+
+/* ── Car Picker (select a real vehicle, opens BookingModal) ── */
+.ap-cars-section {
+  position: relative;
+  background: #fdfbfc;
+  padding: 84px 24px;
+  border-top: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.ap-cars-section::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(172, 28, 122, 0.07), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ap-cars-section::after {
+  content: "";
+  position: absolute;
+  bottom: -140px;
+  left: -100px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(172, 28, 122, 0.05), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ap-cars-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ap-cars-status {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted-text);
+  padding: 24px 0;
+}
+
+.ap-cars-status--error {
+  color: #c0392b;
+}
+
+.ap-cars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+
+.ap-car-card {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.ap-car-card:hover {
+  box-shadow: 0 16px 40px rgba(172, 28, 122, 0.14);
+  transform: translateY(-6px);
+  border-color: rgba(172, 28, 122, 0.25);
+}
+
+.ap-car-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #f2f2f2;
+}
+
+.ap-car-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.ap-car-card:hover .ap-car-image img {
+  transform: scale(1.08);
+}
+
+/* Bottom gradient over the image so a badge/label always stays readable */
+.ap-car-image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.35) 100%);
+  z-index: 1;
+}
+
+/* Decorative "ready to drive" badge, purely visual — no data dependency */
+.ap-car-image::after {
+  content: "Test Drive Ready";
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--theme-color);
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 5px 11px;
+  border-radius: 50px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.ap-car-info {
+  padding: 18px 16px 6px;
+  border-top: 3px solid transparent;
+}
+
+.ap-car-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.ap-car-subtitle {
+  font-size: 0.82rem;
+  color: var(--muted-text);
+  margin-top: 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.ap-car-actions {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px 18px;
+  margin-top: auto;
+}
+
+.ap-car-btn {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.ap-car-btn-primary {
+  background: var(--theme-color);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(172, 28, 122, 0.22);
+}
+
+.ap-car-btn-primary:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(172, 28, 122, 0.3);
+}
+
+.ap-car-btn-primary:active {
+  transform: translateY(0);
+}
+
+.ap-car-btn-primary svg {
+  transition: transform 0.25s ease;
+}
+
+.ap-car-btn-primary:hover svg {
+  transform: translateX(3px);
+}
+
+@media (max-width: 1024px) {
+  .ap-cars-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ap-cars-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .ap-cars-section {
+    padding: 56px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ap-cars-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+}
+
+/* Down to very narrow phones (as low as ~330px) */
+@media (max-width: 360px) {
+  .ap-cars-section {
+    padding: 44px 14px;
+  }
+
+  .ap-cars-grid {
+    max-width: 100%;
+  }
+
+  .ap-car-info {
+    padding: 14px 12px 4px;
+  }
+
+  .ap-car-title {
+    font-size: 0.92rem;
+  }
+
+  .ap-car-subtitle {
+    font-size: 0.78rem;
+  }
+
+  .ap-car-actions {
+    padding: 12px 12px 14px;
+  }
+
+  .ap-car-btn {
+    font-size: 0.74rem;
+    padding: 10px 8px;
+  }
+
+  .ap-car-image::after {
+    font-size: 0.6rem;
+    padding: 4px 9px;
+    top: 8px;
+    left: 8px;
+  }
+}
