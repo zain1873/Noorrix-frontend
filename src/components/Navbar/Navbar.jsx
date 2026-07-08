@@ -38,6 +38,7 @@ import {
   FaMoneyBillWave,
   FaUserCircle,
   FaSignOutAlt,
+  FaCalendarAlt 
 } from "react-icons/fa";
 
 // ─── Mobile Contact Dropdown ──────────────────────────────────────────────────
@@ -224,6 +225,10 @@ function NavDrawer({ open, onClose }) {
           <Link href="/about" className="drawer-nav-item">
             <FaInfoCircle size={18} className="nav-icon" />
             <span>About</span>
+          </Link>
+          <Link href="/appointment" className="drawer-nav-item">
+            <FaCalendarAlt size={18} className="nav-icon" />
+            <span>Book an Appointment</span>
           </Link>
           <Link href="/stock" className="drawer-nav-item">
             <FaTh size={18} className="nav-icon" />

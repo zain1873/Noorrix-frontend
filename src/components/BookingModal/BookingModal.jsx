@@ -37,6 +37,24 @@ export default function BookingModal({ car, type, onClose }) {
   // document.body isn't available during SSR — only portal once mounted client-side.
   useEffect(() => setMounted(true), []);
 
+  // Lock background scroll while the modal is open.
+  useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+
+  // Close on Escape key.
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
   useEffect(() => {
     let active = true;
     setLoadingSlots(true);
@@ -96,7 +114,9 @@ export default function BookingModal({ car, type, onClose }) {
 
         {done ? (
           <div className="bm-success">
-            <FiCheckCircle className="bm-success-icon" />
+            <div className="bm-success-icon-wrap">
+              <FiCheckCircle className="bm-success-icon" />
+            </div>
             <h3>Booking requested</h3>
             <p>
               We've got your {type === "test_drive" ? "test drive" : "appointment"} request for{" "}
@@ -109,66 +129,70 @@ export default function BookingModal({ car, type, onClose }) {
           <>
             <h3 className="bm-title">{TITLES[type] || "Book"}</h3>
 
-            <div className="bm-car-preview">
-              <img src={car.image_url} alt={car.title} />
-              <div>
-                <div className="bm-car-title">{car.title}</div>
-                <div className="bm-car-subtitle">{car.subtitle}</div>
+            <div className="bm-body">
+              <div className="bm-side">
+                <div className="bm-car-preview">
+                  <img src={car.image_url} alt={car.title} />
+                  <div>
+                    <div className="bm-car-title">{car.title}</div>
+                    <div className="bm-car-subtitle">{car.subtitle}</div>
+                  </div>
+                </div>
+
+                <div className="bm-location">
+                  <FiMapPin size={14} /> {SHOWROOM_ADDRESS}
+                </div>
               </div>
+
+              <form className="bm-form" onSubmit={handleSubmit}>
+                <div className="bm-row">
+                  <label className="bm-field">
+                    <span><FiCalendar size={13} /> Date</span>
+                    <input
+                      type="date"
+                      min={todayISO()}
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                      required
+                    />
+                  </label>
+
+                  <label className="bm-field">
+                    <span><FiClock size={13} /> Time</span>
+                    <select value={time} onChange={(e) => setTime(e.target.value)} required>
+                      <option value="" disabled>
+                        {loadingSlots ? "Loading…" : "Select a time"}
+                      </option>
+                      {availableSlots.map((t) => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                <label className="bm-field bm-field--full">
+                  <span>Full name</span>
+                  <input type="text" name="name" value={form.name} onChange={handleChange} required />
+                </label>
+
+                <div className="bm-row">
+                  <label className="bm-field">
+                    <span>Email</span>
+                    <input type="email" name="email" value={form.email} onChange={handleChange} required />
+                  </label>
+                  <label className="bm-field">
+                    <span>Phone</span>
+                    <input type="tel" name="phone" value={form.phone} onChange={handleChange} required />
+                  </label>
+                </div>
+
+                {error && <p className="bm-error">{error}</p>}
+
+                <button className="bm-btn-primary" type="submit" disabled={submitting || !time}>
+                  {submitting ? "Booking…" : "Confirm booking"}
+                </button>
+              </form>
             </div>
-
-            <div className="bm-location">
-              <FiMapPin size={14} /> {SHOWROOM_ADDRESS}
-            </div>
-
-            <form className="bm-form" onSubmit={handleSubmit}>
-              <div className="bm-row">
-                <label className="bm-field">
-                  <span><FiCalendar size={13} /> Date</span>
-                  <input
-                    type="date"
-                    min={todayISO()}
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    required
-                  />
-                </label>
-
-                <label className="bm-field">
-                  <span><FiClock size={13} /> Time</span>
-                  <select value={time} onChange={(e) => setTime(e.target.value)} required>
-                    <option value="" disabled>
-                      {loadingSlots ? "Loading…" : "Select a time"}
-                    </option>
-                    {availableSlots.map((t) => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-
-              <label className="bm-field bm-field--full">
-                <span>Full name</span>
-                <input type="text" name="name" value={form.name} onChange={handleChange} required />
-              </label>
-
-              <div className="bm-row">
-                <label className="bm-field">
-                  <span>Email</span>
-                  <input type="email" name="email" value={form.email} onChange={handleChange} required />
-                </label>
-                <label className="bm-field">
-                  <span>Phone</span>
-                  <input type="tel" name="phone" value={form.phone} onChange={handleChange} required />
-                </label>
-              </div>
-
-              {error && <p className="bm-error">{error}</p>}
-
-              <button className="bm-btn-primary" type="submit" disabled={submitting || !time}>
-                {submitting ? "Booking…" : "Confirm booking"}
-              </button>
-            </form>
           </>
         )}
       </div>
