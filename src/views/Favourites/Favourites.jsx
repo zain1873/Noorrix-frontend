@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  FaCalendarAlt, FaTachometerAlt, FaCog, FaLeaf, FaGasPump, FaClone, FaHeartBroken,
+  FaCalendarAlt, FaTachometerAlt, FaCog, FaLeaf, FaGasPump, FaClone, FaHeartBroken, FaPhoneAlt,
 } from "react-icons/fa";
 import Navbar from "../../components/Navbar/Navbar";
 import NoorrixFooter from "../../components/Footer/Footer";
@@ -11,7 +11,7 @@ import HeartButton from "../../components/HeartButton/HeartButton";
 import { useAuth, loginGate } from "../../context/AuthContext";
 import { getCars } from "../../lib/cars";
 import { getFavourites, getGuestFavouriteIds } from "../../lib/favourites";
-import { gbp, money, miles, cc, ukDate, carUrl } from "../../lib/format";
+import { gbp, miles, cc, ukDate, carUrl } from "../../lib/format";
 import "../../components/FeatureCards/FeatureCard.css";
 import "../OurStock.css";
 import "./Favourites.css";
@@ -97,10 +97,16 @@ export default function Favourites() {
                     <div className="spec-item"><FaGasPump      className="spec-icon" /><span className="spec-value">{car.fuel}</span></div>
                   </div>
                   <div className="price-section">
-                    <div className="monthly-price">
-                      <span className="price-amount">{money(car.monthly)}</span>
-                      <span className="price-label">Per month</span>
-                    </div>
+                    <a
+                      href="tel:07300503113"
+                      className="call-to-book"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="call-to-book-icon">
+                        <FaPhoneAlt size={13} />
+                      </span>
+                      <span className="call-to-book-label">Call to Book</span>
+                    </a>
                     <div className="total-price">
                       <span className="total-amount">{gbp(car.price)}</span>
                       <span className="total-label">Total Price</span>
