@@ -10,6 +10,10 @@ import {
   FaClipboardCheck,
   FaHandshake,
   FaPhoneAlt,
+  FaStar,
+  FaUsers,
+  FaAward,
+  FaClock,
 } from "react-icons/fa";
 import Navbar from "../../components/Navbar/Navbar";
 import NoorrixFooter from "../../components/Footer/Footer";
@@ -83,6 +87,14 @@ const steps = [
   },
 ];
 
+/* Quick-glance trust indicators shown right under the hero */
+const trustStats = [
+  { icon: FaAward, value: "15+", label: "Years Trading" },
+  { icon: FaUsers, value: "2,000+", label: "Happy Drivers" },
+  { icon: FaStar, value: "4.9/5", label: "Average Rating" },
+  { icon: FaClock, value: "< 2 Hrs", label: "Average Response" },
+];
+
 /**
  * Car selection grid — lets the user pick a real vehicle from stock first,
  * then opens the existing BookingModal with that car, reusing the exact
@@ -138,7 +150,17 @@ function CarPickerSection() {
         </div>
         <div className="ap-accent-bar" style={{ margin: "16px auto 40px" }} />
 
-        {loading && <p className="ap-cars-status">Loading vehicles…</p>}
+        {loading && (
+          <div className="ap-cars-skeleton-grid">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div className="ap-car-skeleton" key={i}>
+                <div className="ap-car-skeleton-img" />
+                <div className="ap-car-skeleton-line ap-car-skeleton-line--wide" />
+                <div className="ap-car-skeleton-line ap-car-skeleton-line--narrow" />
+              </div>
+            ))}
+          </div>
+        )}
         {!loading && error && <p className="ap-cars-status ap-cars-status--error">{error}</p>}
         {!loading && !error && cars.length === 0 && (
           <p className="ap-cars-status">No vehicles available right now.</p>
@@ -148,8 +170,20 @@ function CarPickerSection() {
           <div className="ap-cars-grid">
             {cars.map((car) => (
               <div key={car.id} className="ap-car-card">
-                <div className="ap-car-image">
+                <div
+                  className={`ap-car-image${
+                    car.status === "sold" || car.status === "reserved"
+                      ? " ap-car-image--unavailable"
+                      : ""
+                  }`}
+                >
                   <img src={car.image_url} alt={car.title} />
+                  {car.status === "reserved" && (
+                    <span className="ap-car-status-badge ap-car-status-badge--reserved">Reserved</span>
+                  )}
+                  {car.status === "sold" && (
+                    <span className="ap-car-status-badge ap-car-status-badge--sold">Sold</span>
+                  )}
                 </div>
                 <div className="ap-car-info">
                   <div className="ap-car-title">{car.title}</div>
@@ -194,7 +228,7 @@ function Appointment() {
       </div>
 
       {/* Hero Banner */}
- <section className="ap-hero">
+        <section className="ap-hero">
   <div
     className="ap-hero-bg"
     style={{
@@ -238,6 +272,24 @@ function Appointment() {
     </div>
   </div>
 </section>
+
+      {/* Trust Stats Strip */}
+      <section className="ap-stats">
+        <div className="ap-stats-inner">
+          {trustStats.map(({ icon: Icon, value, label }) => (
+            <div key={label} className="ap-stat">
+              <div className="ap-stat-icon">
+                <Icon size={18} />
+              </div>
+              <div className="ap-stat-text">
+                <div className="ap-stat-value">{value}</div>
+                <div className="ap-stat-label">{label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Services Grid */}
       <section className="ap-services">
         <div className="ap-services-inner">
@@ -315,9 +367,6 @@ function Appointment() {
         </div>
       </section>
 
-      {/* Car picker — pick a real vehicle, opens the existing BookingModal.
-          Keeps the #appointment-form id so the hero/CTA "Book Now" anchor
-          links still scroll to the right place. */}
       <CarPickerSection />
 
       {/* CTA Banner */}
@@ -347,7 +396,6 @@ function Appointment() {
           </div>
         </div>
       </section>
-
 
       <NoorrixFooter />
     </>
