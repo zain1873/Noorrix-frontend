@@ -11,7 +11,7 @@ import {
 import "../components/FeatureCards/FeatureCard.css";
 import "./OurStock.css";
 import { useAuth, loginGate } from "../context/AuthContext";
-import { gbp, money, miles, cc, ukDate, carUrl } from "../lib/format";
+import { gbp, miles, cc, ukDate, carUrl } from "../lib/format";
 import HeartButton from "../components/HeartButton/HeartButton";
 import AutoTraderBadge from "../components/AutoTraderBadge/AutoTraderBadge";
 
@@ -425,10 +425,16 @@ export default function OurStock({ cars = [], filters = null }) {
                     <div className="spec-item"><FaGasPump      className="spec-icon" /><span className="spec-value">{car.fuel}</span></div>
                   </div>
                   <div className="price-section">
-                    <div className="monthly-price">
-                      <span className="price-amount">{money(car.monthly)}</span>
-                      <span className="price-label">Per month</span>
-                    </div>
+                    <a
+                      href="tel:07300503113"
+                      className="call-to-book"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="call-to-book-icon">
+                        <FaPhoneAlt size={13} />
+                      </span>
+                      <span className="call-to-book-label">Call to Book</span>
+                    </a>
                     <div className="total-price">
                       <span className="total-amount">{gbp(car.price)}</span>
                       <span className="total-label">Total Price</span>
