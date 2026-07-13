@@ -1,0 +1,80 @@
+.dbs-section {
+  padding: 64px 24px;
+  background: linear-gradient(120deg, #fdeeee 0%, #fdf6ec 100%);
+  text-align: center;
+}
+
+.dbs-inner {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.dbs-title {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--theme-color);
+  margin: 0 0 12px;
+  line-height: 1.15;
+}
+
+.dbs-subtitle {
+  font-size: 17px;
+  color: #6b7280;
+  margin: 0 auto 40px;
+  max-width: 640px;
+}
+
+.dbs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.dbs-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 28px 24px;
+  text-align: left;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  transition: .3s ease-in-out;
+  border: 1px solid transparent;
+}
+.dbs-card:hover {
+  border: 1px solid var(--theme-color);
+
+}
+.dbs-icon {
+  display: inline-flex;
+  color: var(--theme-color);
+  margin-bottom: 18px;
+}
+
+.dbs-card-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--theme-color);
+  margin: 0 0 10px;
+}
+
+.dbs-card-text {
+  font-size: 16px;
+  line-height: 1.55;
+  color: #6b7280;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .dbs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .dbs-title {
+    font-size: 30px;
+  }
+
+  .dbs-grid {
+    grid-template-columns: 1fr;
+  }
+}

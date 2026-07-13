@@ -1,0 +1,119 @@
+/* ===================================================
+   ===== INSPECTION CHECKLIST SECTION
+   =================================================== */
+
+.ic-wrapper {
+  background: #f2f3f5;
+  padding: 48px 24px 44px;
+}
+
+.ic-inner {
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ic-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #111111;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.ic-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+.ic-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  text-align: left;
+}
+
+.ic-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ic-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.ic-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #f2f3f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.ic-icon svg {
+  height: 32px;
+  width: 32px;
+}
+
+.ic-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.25;
+}
+
+.ic-passed {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #22c55e;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 1024px) {
+  .ic-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ic-wrapper {
+    padding: 36px 20px 32px;
+  }
+  .ic-title {
+    font-size: 24px;
+  }
+  .ic-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .ic-grid {
+    grid-template-columns: 1fr;
+  }
+  .ic-title {
+    font-size: 20px;
+  }
+}
