@@ -1,14 +1,16 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth, loginGate } from "../../context/AuthContext";
 import { gbp, money, miles, cc, ukDate } from "../../lib/format";
+import { FiHome } from "react-icons/fi";
 
 // ---------- react-icons ----------
-import { FiChevronLeft, FiChevronRight, FiChevronDown, FiChevronUp, FiX } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiChevronDown, FiChevronUp, FiX, FiCopy, FiShare2, FiCheck, FiAlertTriangle } from "react-icons/fi";
 import { FaStar, FaPhoneAlt, FaEnvelope, FaHome } from "react-icons/fa";
+import { FaFacebookF, FaXTwitter, FaWhatsapp, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 import HeartButton from "../../components/HeartButton/HeartButton";
 import BookingModal from "../../components/BookingModal/BookingModal";
 import { MdLocationOn, MdOutlineDirectionsCar, MdGridView, MdColorLens } from "react-icons/md";
@@ -21,11 +23,13 @@ import { HiCheckCircle } from "react-icons/hi";
 import { AiOutlineCalendar, AiOutlineInfo, AiOutlineCar } from "react-icons/ai";
 import { BiPlayCircle } from "react-icons/bi";
 import Navbar from "../../components/Navbar/Navbar"
+import CheckList from "../../components/CheckList/Checklist"
 
 import "./CarDetails.css";
 import NoorrixFooter from "../../components/Footer/Footer";
 import MessageDealerCard from "../../components/DealerContactCard/DealerContactCard";
 import SimilarCarsSlider from "./SimilarCarsSlider";
+import DrivenBySatisfaction from "@/components/DrivenSatisfaction/DrivenSatisfaction";
 
 // ----------------------------------------------------------------
 // DATA
@@ -137,8 +141,134 @@ function GalleryModal({ startIndex, onClose, slides }) {
 }
 
 // ----------------------------------------------------------------
-// IMAGE SLIDER
+// SHARE MODAL
 // ----------------------------------------------------------------
+function ShareModal({ onClose, title, url }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
+
+  const platforms = [
+    {
+      name: "Facebook",
+      icon: <FaFacebookF />,
+      className: "share-icon facebook",
+      action: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, "_blank", "noopener,noreferrer,width=600,height=500"),
+    },
+    {
+      name: "X",
+      icon: <FaXTwitter />,
+      className: "share-icon x",
+      action: () => window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, "_blank", "noopener,noreferrer,width=600,height=500"),
+    },
+    {
+      name: "WhatsApp",
+      icon: <FaWhatsapp />,
+      className: "share-icon whatsapp",
+      action: () => window.open(`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`, "_blank", "noopener,noreferrer"),
+    },
+    {
+      name: "Instagram",
+      icon: <FaInstagram />,
+      className: "share-icon instagram",
+      action: async () => {
+        // Instagram has no public web-share endpoint, so copy the link instead
+        await handleCopy();
+      },
+    },
+    {
+      name: "LinkedIn",
+      icon: <FaLinkedinIn />,
+      className: "share-icon linkedin",
+      action: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, "_blank", "noopener,noreferrer,width=600,height=500"),
+    },
+    {
+      name: "Email",
+      icon: <FaEnvelope />,
+      className: "share-icon email",
+      action: () => { window.location.href = `mailto:?subject=${encodedTitle}&body=${encodedUrl}`; },
+    },
+    {
+      name: "Copy link",
+      icon: <FiCopy />,
+      className: "share-icon copy",
+      action: async () => { await handleCopy(); },
+    },
+  ];
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // no-op fallback
+    }
+  };
+
+  return createPortal(
+    <div className="share-modal-overlay" onClick={handleOverlayClick}>
+      <div className="share-modal-card">
+        <button className="share-modal-close" onClick={onClose}>
+          <FiX />
+        </button>
+        <h3 className="share-modal-title">Share this advert</h3>
+        <p className="share-modal-sub">Choose a platform below or copy the link.</p>
+
+        <div className="share-modal-icons">
+          {platforms.map((p) => (
+            <button
+              key={p.name}
+              className={p.className}
+              onClick={p.action}
+              title={p.name}
+              aria-label={`Share via ${p.name}`}
+            >
+              {p.icon}
+            </button>
+          ))}
+        </div>
+
+        {copied && <div className="share-copied-toast">Link copied!</div>}
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+function ShareButton({ car }) {
+  const [showShare, setShowShare] = useState(false);
+  const url = typeof window !== "undefined" ? window.location.href : "";
+
+  return (
+    <>
+      <button className="share-advert-btn" onClick={() => setShowShare(true)}>
+        <FiShare2 size={15} />
+        Share Advert
+      </button>
+
+      {showShare && (
+        <ShareModal
+          onClose={() => setShowShare(false)}
+          title={car.title}
+          url={url}
+        />
+      )}
+    </>
+  );
+}
+
+
 function ImageSlider({ slides, car }) {
   const [current,     setCurrent    ] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
@@ -243,49 +373,93 @@ function ImageSlider({ slides, car }) {
 }
 
 // ----------------------------------------------------------------
-// SPECS GRID
+// VEHICLE TITLE + PRICE CARD  (Right panel — end of Enquire CTA)
+// Pulls car.title / car.subtitle / car.price straight from backend
 // ----------------------------------------------------------------
-
-
-
-
-// ----------------------------------------------------------------
-// DESCRIPTION + CAR OVERVIEW SECTION (Image 1 - Light)
-// ----------------------------------------------------------------
-function DescriptionOverviewSection({ car }) {
-  const descText =
-    car.description ||
-    `This ${car.year} ${car.title} offers an exceptional blend of performance and efficiency. Featuring a ${cc(car.engine_cc)} ${(car.fuel || "").toLowerCase()} engine with ${(car.transmission || "").toLowerCase()} gearbox, this ${(car.body_type || "").toLowerCase()} has covered ${miles(car.mileage)} and comes with an MOT valid until ${ukDate(car.mot_date)}. A great opportunity to own a quality used vehicle from Noorrix Motors in Bedford.`;
-
-  const overviewItems = [
-    { icon: <BsCalendarCheck size={26} />,        label: "MOT date",  value: ukDate(car.mot_date)               },
-    { icon: <MdColorLens size={26} />,            label: "Colour",    value: car.colour                         },
-    { icon: <BsShieldCheck size={26} />,          label: "Condition", value: car.history_check || "HPI Checked" },
-    { icon: <AiOutlineCar size={26} />,           label: "Make",      value: car.make                           },
-    { icon: <MdOutlineDirectionsCar size={26} />, label: "Model",     value: car.model                          },
-    { icon: <BsFuelPump size={26} />,             label: "Fuel Type", value: car.fuel                           },
-  ];
+function VehicleTitlePriceCard({ car }) {
+  if (!car.title && !car.price) return null;
 
   return (
-    <div className="do-wrapper">
-      <div className="do-inner">
-        <div className="do-desc">
-          <h3 className="do-desc-title">Description</h3>
-          <p className="do-desc-body" style={{ whiteSpace: "pre-line" }}>{descText}</p>
-        </div>
-        <div className="do-overview">
-          <h3 className="do-overview-title">Car Overview</h3>
-          <div className="do-overview-grid">
-            {overviewItems.map((item, i) => (
-              <div className="do-card" key={i}>
-                <div className="do-card-icon">{item.icon}</div>
-                <span className="do-card-label">{item.label}</span>
-                <span className="do-card-value">{item.value}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className="vtp-card">
+      {car.title && <h1 className="vtp-title">{car.title}</h1>}
+      {car.subtitle && <p className="vtp-subtitle">{car.subtitle}</p>}
+      {car.price != null && <div className="vtp-price">{gbp(car.price)}</div>}
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------
+// MOT INFORMATION CARD  (Right panel — end of Enquire CTA)
+// Pulls car.mot_date straight from backend
+// ----------------------------------------------------------------
+function MotInfoCard({ car }) {
+  if (!car.mot_date) return null;
+
+  return (
+    <div className="mot-card">
+      <div className="mot-card-inner">
+        <BsShieldCheck className="mot-icon" />
+        <h3 className="mot-card-title">MOT Information</h3>
+        <p className="mot-card-date">Current MOT Date: {ukDate(car.mot_date)}</p>
       </div>
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------
+// VEHICLE SPECS GRID (below gallery)
+// Road Tax, Registration & Insurance removed (backend-driven, not needed here)
+// ----------------------------------------------------------------
+function VehicleSpecsGrid({ car }) {
+  const items = [
+      { icon: <AiOutlineCar />,           label: "Make",          value: car.make },
+      { icon: <MdOutlineDirectionsCar />, label: "Model",         value: car.model },
+      { icon: <BsCalendar3 />,            label: "Year",          value: car.year },
+      { icon: <TbEngine />,               label: "Engine",        value: car.engine },
+      { icon: <BsFuelPump />,             label: "Fuel Type",     value: car.fuel },
+      { icon: <BsSpeedometer2 />,         label: "Mileage",       value: car.mileage ? miles(car.mileage) : "-" },
+      { icon: <BsGear />,                 label: "Transmission",  value: car.transmission },
+      { icon: <MdOutlineDirectionsCar />, label: "Body Type",     value: car.body_type },
+      { icon: <BsCalendarCheck />,        label: "MOT Date",      value: car.mot_date ? ukDate(car.mot_date) : "-" },
+      { icon: <RiPaintBrushLine />,       label: "Colour",        value: car.colour },
+      { icon: <HiCheckCircle />,          label: "History check", value: car.history_check },
+    ];
+
+  return (
+    <div className="vsg-wrapper">
+      <div className="vsg-grid">
+        {items.map((item, i) => (
+          <div className="vsg-item" key={i}>
+            <span className="vsg-icon">{item.icon}</span>
+            <div className="vsg-text">
+              <span className="vsg-label">{item.label}</span>
+              <span className="vsg-value">{item.value || "-"}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------
+// ENQUIRE CTA CARD (Right sidebar) — replaces the old do-card-block
+// ----------------------------------------------------------------
+function EnquireCTA({ car }) {
+  const router = useRouter();
+
+  return (
+    <div className="enquire-cta-card">
+      <h3 className="enquire-cta-title">Want to know more about this vehicle?</h3>
+      <p className="enquire-cta-body">
+        Looking for a car that ticks every box? This vehicle blends dependability, performance, and comfort. Explore the details and decide with confidence.
+      </p>
+      <button
+        className="enquire-cta-btn"
+        onClick={() => router.push(`/contact?car=${car.id || ""}`)}
+      >
+        Enquire now
+      </button>
     </div>
   );
 }
@@ -367,11 +541,11 @@ function VehicleLocationSection({ car }) {
 }
 
 // ----------------------------------------------------------------
-// CAR FEATURES SECTION
+// SPECIFICATIONS & FEATURES SECTION
 // ----------------------------------------------------------------
 const CATEGORY_ORDER = ["Exterior", "Interior", "Performance", "Size and dimensions", "Audio and Communications"];
 
-function buildCategories(features) {
+function buildFeatureCategories(features) {
   const grouped = features.reduce((acc, f) => {
     (acc[f.category] ??= []).push(f.text);
     return acc;
@@ -382,64 +556,168 @@ function buildCategories(features) {
     .filter(([, items]) => items.length > 0);
 }
 
-function AccordionRow({ rowKey, label, items, isOpen, onToggle }) {
+function SpecFeaturePanel({ items }) {
+  if (!items || !items.length) {
+    return <p className="sf-empty">No details available.</p>;
+  }
   return (
-    <div className="cf-acc-row">
-      <button className={`cf-acc-header ${isOpen ? "open" : ""}`} onClick={() => onToggle(rowKey)}>
-        <span className="cf-acc-label">{label}</span>
-        <span className="cf-acc-right">
-          {isOpen ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
-        </span>
-      </button>
-      <div className={`cf-acc-collapse ${isOpen ? "open" : ""}`}>
-        <div className="cf-acc-collapse-inner">
-          <ul className="cf-acc-list">
-            {items.map((item, i) => (
-              <li key={i}>{item}</li>
+    <div className="sf-panel-list">
+      {items.map((item, i) => {
+        const label = typeof item === "string" ? item : item.label;
+        const value = typeof item === "string" ? null : item.value;
+        return (
+          <div className="sf-row" key={i}>
+            <span className="sf-check"><FiCheck size={10} /></span>
+            <span className="sf-label">{label}</span>
+            {value !== null && value !== undefined && value !== "" && (
+              <span className="sf-value">{value}</span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+
+function CarFeaturesSection({ car }) {
+  const [openCategory, setOpenCategory] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // Features: expects car.features = [{ category, text }]
+  const features = Array.isArray(car.features) ? car.features : [];
+  const featureCategories = buildFeatureCategories(features);
+
+  if (!featureCategories.length) return null;
+
+  const toggleCategory = (name) => {
+    setOpenCategory((prev) => (prev === name ? null : name));
+  };
+
+  // On mobile everything is a single stacked column (natural order).
+  // On desktop, split into two independent columns.
+  const columns = isMobile
+    ? [featureCategories]
+    : [
+        featureCategories.filter((_, i) => i % 2 === 0),
+        featureCategories.filter((_, i) => i % 2 === 1),
+      ];
+
+  return (
+    <div className="sf-section">
+      <div className="sf-header">
+        <h3 className="sf-title">Specifications and Features</h3>
+      </div>
+
+      <div className="sf-cat-grid">
+        {columns.map((colItems, ci) => (
+          <div className="sf-col" key={ci}>
+            {colItems.map(([name, items]) => (
+              <Fragment key={name}>
+                <button
+                  className={`sf-cat-btn ${openCategory === name ? "open" : ""}`}
+                  onClick={() => toggleCategory(name)}
+                >
+                  <span>{name}</span>
+                  {openCategory === name ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />}
+                </button>
+
+                {openCategory === name && (
+                  <div className="sf-panel">
+                    <SpecFeaturePanel items={items} />
+                  </div>
+                )}
+              </Fragment>
             ))}
-          </ul>
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-function FeaturesModal({ features, onClose }) {
-  const [openRow, setOpenRow] = useState(null);
 
+// ----------------------------------------------------------------
+// FOOTER HIGHLIGHT SLIDER (rotating trust badges)
+// ----------------------------------------------------------------
+const FOOTER_HIGHLIGHTS = [
+  {
+    icon: <BsShieldCheck size={20} />,
+    title: "Approved Used Cars",
+    sub: "Certified quality for extra reassurance",
+  },
+  {
+    icon: <AiOutlineCar size={20} />,
+    title: "Test Drive",
+    sub: "Step in, buckle up, test the difference",
+  },
+  {
+    icon: <MdOutlineDirectionsCar size={20} />,
+    title: "Verified Mileage",
+    sub: "All cars checked and confirmed",
+  },
+];
+
+function FooterHighlightSlider() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % FOOTER_HIGHLIGHTS.length);
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  const current = FOOTER_HIGHLIGHTS[index];
+
+  return (
+    <div className="lsc-footer">
+      <span className="lsc-footer-icon" key={`icon-${index}`}>{current.icon}</span>
+      <div className="lsc-footer-text" key={`text-${index}`}>
+        <div className="lsc-footer-title">{current.title}</div>
+        <div className="lsc-footer-sub">{current.sub}</div>
+      </div>
+      <div className="lsc-footer-dots">
+        {FOOTER_HIGHLIGHTS.map((_, i) => (
+          <span key={i} className={`lsc-footer-dot ${i === index ? "active" : ""}`} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------
+// DESCRIPTION CARD (Right Panel) + READ MORE MODAL
+// ----------------------------------------------------------------
+function DescriptionModal({ text, onClose }) {
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) onClose();
   };
-
-  const toggleRow = (key) => setOpenRow((prev) => (prev === key ? null : key));
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
 
-  const categories = buildCategories(features);
-
   return createPortal(
-    <div className="cf-modal-overlay" onClick={handleOverlayClick}>
-      <div className="cf-modal-card">
-        <div className="cf-modal-header">
-          <h3 className="cf-modal-title">All Features &amp; Spec</h3>
-          <button className="cf-modal-close" onClick={onClose}>
+    <div className="desc-modal-overlay" onClick={handleOverlayClick}>
+      <div className="desc-modal-card">
+        <div className="desc-modal-header">
+          <h3 className="desc-modal-title">Description</h3>
+          <button className="desc-modal-close" onClick={onClose}>
             <FiX />
           </button>
         </div>
-        <div className="cf-modal-body">
-          {categories.map(([name, items]) => (
-            <AccordionRow
-              key={name}
-              rowKey={name}
-              label={name}
-              items={items}
-              isOpen={openRow === name}
-              onToggle={toggleRow}
-            />
-          ))}
+        <div className="desc-modal-body">
+          <p style={{ whiteSpace: "pre-line" }}>{text}</p>
         </div>
       </div>
     </div>,
@@ -447,135 +725,105 @@ function FeaturesModal({ features, onClose }) {
   );
 }
 
-function CarFeaturesSection({ car }) {
-  const features = Array.isArray(car.features) ? car.features : [];
-  const [showAll, setShowAll] = useState(false);
-  if (!features.length) return null;
+function DescriptionCard({ car }) {
+  const [showModal, setShowModal] = useState(false);
+
+  const descText =
+    car.description ||
+    `This ${car.year || ""} ${car.title || ""} offers an exceptional blend of performance and efficiency.`;
+
+  if (!descText) return null;
 
   return (
-    <div className="cf-section">
-      <h3 className="cf-title">Car Features</h3>
-      <button className="cf-view-all-btn" onClick={() => setShowAll(true)}>
-        View all spec &amp; features <FiChevronRight size={15} />
-      </button>
+    <>
+      <div className="desc-card">
+        <h3 className="desc-card-title">Description</h3>
+        <p className="desc-card-body">{descText}</p>
+        <button className="desc-read-more" onClick={() => setShowModal(true)}>
+          Read More
+        </button>
+      </div>
 
-      {showAll && (
-        <FeaturesModal features={features} onClose={() => setShowAll(false)} />
+      {showModal && (
+        <DescriptionModal text={descText} onClose={() => setShowModal(false)} />
       )}
-    </div>
+    </>
   );
 }
 
-// ----------------------------------------------------------------
-// DARK SPEC CARD  (replaces PriceCard + DealerCard + OutOfHoursPanel)
-// ----------------------------------------------------------------
 function DarkSpecCard({ car }) {
   const router = useRouter();
   const { user } = useAuth();
   const deposit = Number(car.deposit_amount) || 200;
   const [booking, setBooking] = useState(null); // null | "test_drive" | "appointment"
+
   return (
-    <div className="dark-spec-card">
+    <div className="light-spec-card">
+
+      {car.ulez_compliant && (
+        <div className="lsc-badge">
+          <HiCheckCircle size={14} /> ULEZ Compliant
+        </div>
+      )}
 
       {/* ── Title ── */}
-      <div className="dark-card-title">{car.title}</div>
-      <div className="dark-card-subtitle">{car.subtitle}</div>
+      <div className="lsc-title">{car.title}</div>
+      <div className="lsc-subtitle">{car.subtitle}</div>
 
-      {/* ── Price row ── */}
-      <div className="dark-price-row">
-        <div className="dark-price-right">
-          <span className="dark-main-price">{gbp(car.price)}</span>
-        </div>
-      </div>
+      {/* ── Price ── */}
+      <div className="lsc-price">{gbp(car.price)}</div>
 
-      {/* ── Spec icons ── */}
-      <div className="dark-specs-icons">
-        <div className="dark-spec-icon-item">
-          <div className="dark-spec-circle"><BsCalendar3 /></div>
-          <span className="dark-spec-label">{car.year}</span>
-        </div>
-        <div className="dark-spec-icon-item">
-          <div className="dark-spec-circle"><BsSpeedometer2 /></div>
-          <span className="dark-spec-label">{miles(car.mileage)}</span>
-        </div>
-        <div className="dark-spec-icon-item">
-          <div className="dark-spec-circle"><RiPaintBrushLine /></div>
-          <span className="dark-spec-label">{car.colour}</span>
-        </div>
-        <div className="dark-spec-icon-item">
-          <div className="dark-spec-circle"><TbEngine /></div>
-          <span className="dark-spec-label">{cc(car.engine_cc)}</span>
-        </div>
-        <div className="dark-spec-icon-item">
-          <div className="dark-spec-circle"><BsGear /></div>
-          <span className="dark-spec-label">{car.transmission}</span>
-        </div>
-        <div className="dark-spec-icon-item">
-          <div className="dark-spec-circle"><BsFuelPump /></div>
-          <span className="dark-spec-label">{car.fuel}</span>
-        </div>
-      </div>
-
-      <div className="dark-divider" />
-
-      {/* ── Action buttons ── */}
-      <div className="dark-btns">
-
-        {/* Reserve */}
-        <button
-          className="dark-btn-reserve"
+      {/* ── Main action buttons ── */}
+      <div className="lsc-btns">
+        <button className="lsc-btn" onClick={() => setBooking("appointment")}>
+          <BsCalendarCheck size={15} /> Appointment
+        </button>
+        <button className="lsc-btn" onClick={() => setBooking("test_drive")}>
+          <AiOutlineCar size={15} /> Test Drive
+        </button>
+        {/* <button
+          className="lsc-btn"
           onClick={() => router.push(loginGate(user, `/checkout?amount=${deposit}&car=${car.id}`))}
         >
-          Reserve now for {gbp(deposit)} <FiChevronRight size={16} />
-        </button>
-
-        {/* Book a test drive + Book an appointment side by side */}
-        <div className="dark-btn-enquiry-row enquiry-btns">
-          <button className="dark-btn-outline" onClick={() => setBooking("test_drive")}>
-            <AiOutlineCar size={14} /> Book test drive
-          </button>
-          <button className="dark-btn-outline" onClick={() => setBooking("appointment")}>
-            <BsCalendarCheck size={13} /> Book appointment
-          </button>
-        </div>
-
-        {/* Make an enquiry + Part exchange side by side */}
-        <div className="dark-btn-enquiry-row">
-          <button className="dark-btn-outline" onClick={() => router.push("/contact")}>
-            <FaEnvelope size={12} /> Make an enquiry
-          </button>
-          <button className="dark-btn-outline" onClick={() => router.push("/part-exchange")}>
-            <MdOutlineDirectionsCar size={14} /> Part exchange
-          </button>
-        </div>
-
-        {booking && (
-          <BookingModal car={car} type={booking} onClose={() => setBooking(null)} />
-        )}
-
-        {/* View video — links to YouTube */}
+          Reserve for {gbp(deposit)}
+        </button> */}
         <a
           href={car.video_url || "https://www.youtube.com"}
           target="_blank"
           rel="noopener noreferrer"
-          className="dark-btn-video"
+          className="lsc-btn"
         >
-          <BiPlayCircle size={17} />
-          View video walkthrough
+          <BiPlayCircle size={16} /> Check Video
         </a>
       </div>
+
+      {/* ── Secondary row (enquiry / part exchange) ── */}
+      <div className="lsc-secondary-row">
+        <button className="lsc-btn-outline" onClick={() => router.push("/contact")}>
+          <FaEnvelope size={12} /> Make an enquiry
+        </button>
+        <button className="lsc-btn-outline" onClick={() => router.push("/part-exchange")}>
+          <MdOutlineDirectionsCar size={13} /> Part exchange
+        </button>
+      </div>
+
+      {/* ── Footer strip (rotating trust badges) ── */}
+      <FooterHighlightSlider />
 
       {/* ── Contact strip ── */}
-      <div className="dark-contact-row">
-        <a href="tel:07300503113" className="dark-contact-item">
+      <div className="lsc-contact-row">
+        <a href="tel:07300503113" className="lsc-contact-item">
           <FaPhoneAlt size={12} /> 07300 503113
         </a>
-        <span className="dark-contact-divider">|</span>
-        <a href="mailto:info@noorrixmotors.co.uk" className="dark-contact-item">
-          <FaEnvelope size={12} /> sales@dealership.co.uk
+        <span className="lsc-contact-divider">|</span>
+        <a href="mailto:info@noorrixmotors.co.uk" className="lsc-contact-item">
+          <FaEnvelope size={12} /> info@noorrixmotors.co.uk
         </a>
       </div>
 
+      {booking && (
+        <BookingModal car={car} type={booking} onClose={() => setBooking(null)} />
+      )}
     </div>
   );
 }
@@ -611,15 +859,20 @@ export default function CarsListing({ car, similar = [] }) {
       {/* ── Page body ── */}
       <div className="wrapper">
       <div className="listing-container">
-        <Link href={`/used-cars/${car.make.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`} className="back-btn">
-          <FiChevronLeft size={18} /> Back
+        <div className="page-top-row">
+        <Link href="/" className="back-btn">
+          <FiHome size={18} /> Back
         </Link>
+        <ShareButton car={car} />
+      </div>
 
         <div className="listing-grid" style={{ marginTop: 12 }}>
 
           {/* ======== LEFT COLUMN ======== */}
           <div>
             <ImageSlider slides={slides} car={car} />
+
+            <VehicleSpecsGrid car={car} />
 
             <div className="location-row">
               <div className="location-left">
@@ -648,6 +901,10 @@ export default function CarsListing({ car, similar = [] }) {
           {/* ======== RIGHT COLUMN ======== */}
           <div className="right-panel">
             <DarkSpecCard car={car} />
+            <DescriptionCard car={car} />
+            <EnquireCTA car={car} />
+            <VehicleTitlePriceCard car={car} />
+            <MotInfoCard car={car} />
           </div>
 
         </div>
@@ -656,7 +913,8 @@ export default function CarsListing({ car, similar = [] }) {
       </div>
 
           {/* ── NEW SECTIONS ADDED BELOW ── */}
-            <DescriptionOverviewSection car={car} />
+            <CheckList/>
+            <DrivenBySatisfaction/>
             <VehicleLocationSection car={car} />
             <SimilarCarsSlider cars={similar} />
 
