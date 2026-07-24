@@ -17,23 +17,23 @@ import "./Warranty.css";
 const features = [
   {
     icon: FaShieldAlt,
-    title: "Comprehensive Coverage",
-    desc: "Protection for major mechanical and electrical parts.",
+    title: "In-House Customer Support",
+    desc: "Support provided directly by Noorrix Motors following your vehicle purchase.",
   },
   {
     icon: FaTools,
-    title: "Parts & Labour Included",
-    desc: "Approved repairs include parts and labour costs within your plan limits.",
+    title: "Repair Support",
+    desc: "If an issue arises during the warranty period, we may cover repair costs as a goodwill gesture.",
   },
   {
     icon: FaSlidersH,
-    title: "Flexible Warranty Options",
-    desc: "Choose coverage that fits your vehicle and budget.",
+    title: "Case-by-Case Assessment",
+    desc: "Each issue is assessed by our team based on the circumstances and nature of the problem.",
   },
   {
     icon: FaHandshake,
-    title: "Trusted Support",
-    desc: "Friendly assistance whenever you need help or guidance.",
+    title: "Dedicated Customer Care",
+    desc: "Our team is here to provide support and assistance after your vehicle purchase.",
   },
 ];
 
@@ -66,27 +66,34 @@ export default function Warranty() {
         <div className="wr-hero-overlay" />
         <div className="wr-hero-top-accent" />
         <div className="wr-hero-glow" />
-        <div className="wr-hero-container">
-          <span className="wr-hero-tag">Vehicle Warranty</span>
-          <h1 className="wr-hero-title">
-            Protect Your Vehicle with <span>Confidence</span>
-          </h1>
-          <p className="wr-hero-subtitle">
-            Drive away knowing your vehicle is backed by reliable warranty
-            protection. Choose the plan that suits your needs and budget.
-          </p>
-          <div className="wr-hero-buttons">
-            <a
-              href="#warranty-options"
-              className="wr-hero-btn wr-hero-btn-primary"
-            >
-              <FaClipboardList size={16} /> Explore Plans
-            </a>
-            <Link href="/contact" className="wr-hero-btn wr-hero-btn-secondary">
-              <FaPhoneAlt size={16} /> Contact Us
-            </Link>
-          </div>
-        </div>
+       <div className="wr-hero-container">
+  <span className="wr-hero-tag">Vehicle Warranty</span>
+
+  <h1 className="wr-hero-title">
+    Drive with <span>Confidence</span>
+  </h1>
+
+  <p className="wr-hero-subtitle">
+    At Noorrix Motors, we are committed to supporting our customers after
+    their vehicle purchase with our in-house customer service warranty.
+  </p>
+
+  <div className="wr-hero-buttons">
+    <a
+      href="#warranty-options"
+      className="wr-hero-btn wr-hero-btn-primary"
+    >
+      <FaClipboardList size={16} /> Learn More
+    </a>
+
+    <Link
+      href="/contact"
+      className="wr-hero-btn wr-hero-btn-secondary"
+    >
+      <FaPhoneAlt size={16} /> Contact Us
+    </Link>
+  </div>
+</div>
       </section>
 
       {/* Warranty Options Section */}
@@ -107,21 +114,24 @@ export default function Warranty() {
               Explore Our <span>Warranty Options</span>
             </h2>
             <p className="wr-options-desc">
-              Noorrix Motors is committed to providing comprehensive warranty
-              coverage tailored to your vehicle and needs. Our range of plans
-              offers protection across a wide range of mechanical and electrical
-              components.
+              At Noorrix Motors, we are committed to providing excellent customer service
+              and supporting our customers after their vehicle purchase. As part of this
+              commitment, we offer an in-house customer service warranty for the first
+              month, and in some cases up to three months, following the purchase of a
+              vehicle.
             </p>
+
             <p className="wr-options-desc">
-              Unexpected repairs can quickly become expensive without proper
-              coverage. Our warranty plans protect key parts and come with
-              valuable benefits — all supported by our friendly, expert team.
-              Drive with confidence knowing your vehicle is in safe hands.
+              If an issue arises with the vehicle during this period, we may cover the
+              cost of the required repair as a goodwill gesture, subject to our assessment
+              of the issue and the circumstances involved.
             </p>
+
             <p className="wr-options-desc">
-              We help cover the cost of repairs, including parts, labour, and
-              VAT, up to your individual claim limit. Below is a summary of the
-              protection we offer.
+              This warranty is an in-house customer service warranty provided directly by
+              Noorrix Motors. Any potential repair or support will be considered and
+              assessed by our team on a case-by-case basis. Our goal is to provide
+              continued support and peace of mind to our customers after their purchase.
             </p>
 
             {/* 2x2 Features Grid */}
@@ -142,34 +152,44 @@ export default function Warranty() {
         </div>
       </section>
                 
-      {/* Extended Warranty + Sidebar Section */}
+      {/* In-House Warranty + Sidebar Section */}
       <section className="wr-info-sidebar-section">
         <div className="wr-info-sidebar-container">
-          {/* Left: Extended Warranty Content */}
+          {/* Left: In-House Warranty Content */}
           <div className="wr-info-main">
             <div className="wr-info-peace">
               <h3 className="wr-info-ext-title">Drive with Confidence</h3>
             </div>
+
             <p className="wr-info-text">
-              Unexpected repairs can happen at any time — our warranty plans
-              help protect you from costly repair bills and give you complete
-              peace of mind on the road. We offer flexible warranty options
-              designed to suit different vehicles and driving needs, with
-              coverage available for a wide range of mechanical and electrical
-              components.
+              At Noorrix Motors, we are committed to providing excellent customer
+              service and supporting our customers after their vehicle purchase. As
+              part of this commitment, we offer an in-house customer service warranty
+              for the first month, and in some cases up to three months, following
+              the purchase of a vehicle.
             </p>
-            <h3 className="wr-info-ext-title">Extended Warranty Available</h3>
+
+            <h3 className="wr-info-ext-title">
+              Our In-House Customer Service Warranty
+            </h3>
+
             <p className="wr-info-text">
-              Selected vehicles include a complimentary standard warranty, with
-              the option to extend your protection for added confidence and
-              long-term peace of mind. There is also the option to purchase a
-              more comprehensive product up to a period of 3 years at an
-              additional cost.
+              If an issue arises with the vehicle during this period, we may cover
+              the cost of the required repair as a goodwill gesture, subject to our
+              assessment of the issue and the circumstances involved.
             </p>
+
             <p className="wr-info-text">
-              Our team will be happy to help you choose the right warranty plan
-              for your vehicle. Please call us for a detailed overview of all
-              products and services available.
+              This is an in-house customer service warranty provided directly by
+              Noorrix Motors. Any potential repair or support will be considered and
+              assessed by our team on a case-by-case basis.
+            </p>
+
+            <p className="wr-info-text">
+              Our team is always here to assist you and provide support after your
+              vehicle purchase. If you experience an issue during the applicable
+              warranty period, please contact us so that we can assess the matter
+              and discuss the appropriate next steps.
             </p>
           </div>
 
