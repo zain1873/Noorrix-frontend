@@ -66,34 +66,32 @@ export default function Warranty() {
         <div className="wr-hero-overlay" />
         <div className="wr-hero-top-accent" />
         <div className="wr-hero-glow" />
-       <div className="wr-hero-container">
-  <span className="wr-hero-tag">Vehicle Warranty</span>
+        <div className="wr-hero-container">
+          <span className="wr-hero-tag">Vehicle Warranty</span>
 
-  <h1 className="wr-hero-title">
-    Drive with <span>Confidence</span>
-  </h1>
+          <h1 className="wr-hero-title">
+            Drive with <span>Confidence</span>
+          </h1>
 
-  <p className="wr-hero-subtitle">
-    At Noorrix Motors, we are committed to supporting our customers after
-    their vehicle purchase with our in-house customer service warranty.
-  </p>
+          <p className="wr-hero-subtitle">
+            At Noorrix Motors, we are committed to supporting our customers
+            after their vehicle purchase with our in-house customer service
+            warranty.
+          </p>
 
-  <div className="wr-hero-buttons">
-    <a
-      href="#warranty-options"
-      className="wr-hero-btn wr-hero-btn-primary"
-    >
-      <FaClipboardList size={16} /> Learn More
-    </a>
+          <div className="wr-hero-buttons">
+            <a
+              href="#warranty-options"
+              className="wr-hero-btn wr-hero-btn-primary"
+            >
+              <FaClipboardList size={16} /> Learn More
+            </a>
 
-    <Link
-      href="/contact"
-      className="wr-hero-btn wr-hero-btn-secondary"
-    >
-      <FaPhoneAlt size={16} /> Contact Us
-    </Link>
-  </div>
-</div>
+            <Link href="/contact" className="wr-hero-btn wr-hero-btn-secondary">
+              <FaPhoneAlt size={16} /> Contact Us
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* Warranty Options Section */}
@@ -114,24 +112,26 @@ export default function Warranty() {
               Explore Our <span>Warranty Options</span>
             </h2>
             <p className="wr-options-desc">
-              At Noorrix Motors, we are committed to providing excellent customer service
-              and supporting our customers after their vehicle purchase. As part of this
-              commitment, we offer an in-house customer service warranty for the first
-              month, and in some cases up to three months, following the purchase of a
-              vehicle.
+              At Noorrix Motors, we are committed to providing excellent
+              customer service and supporting our customers after their vehicle
+              purchase. As part of this commitment, we offer an in-house
+              customer service warranty for the first month, and in some cases
+              up to three months, following the purchase of a vehicle.
             </p>
 
             <p className="wr-options-desc">
-              If an issue arises with the vehicle during this period, we may cover the
-              cost of the required repair as a goodwill gesture, subject to our assessment
-              of the issue and the circumstances involved.
+              If an issue arises with the vehicle during this period, we may
+              cover the cost of the required repair as a goodwill gesture,
+              subject to our assessment of the issue and the circumstances
+              involved.
             </p>
 
             <p className="wr-options-desc">
-              This warranty is an in-house customer service warranty provided directly by
-              Noorrix Motors. Any potential repair or support will be considered and
-              assessed by our team on a case-by-case basis. Our goal is to provide
-              continued support and peace of mind to our customers after their purchase.
+              This warranty is an in-house customer service warranty provided
+              directly by Noorrix Motors. Any potential repair or support will
+              be considered and assessed by our team on a case-by-case basis.
+              Our goal is to provide continued support and peace of mind to our
+              customers after their purchase.
             </p>
 
             {/* 2x2 Features Grid */}
@@ -151,7 +151,7 @@ export default function Warranty() {
           </div>
         </div>
       </section>
-                
+
       {/* In-House Warranty + Sidebar Section */}
       <section className="wr-info-sidebar-section">
         <div className="wr-info-sidebar-container">
@@ -162,11 +162,11 @@ export default function Warranty() {
             </div>
 
             <p className="wr-info-text">
-              At Noorrix Motors, we are committed to providing excellent customer
-              service and supporting our customers after their vehicle purchase. As
-              part of this commitment, we offer an in-house customer service warranty
-              for the first month, and in some cases up to three months, following
-              the purchase of a vehicle.
+              At Noorrix Motors, we are committed to providing excellent
+              customer service and supporting our customers after their vehicle
+              purchase. As part of this commitment, we offer an in-house
+              customer service warranty for the first month, and in some cases
+              up to three months, following the purchase of a vehicle.
             </p>
 
             <h3 className="wr-info-ext-title">
@@ -174,22 +174,23 @@ export default function Warranty() {
             </h3>
 
             <p className="wr-info-text">
-              If an issue arises with the vehicle during this period, we may cover
-              the cost of the required repair as a goodwill gesture, subject to our
-              assessment of the issue and the circumstances involved.
+              If an issue arises with the vehicle during this period, we may
+              cover the cost of the required repair as a goodwill gesture,
+              subject to our assessment of the issue and the circumstances
+              involved.
             </p>
 
             <p className="wr-info-text">
               This is an in-house customer service warranty provided directly by
-              Noorrix Motors. Any potential repair or support will be considered and
-              assessed by our team on a case-by-case basis.
+              Noorrix Motors. Any potential repair or support will be considered
+              and assessed by our team on a case-by-case basis.
             </p>
 
             <p className="wr-info-text">
-              Our team is always here to assist you and provide support after your
-              vehicle purchase. If you experience an issue during the applicable
-              warranty period, please contact us so that we can assess the matter
-              and discuss the appropriate next steps.
+              Our team is always here to assist you and provide support after
+              your vehicle purchase. If you experience an issue during the
+              applicable warranty period, please contact us so that we can
+              assess the matter and discuss the appropriate next steps.
             </p>
           </div>
 
@@ -209,21 +210,27 @@ export default function Warranty() {
         <div className="wr-cta-overlay" />
         <div className="wr-cta-glow" />
         <div className="wr-cta-container">
-          <span className="wr-cta-tag">Get Protected Today</span>
+          <span className="wr-cta-tag">We're Here to Support You</span>
+
           <h2 className="wr-cta-title">
-            Protect Your <span>Vehicle Today</span>
+            Drive with <span>Confidence</span>
           </h2>
+
           <p className="wr-cta-subtitle">
-            Drive away with added confidence knowing your vehicle is backed by
-            reliable warranty protection.
+            Our in-house customer service warranty is designed to provide
+            support after your vehicle purchase. If an issue arises during the
+            applicable warranty period, our team will assess the matter and
+            provide assistance where applicable.
           </p>
+
           <div className="wr-cta-buttons">
             <a
               href="#warranty-options"
               className="wr-cta-btn wr-cta-btn-primary"
             >
-              <FaClipboardList size={16} /> Explore Plans
+              <FaClipboardList size={16} /> Learn More
             </a>
+
             <Link href="/contact" className="wr-cta-btn wr-cta-btn-secondary">
               <FaPhoneAlt size={16} /> Contact Us
             </Link>
