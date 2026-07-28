@@ -414,6 +414,7 @@ function VehicleSpecsGrid({ car }) {
   const items = [
       { icon: <AiOutlineCar />,           label: "Make",          value: car.make },
       { icon: <MdOutlineDirectionsCar />, label: "Model",         value: car.model },
+      { icon: <AiOutlineCalendar />,      label: "Reg",           value: car.reg },
       { icon: <BsCalendar3 />,            label: "Year",          value: car.year },
       { icon: <TbEngine />,               label: "Engine",        value: car.engine },
       { icon: <BsFuelPump />,             label: "Fuel Type",     value: car.fuel },
