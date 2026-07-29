@@ -421,6 +421,8 @@ function VehicleSpecsGrid({ car }) {
       { icon: <BsSpeedometer2 />,         label: "Mileage",       value: car.mileage ? miles(car.mileage) : "-" },
       { icon: <BsGear />,                 label: "Transmission",  value: car.transmission },
       { icon: <MdOutlineDirectionsCar />, label: "Body Type",     value: car.body_type },
+      { icon: <GiCarDoor />,              label: "Doors",         value: car.doors },
+      { icon: <IoMdPerson />,             label: "Seats",         value: car.seats },
       { icon: <BsCalendarCheck />,        label: "MOT Date",      value: car.mot_date ? ukDate(car.mot_date) : "-" },
       { icon: <RiPaintBrushLine />,       label: "Colour",        value: car.colour },
       { icon: <HiCheckCircle />,          label: "History check", value: car.history_check },
