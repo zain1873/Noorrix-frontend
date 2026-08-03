@@ -59,6 +59,7 @@
 .sc-swiper .swiper-pagination-bullet {
   background: #555;
   opacity: 1;
+  display: none;
 }
 
 .sc-swiper .swiper-pagination-bullet-active {
