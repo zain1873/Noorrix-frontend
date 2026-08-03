@@ -475,8 +475,14 @@
 .swiper-button-next {
   display: none;
 }
+.view-all-stock-wrapper {
+  text-align: center;
+}
 .view-all-stock-link {
-  color: var(--theme-color);
+  background-color: var(--theme-color);
+  color: #fff;
+  text-decoration: underline;
+  padding: 20px;
 }
 
 .swiper-pagination-bullet {
