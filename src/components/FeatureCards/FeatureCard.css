@@ -475,16 +475,22 @@
 .swiper-button-next {
   display: none;
 }
+.view-all-stock-link {
+  color: var(--theme-color);
+}
 
 .swiper-pagination-bullet {
   width: 8px !important;
   height: 8px !important;
   background: #ccc !important;
   opacity: 1 !important;
+  display: none !important;
 }
 
 .swiper-pagination-bullet-active {
   background: var(--theme-color) !important;
+  display: none !important;
+
 }
 
 /* === Responsive === */

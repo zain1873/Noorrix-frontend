@@ -165,6 +165,9 @@ const FeatureCard = () => {
         ))}
       </Swiper>
       )}
+      <div className="view-all-stock-wrapper">
+        <a href="/stock" className="view-all-stock-link">View All Stock</a>
+      </div>
     </div>
   );
 };
