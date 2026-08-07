@@ -97,7 +97,7 @@ const FeatureCard = () => {
                 <HeartButton car={car} />
                 {car.status === "reserved" && <span className="reserved-badge">Reserved</span>}
                 {car.status === "sold" && <span className="sold-badge">Sold</span>}
-                <AutoTraderBadge />
+                <AutoTraderBadge showCarguru />
               </div>
 
               {/* Content Section */}
