@@ -655,8 +655,8 @@
 
 @media (max-width: 500px) {
   .logo {
-  width: 160px;
-  height: 90px;
+    width: 130px;
+    height: 78px;
 }
 }
 /* Login Button — Navbar */
