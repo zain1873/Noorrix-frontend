@@ -411,7 +411,7 @@ export default function OurStock({ cars = [], filters = null }) {
                   <HeartButton car={car} />
                   {car.status === "reserved" && <span className="reserved-badge">Reserved</span>}
                   {car.status === "sold" && <span className="sold-badge">Sold</span>}
-                  <AutoTraderBadge />
+                  <AutoTraderBadge showCarguru />
                 </div>
                 <div className="card-content">
                   <h2 className="car-title">{car.title}</h2>
