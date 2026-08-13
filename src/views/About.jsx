@@ -60,39 +60,34 @@ const companyValues = [
 // ─── Timeline Data ───────────────────────────────────────────────────────────
 const journeyMilestones = [
   {
-    year: "2012",
     number: "01",
     heading: "The Beginning",
     description:
-      "Noorrix Motors was founded with a simple vision — to provide quality used cars with honest, transparent service. What started as a small operation quickly gained a reputation for reliability.",
+      "Founded in 2026, Noorrix Motors began with a clear vision — to make buying a quality used vehicle simple, transparent, and trustworthy. From day one, our focus has been on putting customers first.",
   },
   {
-    year: "2015",
     number: "02",
-    heading: "Growing Our Inventory",
+    heading: "Building Our Collection",
     description:
-      "As demand grew, we expanded our showroom and diversified our inventory to include a wider range of makes and models, catering to more drivers across the region.",
+      "We carefully source a diverse selection of quality used cars and vans, giving customers access to reliable vehicles across a range of makes, models, specifications, and budgets.",
   },
   {
-    year: "2018",
     number: "03",
-    heading: "Expanding Services",
+    heading: "Putting Customers First",
     description:
-      "We launched additional services including vehicle sourcing, part exchange, and professional dent & paint repair, becoming a one-stop destination for car buyers.",
+      "We believe buying a vehicle should be straightforward and stress-free. Our team is committed to honest communication, clear vehicle information, and professional service throughout the buying journey.",
   },
   {
-    year: "2021",
     number: "04",
-    heading: "Digital Transformation",
+    heading: "More Than Just Cars",
     description:
-      "Embracing modern technology, we revamped our online presence with a user-friendly website, virtual tours, and digital financing options for a seamless buying experience.",
+      "From vehicle sourcing and part exchange to after-sales support and vehicle care, we continue to develop services designed to make every part of your automotive journey easier.",
   },
   {
-    year: "2024",
     number: "05",
-    heading: "Trusted by Thousands",
+    heading: "Looking Ahead",
     description:
-      "Today, Noorrix Motors is a trusted name with thousands of satisfied customers, hundreds of vehicles sold, and a growing team dedicated to automotive excellence.",
+      "As a growing dealership, our goal is to build lasting relationships with our customers and become a name people can rely on for quality vehicles, honest service, and a better car-buying experience.",
   },
 ];
 
@@ -166,7 +161,7 @@ function About() {
           <div className="about-hero-stats">
             <div className="about-hero-stat-item">
               <span className="about-hero-stat-number">
-                500<span>+</span>
+                100<span>+</span>
               </span>
               <span className="about-hero-stat-label">Cars Sold</span>
             </div>
@@ -178,13 +173,13 @@ function About() {
             </div>
             <div className="about-hero-stat-item">
               <span className="about-hero-stat-number">
-                12<span>+</span>
+                1<span>+</span>
               </span>
               <span className="about-hero-stat-label">Years Experience</span>
             </div>
             <div className="about-hero-stat-item">
               <span className="about-hero-stat-number">
-                1K<span>+</span>
+                100<span>+</span>
               </span>
               <span className="about-hero-stat-label">Happy Customers</span>
             </div>
@@ -208,7 +203,7 @@ function About() {
               />
               <div className="about-story-image-accent" />
               <div className="about-story-badge">
-                <span className="about-story-badge-number">12+</span>
+                <span className="about-story-badge-number">1+</span>
                 <span className="about-story-badge-text">
                   Years of <br />
                   Excellence
