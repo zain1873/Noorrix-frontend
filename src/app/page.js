@@ -4,6 +4,9 @@ export const metadata = {
   title: "Noorrix Motors | Quality Used Cars UK",
   description:
     "Browse quality used cars at Noorrix Motors. Part exchange, warranty, servicing and nationwide delivery.",
+  other: {
+    "google-site-verification": "ve-wE6-Z_V6TVozOwkwYgyMGqPdDr76cTr2YCl7OvdU",
+  },
 };
 
 const BASE = process.env.NEXT_PUBLIC_API_URL?.trim();
