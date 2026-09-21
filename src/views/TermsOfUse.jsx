@@ -34,7 +34,7 @@ const policySections = [
     icon: <FaBuilding />,
     title: "About Us & Contact Details",
     content:
-      'www.noorrixmotors.co.uk is operated by NOORRIX MOTORS LTD. We are a company registered in England and Wales under company number 17150029. Our registered office and principal trading address is: 16 Eastside, Cauldwell Walk, Bedford MK42 9DT, United Kingdom. To contact us, please email info@noorrixmotors.co.uk, call our customer support team on 07300 503113, or write to us at the address above.',
+      'NOORRIX MOTORS LTD. We are a company registered in England and Wales under company number 17150029. Our registered office and principal trading address is: 16 Eastside, Cauldwell Walk, Bedford MK42 9DT, United Kingdom. To contact us, please email info@noorrixmotors.co.uk, call our customer support team on 07300 503113, or write to us at the address above.',
   },
   {
     icon: <FaFileSignature />,

@@ -2,16 +2,15 @@
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { getFilters } from "../../lib/cars";
+import { BUDGET_MIN, BUDGET_MAX, BUDGET_STEP } from "../../lib/priceBands";
 import "./Filter.css";
 
 const DEFAULT_TRANSMISSIONS = ["Automatic", "Manual", "CVT", "Semi-Automatic"];
 
-// Budget slider — matched to the actual used-car inventory (most stock is well under £30k).
+// Budget slider bounds live in lib/priceBands.js (shared with the stock page and the
+// sidebar search) and start at £1,500 to match the actual inventory.
 // The slider at its MAX is treated as "Any budget" (no upper price limit), so a default
 // search never filters cars out — the user must slide down to constrain the price.
-const BUDGET_MIN = 5000;
-const BUDGET_MAX = 50000;
-const BUDGET_STEP = 1000;
 
 export default function HeroFilter() {
   const router = useRouter();

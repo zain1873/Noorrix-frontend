@@ -6,7 +6,7 @@ import NoorrixFooter from "../components/Footer/Footer";
 import {
   FaCalendarAlt, FaTachometerAlt, FaCog, FaLeaf, FaGasPump, FaClone,
   FaCar, FaPhoneAlt, FaExchangeAlt, FaThLarge, FaTint, FaTag,
-  FaSlidersH, FaChevronDown, FaTimes, FaCheck,
+  FaSlidersH, FaChevronDown, FaTimes, FaCheck, FaCheckCircle,
 } from "react-icons/fa";
 import "../components/FeatureCards/FeatureCard.css";
 import "./OurStock.css";
@@ -14,6 +14,7 @@ import { useAuth, loginGate } from "../context/AuthContext";
 import { gbp, miles, cc, ukDate, carUrl } from "../lib/format";
 import HeartButton from "../components/HeartButton/HeartButton";
 import AutoTraderBadge from "../components/AutoTraderBadge/AutoTraderBadge";
+import { PRICE_BANDS } from "../lib/priceBands";
 
 /* ── Fallback filter options (used until /api/filters/ provides live ones) ── */
 const DEFAULT_BODY_TYPES    = ["SUV", "Hatchback", "Saloon", "Estate", "Coupe", "Convertible", "MPV", "Van"];
@@ -21,13 +22,10 @@ const DEFAULT_FUEL_TYPES    = ["Petrol", "Diesel", "Hybrid", "Electric", "Mild H
 const DEFAULT_TRANSMISSIONS = ["Automatic", "Manual", "CVT", "Semi-Automatic"];
 const DEFAULT_COLOURS       = ["Black", "White", "Silver", "Grey", "Blue", "Red", "Green", "Orange"];
 
-const DEFAULT_PRICE_OPTIONS = [
-  { label: "Under £10,000",      min: 0,     max: 10000    },
-  { label: "£10,000 – £15,000",  min: 10000, max: 15000    },
-  { label: "£15,000 – £20,000",  min: 15000, max: 20000    },
-  { label: "£20,000 – £30,000",  min: 20000, max: 30000    },
-  { label: "£30,000+",           min: 30000, max: Infinity  },
-];
+/* Availability filter — "Available" and "Sold" each show ONLY cars with that status.
+   /api/filters/ sends `statuses`; reserved is deliberately never offered as an option. */
+const DEFAULT_STATUSES = ["available", "sold"];
+const statusLabel = (value) => (value ? value.charAt(0).toUpperCase() + value.slice(1) : "");
 const DEFAULT_MILEAGE_OPTIONS = [
   { label: "Under 20,000",       min: 0,      max: 20000    },
   { label: "20,000 – 50,000",    min: 20000,  max: 50000    },
@@ -44,6 +42,7 @@ const filterConfig = [
   { key: "colour",       label: "Colour",       Icon: FaTint        },
   { key: "price",        label: "Price",        Icon: FaTag         },
   { key: "mileage",      label: "Mileage",      Icon: FaTachometerAlt },
+  { key: "status",       label: "Availability", Icon: FaCheckCircle },
 ];
 
 /* Convert API ranges ({max:null} = no upper bound) to numeric ranges; fall back to defaults. */
@@ -83,8 +82,18 @@ export default function OurStock({ cars = [], filters = null }) {
   const fuelTypes      = f.fuelTypes || DEFAULT_FUEL_TYPES;
   const transmissions  = f.transmissions || DEFAULT_TRANSMISSIONS;
   const colours        = f.colours || DEFAULT_COLOURS;
-  const priceOptions   = normRanges(f.priceRanges,   DEFAULT_PRICE_OPTIONS);
   const mileageOptions = normRanges(f.mileageRanges, DEFAULT_MILEAGE_OPTIONS);
+
+  // Price: use the API's bands only once they reach down to the budget end of the
+  // inventory (first band ≤ £1,500). An API still serving the old "Under £10,000"
+  // first band would put every car in one band, so fall back to lib/priceBands.js.
+  const apiPriceOptions = normRanges(f.priceRanges, null);
+  const priceOptions    = apiPriceOptions?.[0]?.max <= 1500 ? apiPriceOptions : PRICE_BANDS;
+
+  // Availability: API `statuses`, narrowed to the two we offer.
+  const statusOptions = (Array.isArray(f.statuses) && f.statuses.length ? f.statuses : DEFAULT_STATUSES)
+    .filter((v) => DEFAULT_STATUSES.includes(v))
+    .map((v) => ({ label: statusLabel(v), value: v }));
 
   const initialPrice = parsePriceFromParams(searchParams, priceOptions);
 
@@ -98,6 +107,7 @@ export default function OurStock({ cars = [], filters = null }) {
   const [priceRange,   setPriceRange]   = useState(initialPrice.range);
   const [mileageLabel, setMileageLabel] = useState("");
   const [mileageRange, setMileageRange] = useState({ min: 0, max: Infinity });
+  const [status,       setStatus]       = useState(() => searchParams.get("status") || "");
 
   const [showModal,      setShowModal]      = useState(false);
   const [expandedFilter, setExpandedFilter] = useState(null);
@@ -113,12 +123,13 @@ export default function OurStock({ cars = [], filters = null }) {
       if (colour       && car.colour       !== colour)       return false;
       if (car.price   < priceRange.min   || car.price   > priceRange.max)   return false;
       if (car.mileage < mileageRange.min || car.mileage > mileageRange.max) return false;
+      if (status       && car.status       !== status)       return false;
       return true;
     }),
-    [cars, make, model, bodyType, fuelType, transmission, colour, priceRange, mileageRange]
+    [cars, make, model, bodyType, fuelType, transmission, colour, priceRange, mileageRange, status]
   );
 
-  const activeCount = [make, model, bodyType, fuelType, transmission, colour, priceLabel, mileageLabel].filter(Boolean).length;
+  const activeCount = [make, model, bodyType, fuelType, transmission, colour, priceLabel, mileageLabel, status].filter(Boolean).length;
 
   /* ── Helpers ── */
   const clearAll = () => {
@@ -126,6 +137,7 @@ export default function OurStock({ cars = [], filters = null }) {
     setTransmission(""); setColour("");
     setPriceLabel("");   setPriceRange({ min: 0, max: Infinity });
     setMileageLabel(""); setMileageRange({ min: 0, max: Infinity });
+    setStatus("");
   };
 
   const handleSearch = () => {
@@ -148,6 +160,7 @@ export default function OurStock({ cars = [], filters = null }) {
       case "colour":       return !!colour;
       case "price":        return !!priceLabel;
       case "mileage":      return !!mileageLabel;
+      case "status":       return !!status;
       default:             return false;
     }
   };
@@ -162,6 +175,7 @@ export default function OurStock({ cars = [], filters = null }) {
       case "colour":       return colour       || "Any Colour";
       case "price":        return priceLabel   || "Price";
       case "mileage":      return mileageLabel || "Mileage";
+      case "status":       return statusLabel(status) || "Availability";
       default:             return key;
     }
   };
@@ -176,6 +190,7 @@ export default function OurStock({ cars = [], filters = null }) {
       case "colour":       return colours;
       case "price":        return priceOptions.map((o) => o.label);
       case "mileage":      return mileageOptions.map((o) => o.label);
+      case "status":       return statusOptions.map((o) => o.label);
       default:             return [];
     }
   };
@@ -190,6 +205,7 @@ export default function OurStock({ cars = [], filters = null }) {
       case "colour":       return colour       === value;
       case "price":        return priceLabel   === value;
       case "mileage":      return mileageLabel === value;
+      case "status":       return statusLabel(status) === value;
       default:             return false;
     }
   };
@@ -225,6 +241,11 @@ export default function OurStock({ cars = [], filters = null }) {
         else { const o = mileageOptions.find((x) => x.label === value); if (o) { setMileageLabel(o.label); setMileageRange({ min: o.min, max: o.max }); } }
         break;
       }
+      case "status": {
+        const o = statusOptions.find((x) => x.label === value);
+        setStatus((p) => (o && p === o.value ? "" : o?.value || ""));
+        break;
+      }
       default: break;
     }
   };
@@ -239,6 +260,7 @@ export default function OurStock({ cars = [], filters = null }) {
       if (key !== "colour"       && colour       && car.colour       !== colour)       return false;
       if (key !== "price"   && (car.price   < priceRange.min   || car.price   > priceRange.max))   return false;
       if (key !== "mileage" && (car.mileage < mileageRange.min || car.mileage > mileageRange.max)) return false;
+      if (key !== "status"  && status && car.status !== status) return false;
       switch (key) {
         case "make":         return car.make         === value;
         case "model":        return car.model        === value;
@@ -253,6 +275,10 @@ export default function OurStock({ cars = [], filters = null }) {
         case "mileage": {
           const o = mileageOptions.find((x) => x.label === value);
           return o ? car.mileage >= o.min && car.mileage <= o.max : false;
+        }
+        case "status": {
+          const o = statusOptions.find((x) => x.label === value);
+          return o ? car.status === o.value : false;
         }
         default: return false;
       }
