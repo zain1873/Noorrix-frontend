@@ -3,17 +3,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { FaSearch, FaPhoneAlt, FaPhoneVolume, FaMobileAlt, FaEnvelope } from "react-icons/fa";
 import { getFilters } from "../../lib/cars";
+import { MAX_PRICE_OPTIONS as priceOptions } from "../../lib/priceBands";
 import "./VehicleSidebar.css";
-
-const priceOptions = [
-  { label: "Under £5,000", max: 5000 },
-  { label: "Under £10,000", max: 10000 },
-  { label: "Under £15,000", max: 15000 },
-  { label: "Under £20,000", max: 20000 },
-  { label: "Under £30,000", max: 30000 },
-  { label: "Under £50,000", max: 50000 },
-  { label: "No Maximum", max: null },
-];
 
 export default function VehicleSidebar() {
   const router = useRouter();

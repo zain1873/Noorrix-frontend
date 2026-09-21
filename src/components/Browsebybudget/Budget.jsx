@@ -4,11 +4,13 @@ import { useRouter } from "next/navigation";
 import { getCars } from "../../lib/cars";
 import "./Budjet.css";
 
+// Same ladder as the site-wide price filters (lib/priceBands.js) — starts at £1,500.
+// Bands with no stock in them are dropped below, so an empty band never shows.
 const BUDGET_BANDS = [
-  { label: "Under £3k", max: 3000 },
-  { label: "Under £4k", max: 4000 },
-  { label: "Under £5k", max: 5000 },
-  { label: "Under £10k", max: 10000 },
+  { label: "Under £1.5k", max: 1500 },
+  { label: "Under £3k",   max: 3000 },
+  { label: "Under £5k",   max: 5000 },
+  { label: "Under £10k",  max: 10000 },
 ];
 
 const BrowseByBudget = () => {
