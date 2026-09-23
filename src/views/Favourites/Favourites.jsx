@@ -8,9 +8,9 @@ import {
 import Navbar from "../../components/Navbar/Navbar";
 import NoorrixFooter from "../../components/Footer/Footer";
 import HeartButton from "../../components/HeartButton/HeartButton";
+import { SignInPanel } from "../../components/SignInPrompt/SignInPrompt";
 import { useAuth, loginGate } from "../../context/AuthContext";
-import { getCars } from "../../lib/cars";
-import { getFavourites, getGuestFavouriteIds } from "../../lib/favourites";
+import { getFavourites } from "../../lib/favourites";
 import { gbp, miles, cc, ukDate, carUrl } from "../../lib/format";
 import "../../components/FeatureCards/FeatureCard.css";
 import "../OurStock.css";
@@ -23,21 +23,12 @@ export default function Favourites() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!hydrated) return;
+    if (!hydrated || !user) return;
     let active = true;
 
     (async () => {
       setLoading(true);
-      let result = [];
-      if (user) {
-        result = await getFavourites();
-      } else {
-        const guestIds = new Set(getGuestFavouriteIds());
-        if (guestIds.size) {
-          const all = await getCars();
-          result = (all || []).filter((c) => guestIds.has(c.id));
-        }
-      }
+      const result = await getFavourites();
       if (active) {
         setCars(Array.isArray(result) ? result : []);
         setLoading(false);
@@ -61,10 +52,12 @@ export default function Favourites() {
 
       <div className="stock-browse-section">
         <h2 className="stock-browse-title">
-          Your Favourites <span className="stock-browse-count">({cars.length})</span>
+          Your Favourites {user && <span className="stock-browse-count">({cars.length})</span>}
         </h2>
 
-        {!loading && cars.length === 0 ? (
+        {hydrated && !user ? (
+          <SignInPanel returnTo="/favourites" />
+        ) : !loading && cars.length === 0 ? (
           <div className="fav-empty">
             <FaHeartBroken size={36} />
             <p>No saved cars yet</p>

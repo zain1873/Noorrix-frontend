@@ -7,25 +7,25 @@ import {
   addFavourite,
   removeFavourite,
   getGuestFavouriteIds,
-  setGuestFavouriteIds,
   clearGuestFavourites,
 } from "../lib/favourites";
+import SignInPrompt from "../components/SignInPrompt/SignInPrompt";
 
 const FavouritesContext = createContext(null);
 
 export function FavouritesProvider({ children }) {
   const { user, hydrated } = useAuth();
   const [ids, setIds] = useState(new Set());
+  const [promptOpen, setPromptOpen] = useState(false);
   const migratedRef = useRef(false);
 
-  // Guest favourites live in localStorage. On login, migrate them to the
-  // account once (silent POSTs), then load the canonical backend list.
+  // Favourites require an account. Guests get a sign-in prompt instead.
+  // Any legacy guest favourites left in localStorage are migrated once on login.
   useEffect(() => {
     if (!hydrated) return;
 
     if (!user) {
       migratedRef.current = false;
-      setIds(new Set(getGuestFavouriteIds()));
       return;
     }
 
@@ -46,9 +46,16 @@ export function FavouritesProvider({ children }) {
     return () => { active = false; };
   }, [user, hydrated]);
 
-  const isFavourite = useCallback((id) => ids.has(id), [ids]);
+  const closePrompt = useCallback(() => setPromptOpen(false), []);
+
+  const isFavourite = useCallback((id) => !!user && ids.has(id), [ids, user]);
 
   const toggleFavourite = useCallback(async (car) => {
+    if (!user) {
+      setPromptOpen(true);
+      return false;
+    }
+
     const id = car.id;
     const wasFav = ids.has(id);
 
@@ -57,13 +64,6 @@ export function FavouritesProvider({ children }) {
       if (wasFav) next.delete(id); else next.add(id);
       return next;
     });
-
-    if (!user) {
-      const current = getGuestFavouriteIds();
-      const next = wasFav ? current.filter((x) => x !== id) : [...current, id];
-      setGuestFavouriteIds(next);
-      return true;
-    }
 
     try {
       if (wasFav) await removeFavourite(id);
@@ -80,8 +80,9 @@ export function FavouritesProvider({ children }) {
   }, [ids, user]);
 
   return (
-    <FavouritesContext.Provider value={{ isFavourite, toggleFavourite, count: ids.size }}>
+    <FavouritesContext.Provider value={{ isFavourite, toggleFavourite, count: user ? ids.size : 0 }}>
       {children}
+      <SignInPrompt open={promptOpen} onClose={closePrompt} />
     </FavouritesContext.Provider>
   );
 }
