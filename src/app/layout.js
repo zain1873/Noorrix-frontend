@@ -3,6 +3,7 @@ import "../styles/global.css";
 
 import ScrollToHash from "@/components/ScrollToHash";
 import WhatsAppButton from "@/components/WhatsApp/WhatsAppButton";
+import ChatBot from "@/components/ChatBot/ChatBot";
 
 import { AuthProvider } from "@/context/AuthContext";
 import { FavouritesProvider } from "@/context/FavouritesContext";
@@ -21,7 +22,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      {/* Browser extensions (e.g. ColorZilla) add attributes to <body> before React loads */}
+      <body suppressHydrationWarning>
         {/* Google Fonts */}
         <link
           rel="preconnect"
@@ -48,6 +50,7 @@ export default function RootLayout({ children }) {
         </AuthProvider>
 
         <WhatsAppButton />
+        <ChatBot />
       </body>
     </html>
   );
