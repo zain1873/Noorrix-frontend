@@ -649,6 +649,113 @@
   border-radius: 10px;
 }
 
+.stock-retry {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--theme-color);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── Browse header: title + sort ── */
+.stock-browse-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stock-browse-header .stock-browse-title {
+  margin-bottom: 0;
+}
+
+.stock-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stock-sort-label {
+  font-size: 14px;
+  color: var(--muted-text);
+}
+
+.stock-sort-select {
+  padding: 9px 14px;
+  border-radius: 50px;
+  border: 1.5px solid #ddd5c8;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-main);
+  cursor: pointer;
+}
+
+.stock-sort-select:hover,
+.stock-sort-select:focus-visible {
+  border-color: var(--theme-color);
+}
+
+/* Previous results stay visible, dimmed, while the next page loads */
+.stock-cards-grid--loading {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+/* ── Pagination ── */
+.stock-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 36px;
+}
+
+.stock-page-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 50px;
+  border: 1.5px solid #ddd5c8;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.stock-page-btn:hover:not(:disabled) {
+  border-color: var(--theme-color);
+  color: var(--theme-color);
+}
+
+.stock-page-btn--active,
+.stock-page-btn--active:hover:not(:disabled) {
+  background: var(--theme-color);
+  border-color: var(--theme-color);
+  color: #fff;
+}
+
+.stock-page-btn:disabled:not(.stock-page-btn--active) {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.stock-page-gap {
+  color: var(--muted-text);
+  padding: 0 4px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1200px) {
   .stock-cards-grid {

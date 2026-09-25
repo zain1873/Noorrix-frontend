@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import OurStock from "@/views/OurStock";
-import { getCars, getFilters } from "@/lib/cars";
+import { getFilters } from "@/lib/cars";
 
 export const metadata = {
   title: "Our Stock | Noorrix Motors",
@@ -9,15 +9,16 @@ export const metadata = {
 };
 
 export default async function Page() {
-  // Server-fetch the inventory + filter options (ISR). All client-side filtering
-  // then runs on this array inside OurStock — same logic as before.
-  const [cars, filters] = await Promise.all([getCars(), getFilters()]);
+  // Server-fetch only the filter options (ISR). The cars themselves are paged,
+  // filtered and sorted by the API — OurStock fetches one page at a time in the
+  // browser, driven by the URL query string.
+  const filters = await getFilters();
 
-  // OurStock uses useSearchParams() (to read filters from the Home hero filter),
+  // OurStock uses useSearchParams() (filters, sort and page live in the URL),
   // which requires a Suspense boundary in Next.js to avoid build-time bailout errors.
   return (
     <Suspense fallback={null}>
-      <OurStock cars={cars} filters={filters} />
+      <OurStock filters={filters} />
     </Suspense>
   );
 }

@@ -89,7 +89,7 @@ export default function ChatCarCard({ car }) {
         <div className="ncb-car-actions">
           <a href={carUrl(car)} className="ncb-car-btn ncb-car-btn--primary">View Details</a>
           {!sold && (
-            <a href={BOOKING_URL} className="ncb-car-btn ncb-car-btn--book">
+            <a href={`/appointment?car=${car.id}#appointment-form`} className="ncb-car-btn ncb-car-btn--book">
               <FaCalendarAlt size={13} /> Book Test Drive
             </a>
           )}
