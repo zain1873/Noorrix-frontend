@@ -5,6 +5,7 @@ import { FaCalendarAlt, FaTachometerAlt, FaCog, FaGasPump, FaWhatsapp, FaCar } f
 import { gbp, miles, carUrl } from "../../lib/format";
 
 const WHATSAPP_NUMBER = "447300503113"; // same number as the WhatsApp float button
+export const BOOKING_URL = "/appointment#appointment-form"; // "Pick a vehicle" section of the appointment page
 
 const STATUS = {
   available: { label: "Available", cls: "ncb-car-status--available" },
@@ -87,6 +88,11 @@ export default function ChatCarCard({ car }) {
 
         <div className="ncb-car-actions">
           <a href={carUrl(car)} className="ncb-car-btn ncb-car-btn--primary">View Details</a>
+          {!sold && (
+            <a href={`/appointment?car=${car.id}#appointment-form`} className="ncb-car-btn ncb-car-btn--book">
+              <FaCalendarAlt size={13} /> Book Test Drive
+            </a>
+          )}
           <a
             href={whatsappLink(car)}
             target="_blank"

@@ -4,7 +4,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { HiXMark, HiPaperAirplane, HiMinus } from "react-icons/hi2";
 import { SiChatbot } from "react-icons/si";
 import { getCars } from "../../lib/cars";
-import ChatCarCard, { ChatCarCardSkeleton } from "./ChatCarCard";
+import ChatCarCard, { ChatCarCardSkeleton, BOOKING_URL } from "./ChatCarCard";
 import "./ChatBot.css";
 
 const WELCOME = {
@@ -15,8 +15,9 @@ const WELCOME = {
 // `href` chips open a page; the rest are sent to the assistant as a message.
 const QUICK_REPLIES = [
   { label: "Find me a car" },
+  { label: "Book a test drive", href: BOOKING_URL },
   { label: "Browse all stock", href: "/stock" },
-  { label: "Part exchange my car" },
+  { label: "Part exchange my car", href: "/part-exchange#valuation-form" },
   { label: "Book a service" },
   { label: "Contact the team" },
 ];
@@ -136,7 +137,9 @@ export default function ChatBot() {
 
       if (!res.ok || !res.body) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "chat_failed");
+        const error = new Error(data.error || "chat_failed");
+        error.fromServer = Boolean(data.error);
+        throw error;
       }
 
       const reader = res.body.getReader();
@@ -157,9 +160,9 @@ export default function ChatBot() {
       if (!started) throw new Error("empty_reply");
     } catch (err) {
       if (err.name === "AbortError") return;
-      const msg = err.message && !["chat_failed", "empty_reply"].includes(err.message)
-        ? `${err.message} You can also call us on 07300 503113.`
-        : FALLBACK;
+      // Our API's error messages already include the phone link — show them as they are.
+      // Anything else (network failure, empty reply) gets the generic fallback.
+      const msg = err.fromServer ? err.message : FALLBACK;
       if (started) appendToBot("\n\n" + FALLBACK);
       else setMessages((m) => [...m, { from: "bot", text: msg }]);
     } finally {
@@ -172,9 +175,24 @@ export default function ChatBot() {
     send(input);
   };
 
+  // A link to a section of the page we're already on (e.g. the booking link while on
+  // /appointment) only scrolls, so close the chat to reveal it.
+  const onPanelClick = (e) => {
+    const a = e.target.closest?.("a[href]");
+    if (!a || a.target === "_blank") return;
+    const url = new URL(a.href, window.location.href);
+    if (url.hash && url.pathname === window.location.pathname) setOpen(false);
+  };
+
   return (
     <div className={`ncb ${open ? "ncb--open" : ""}`}>
-      <section className="ncb-panel" role="dialog" aria-label="Noorrix Motors chat assistant" aria-hidden={!open}>
+      <section
+        className="ncb-panel"
+        role="dialog"
+        aria-label="Noorrix Motors chat assistant"
+        aria-hidden={!open}
+        onClick={onPanelClick}
+      >
         <header className="ncb-header">
           <div className="ncb-avatar">
             <SiChatbot size={20} />

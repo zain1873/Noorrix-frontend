@@ -27,25 +27,31 @@ function rateLimited(ip) {
   return recent.length > RATE_LIMIT;
 }
 
+// Error messages are shown to the customer as-is (the chat renders the markdown link).
+const CALL = "[Call 07300 503113](tel:07300503113)";
+const UNAVAILABLE = `Chat is unavailable right now. Please try again later, or ${CALL}.`;
+
 const fail = (message, status) => NextResponse.json({ error: message }, { status });
 
 export async function POST(request) {
   const apiKey = process.env.GROQ_API_KEY?.trim();
   if (!apiKey) {
     console.error("[chat route] GROQ_API_KEY is not set");
-    return fail("Chat is unavailable right now.", 503);
+    return fail(UNAVAILABLE, 503);
   }
 
+  // Only in production — locally every request shares one IP ("local"), so testing would trip it.
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "local";
-  if (rateLimited(ip)) {
-    return fail("You're sending messages too quickly. Please wait a few minutes, or call us on 07300 503113.", 429);
+  if (process.env.NODE_ENV === "production" && rateLimited(ip)) {
+    return fail(`You've sent a lot of messages in a short time. Please try again in a few minutes, or ${CALL}.`, 429);
   }
 
+  const INVALID = `Sorry, something went wrong. Please try again, or ${CALL}.`;
   let body;
   try {
     body = await request.json();
   } catch {
-    return fail("Invalid request.", 400);
+    return fail(INVALID, 400);
   }
 
   const messages = (Array.isArray(body?.messages) ? body.messages : [])
@@ -54,7 +60,7 @@ export async function POST(request) {
     .map((m) => ({ role: m.role, content: m.content.trim().slice(0, MAX_MESSAGE_LEN) }));
 
   if (!messages.length || messages[messages.length - 1].role !== "user") {
-    return fail("Invalid request.", 400);
+    return fail(INVALID, 400);
   }
 
   const cars = await getCars();
@@ -77,15 +83,14 @@ export async function POST(request) {
     });
   } catch (err) {
     console.error("[chat route] Groq request failed:", err?.message);
-    return fail("Chat is unavailable right now.", 503);
+    return fail(UNAVAILABLE, 503);
   }
 
   if (!groqRes.ok || !groqRes.body) {
     console.error("[chat route] Groq status:", groqRes.status, (await groqRes.text().catch(() => "")).slice(0, 300));
-    return fail(
-      groqRes.status === 429 ? "Our assistant is busy right now." : "Chat is unavailable right now.",
-      groqRes.status === 429 ? 429 : 503
-    );
+    return groqRes.status === 429
+      ? fail(`Our assistant is busy right now. Please try again in a minute, or ${CALL}.`, 429)
+      : fail(UNAVAILABLE, 503);
   }
 
   // Groq streams OpenAI-style SSE ("data: {...}\n\n"). Forward only the text

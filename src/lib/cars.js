@@ -21,8 +21,26 @@ async function getJSON(path, { revalidate = 60, fallback = null } = {}) {
   }
 }
 
-/** All available cars — the stock list. */
+/** All available cars as a plain array (no `page` param) — chatbot, home sections, brand pages. */
 export const getCars = () => getJSON(`/api/cars/`, { fallback: [] });
+
+/**
+ * One page of the stock list, filtered/sorted on the server — the Our Stock page.
+ * `query` is an API query string (page, page_size, make, price_max, ordering…).
+ * Sending `page` switches the response to { count, page, page_size, total_pages, next,
+ * previous, results }. Called from the browser, so `signal` lets a newer request cancel
+ * this one. Returns null on failure (including abort, or a response that isn't paged).
+ */
+export async function getCarsPage(query, { signal } = {}) {
+  try {
+    const res = await fetch(`${BASE}/api/cars/?${query}`, { signal });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return Array.isArray(data?.results) ? data : null;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * Cars filtered by brand slug (e.g. "mercedes-benz") — Used Cars by Brand page.

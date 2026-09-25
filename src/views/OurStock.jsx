@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Navbar from "../components/Navbar/Navbar";
 import NoorrixFooter from "../components/Footer/Footer";
 import {
@@ -15,6 +15,7 @@ import { gbp, miles, cc, ukDate, carUrl } from "../lib/format";
 import HeartButton from "../components/HeartButton/HeartButton";
 import AutoTraderBadge from "../components/AutoTraderBadge/AutoTraderBadge";
 import { PRICE_BANDS } from "../lib/priceBands";
+import { getCarsPage } from "../lib/cars";
 
 /* ── Fallback filter options (used until /api/filters/ provides live ones) ── */
 const DEFAULT_BODY_TYPES    = ["SUV", "Hatchback", "Saloon", "Estate", "Coupe", "Convertible", "MPV", "Van"];
@@ -45,6 +46,23 @@ const filterConfig = [
   { key: "status",       label: "Availability", Icon: FaCheckCircle },
 ];
 
+/* ── Paging + sort (the API does the filtering, sorting and slicing) ── */
+const PAGE_SIZE = 12;
+const DEFAULT_SORT = "-created_at";
+const SORT_OPTIONS = [
+  { value: "-created_at", label: "Newest" },
+  { value: "price",       label: "Price: low to high" },
+  { value: "-price",      label: "Price: high to low" },
+  { value: "mileage",     label: "Mileage: low to high" },
+  { value: "-year",       label: "Year: newest first" },
+];
+
+/* The page URL keeps the param names other pages already link with
+   (e.g. Home hero filter → /stock?make=BMW&priceMax=15000); these map them to the API's. */
+const STRING_PARAMS = { make: "make", model: "model", bodyType: "body_type", fuel: "fuel", transmission: "transmission", colour: "colour" };
+const RANGE_PARAMS  = { price: ["price_min", "price_max"], mileage: ["mileage_min", "mileage_max"] };
+const FILTER_URL_KEYS = [...Object.keys(STRING_PARAMS), "priceMin", "priceMax", "mileageMin", "mileageMax", "status"];
+
 /* Convert API ranges ({max:null} = no upper bound) to numeric ranges; fall back to defaults. */
 function normRanges(ranges, fallback) {
   return Array.isArray(ranges) && ranges.length
@@ -52,25 +70,83 @@ function normRanges(ranges, fallback) {
     : fallback;
 }
 
-/* Reads price values arriving from the URL — e.g. Home hero filter → /stock?make=BMW&priceMax=15000 */
-function parsePriceFromParams(sp, priceOptions) {
-  const hasMin = sp.has("priceMin");
-  const hasMax = sp.has("priceMax");
-  if (!hasMin && !hasMax) return { label: "", range: { min: 0, max: Infinity } };
-  const min = hasMin ? Number(sp.get("priceMin")) : 0;
-  const max = hasMax ? Number(sp.get("priceMax")) : Infinity;
-  const preset = priceOptions.find((o) => o.min === min && o.max === max);
-  let label;
-  if (preset)       label = preset.label;
-  else if (!hasMin) label = `Up to £${max.toLocaleString()}`;
-  else if (!hasMax) label = `£${min.toLocaleString()}+`;
-  else              label = `£${min.toLocaleString()} – £${max.toLocaleString()}`;
-  return { label, range: { min, max } };
+/* Whole number ≥ 0 from a URL value, or null if missing/invalid. */
+function wholeNumber(value) {
+  if (value == null || value === "") return null;
+  const n = Math.round(Number(value));
+  return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
+/* {min, max} from e.g. priceMin/priceMax in the URL; null = no bound (a min of 0 is no bound too). */
+function rangeFromParams(sp, prefix) {
+  return { min: wholeNumber(sp.get(`${prefix}Min`)) || null, max: wholeNumber(sp.get(`${prefix}Max`)) };
+}
+
+/* Pill label for a URL range: the matching preset band, else a readable custom range. */
+function rangeLabel({ min, max }, options, fmt) {
+  if (min == null && max == null) return "";
+  const preset = options.find((o) => o.min === (min ?? 0) && o.max === (max ?? Infinity));
+  if (preset)        return preset.label;
+  if (min == null)   return `Up to ${fmt(max)}`;
+  if (max == null)   return `${fmt(min)}+`;
+  return `${fmt(min)} – ${fmt(max)}`;
+}
+
+/* URL params for a chosen band (null = clear it). Unbounded ends are left out. */
+function rangeToParams(prefix, band) {
+  return {
+    [`${prefix}Min`]: band?.min > 0 ? band.min : null,
+    [`${prefix}Max`]: band && Number.isFinite(band.max) ? band.max : null,
+  };
+}
+
+const pageNumber = (sp) => Math.max(1, parseInt(sp.get("page"), 10) || 1);
+const sortValue  = (sp) => (SORT_OPTIONS.some((o) => o.value === sp.get("sort")) ? sp.get("sort") : DEFAULT_SORT);
+
+/* Page URL → API query string. Params with no (valid) value are left out. */
+function buildApiQuery(sp) {
+  const api = new URLSearchParams({ page: String(pageNumber(sp)), page_size: String(PAGE_SIZE) });
+  for (const [key, apiKey] of Object.entries(STRING_PARAMS)) {
+    const value = sp.get(key);
+    if (value) api.set(apiKey, value);
+  }
+  for (const [prefix, [minKey, maxKey]] of Object.entries(RANGE_PARAMS)) {
+    const { min, max } = rangeFromParams(sp, prefix);
+    if (min != null) api.set(minKey, String(min));
+    if (max != null) api.set(maxKey, String(max));
+  }
+  const status = sp.get("status");
+  if (DEFAULT_STATUSES.includes(status)) api.set("status", status);
+  const sort = sortValue(sp);
+  if (sort !== DEFAULT_SORT) api.set("ordering", sort);
+  return api.toString();
+}
+
+/* Current URL with `changes` applied; a null/empty value removes that param. */
+function buildHref(pathname, sp, changes) {
+  const next = new URLSearchParams(sp.toString());
+  for (const [key, value] of Object.entries(changes)) {
+    if (value == null || value === "") next.delete(key);
+    else next.set(key, String(value));
+  }
+  const qs = next.toString();
+  return qs ? `${pathname}?${qs}` : pathname;
+}
+
+/* Page buttons: first, last, and the current page ±1, with "…" for the gaps. */
+function pageList(current, total) {
+  const pages = [];
+  for (let p = 1; p <= total; p++) {
+    if (p === 1 || p === total || Math.abs(p - current) <= 1) pages.push(p);
+    else if (pages[pages.length - 1] !== "…") pages.push("…");
+  }
+  return pages;
 }
 
 /* ─────────────────── Component ─────────────────── */
-export default function OurStock({ cars = [], filters = null }) {
+export default function OurStock({ filters = null }) {
   const router       = useRouter();
+  const pathname     = usePathname();
   const searchParams = useSearchParams();
   const { user }     = useAuth();
 
@@ -95,50 +171,73 @@ export default function OurStock({ cars = [], filters = null }) {
     .filter((v) => DEFAULT_STATUSES.includes(v))
     .map((v) => ({ label: statusLabel(v), value: v }));
 
-  const initialPrice = parsePriceFromParams(searchParams, priceOptions);
-
-  const [make,         setMake]         = useState(() => searchParams.get("make")         || "");
-  const [model,        setModel]        = useState(() => searchParams.get("model")        || "");
-  const [bodyType,     setBodyType]     = useState(() => searchParams.get("bodyType")     || "");
-  const [fuelType,     setFuelType]     = useState(() => searchParams.get("fuel")         || "");
-  const [transmission, setTransmission] = useState(() => searchParams.get("transmission") || "");
-  const [colour,       setColour]       = useState(() => searchParams.get("colour")       || "");
-  const [priceLabel,   setPriceLabel]   = useState(initialPrice.label);
-  const [priceRange,   setPriceRange]   = useState(initialPrice.range);
-  const [mileageLabel, setMileageLabel] = useState("");
-  const [mileageRange, setMileageRange] = useState({ min: 0, max: Infinity });
-  const [status,       setStatus]       = useState(() => searchParams.get("status") || "");
+  /* ── Current filters, sort and page: the URL is the single source of truth, so
+        refresh, back/forward and shared links all restore the same view ── */
+  const make         = searchParams.get("make")         || "";
+  const model        = searchParams.get("model")        || "";
+  const bodyType     = searchParams.get("bodyType")     || "";
+  const fuelType     = searchParams.get("fuel")         || "";
+  const transmission = searchParams.get("transmission") || "";
+  const colour       = searchParams.get("colour")       || "";
+  const status       = DEFAULT_STATUSES.includes(searchParams.get("status")) ? searchParams.get("status") : "";
+  const priceLabel   = rangeLabel(rangeFromParams(searchParams, "price"),   priceOptions,   (n) => `£${n.toLocaleString()}`);
+  const mileageLabel = rangeLabel(rangeFromParams(searchParams, "mileage"), mileageOptions, (n) => `${n.toLocaleString()} miles`);
+  const sort         = sortValue(searchParams);
+  const page         = pageNumber(searchParams);
+  const apiQuery     = buildApiQuery(searchParams);
 
   const [showModal,      setShowModal]      = useState(false);
   const [expandedFilter, setExpandedFilter] = useState(null);
 
-  /* ── Derived ── */
-  const filtered = useMemo(
-    () => cars.filter((car) => {
-      if (make         && car.make         !== make)         return false;
-      if (model        && car.model        !== model)        return false;
-      if (bodyType     && car.body_type    !== bodyType)     return false;
-      if (fuelType     && car.fuel         !== fuelType)     return false;
-      if (transmission && car.transmission !== transmission) return false;
-      if (colour       && car.colour       !== colour)       return false;
-      if (car.price   < priceRange.min   || car.price   > priceRange.max)   return false;
-      if (car.mileage < mileageRange.min || car.mileage > mileageRange.max) return false;
-      if (status       && car.status       !== status)       return false;
-      return true;
-    }),
-    [cars, make, model, bodyType, fuelType, transmission, colour, priceRange, mileageRange, status]
-  );
+  /* ── Fetch the current page. Each new query aborts the in-flight request, so a slow
+        response can never overwrite a newer one. `result.query` is the query the shown
+        data belongs to — while it differs from `apiQuery`, a request is in flight. ── */
+  const [result,  setResult]  = useState({ query: null, data: null, failed: false });
+  const [attempt, setAttempt] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    getCarsPage(apiQuery, { signal: controller.signal }).then((data) => {
+      if (controller.signal.aborted) return;
+      setResult({ query: apiQuery, data, failed: !data });
+    });
+    return () => controller.abort();
+  }, [apiQuery, attempt]);
+
+  const loading    = result.query !== apiQuery;
+  const data       = result.data;
+  const cars       = data?.results ?? [];
+  const count      = data?.count ?? 0;
+  const totalPages = data?.total_pages ?? 0;
+
+  // A page past the last one (e.g. a stale shared link) comes back empty — jump to page 1.
+  useEffect(() => {
+    if (result.query === apiQuery && data && data.results.length === 0 && data.count > 0 && page > 1) {
+      router.replace(buildHref(pathname, searchParams, { page: null }), { scroll: false });
+    }
+  }, [result.query, apiQuery, data, page, router, pathname, searchParams]);
 
   const activeCount = [make, model, bodyType, fuelType, transmission, colour, priceLabel, mileageLabel, status].filter(Boolean).length;
 
   /* ── Helpers ── */
-  const clearAll = () => {
-    setMake(""); setModel(""); setBodyType(""); setFuelType("");
-    setTransmission(""); setColour("");
-    setPriceLabel("");   setPriceRange({ min: 0, max: Infinity });
-    setMileageLabel(""); setMileageRange({ min: 0, max: Infinity });
-    setStatus("");
+  /* Update the URL (which triggers the fetch). Filter and sort changes go back to page 1. */
+  const navigate = (changes, { resetPage = true } = {}) => {
+    const href = buildHref(pathname, searchParams, resetPage ? { ...changes, page: null } : changes);
+    router.push(href, { scroll: false });
   };
+
+  const goToPage = (p) => {
+    navigate({ page: p > 1 ? p : null }, { resetPage: false });
+    document.getElementById("browse-section")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const retry = () => {
+    setResult((r) => ({ ...r, query: null }));
+    setAttempt((n) => n + 1);
+  };
+
+  // Clears every filter; the chosen sort stays.
+  const clearAll = () => navigate(Object.fromEntries(FILTER_URL_KEYS.map((key) => [key, null])));
 
   const handleSearch = () => {
     setShowModal(false);
@@ -210,79 +309,35 @@ export default function OurStock({ cars = [], filters = null }) {
     }
   };
 
+  // Clicking the selected option again clears that filter.
+  const toggle = (current, value) => (current === value ? null : value);
+
   const selectOption = (key, value) => {
     switch (key) {
-      case "make":
-        setMake((p) => (p === value ? "" : value));
-        setModel("");
-        break;
-      case "model":
-        setModel((p) => (p === value ? "" : value));
-        break;
-      case "bodyType":
-        setBodyType((p) => (p === value ? "" : value));
-        break;
-      case "fuel":
-        setFuelType((p) => (p === value ? "" : value));
-        break;
-      case "transmission":
-        setTransmission((p) => (p === value ? "" : value));
-        break;
-      case "colour":
-        setColour((p) => (p === value ? "" : value));
-        break;
+      case "make":         navigate({ make: toggle(make, value), model: null }); break;
+      case "model":        navigate({ model:        toggle(model, value) });        break;
+      case "bodyType":     navigate({ bodyType:     toggle(bodyType, value) });     break;
+      case "fuel":         navigate({ fuel:         toggle(fuelType, value) });     break;
+      case "transmission": navigate({ transmission: toggle(transmission, value) }); break;
+      case "colour":       navigate({ colour:       toggle(colour, value) });       break;
       case "price": {
-        if (priceLabel === value) { setPriceLabel(""); setPriceRange({ min: 0, max: Infinity }); }
-        else { const o = priceOptions.find((x) => x.label === value); if (o) { setPriceLabel(o.label); setPriceRange({ min: o.min, max: o.max }); } }
+        const band = priceLabel === value ? null : priceOptions.find((x) => x.label === value);
+        navigate(rangeToParams("price", band));
         break;
       }
       case "mileage": {
-        if (mileageLabel === value) { setMileageLabel(""); setMileageRange({ min: 0, max: Infinity }); }
-        else { const o = mileageOptions.find((x) => x.label === value); if (o) { setMileageLabel(o.label); setMileageRange({ min: o.min, max: o.max }); } }
+        const band = mileageLabel === value ? null : mileageOptions.find((x) => x.label === value);
+        navigate(rangeToParams("mileage", band));
         break;
       }
       case "status": {
         const o = statusOptions.find((x) => x.label === value);
-        setStatus((p) => (o && p === o.value ? "" : o?.value || ""));
+        navigate({ status: o && status !== o.value ? o.value : null });
         break;
       }
       default: break;
     }
   };
-
-  const getCount = (key, value) =>
-    cars.filter((car) => {
-      if (key !== "make"         && make         && car.make         !== make)         return false;
-      if (key !== "model"        && model        && car.model        !== model)        return false;
-      if (key !== "bodyType"     && bodyType     && car.body_type    !== bodyType)     return false;
-      if (key !== "fuel"         && fuelType     && car.fuel         !== fuelType)     return false;
-      if (key !== "transmission" && transmission && car.transmission !== transmission) return false;
-      if (key !== "colour"       && colour       && car.colour       !== colour)       return false;
-      if (key !== "price"   && (car.price   < priceRange.min   || car.price   > priceRange.max))   return false;
-      if (key !== "mileage" && (car.mileage < mileageRange.min || car.mileage > mileageRange.max)) return false;
-      if (key !== "status"  && status && car.status !== status) return false;
-      switch (key) {
-        case "make":         return car.make         === value;
-        case "model":        return car.model        === value;
-        case "bodyType":     return car.body_type    === value;
-        case "fuel":         return car.fuel         === value;
-        case "transmission": return car.transmission === value;
-        case "colour":       return car.colour       === value;
-        case "price": {
-          const o = priceOptions.find((x) => x.label === value);
-          return o ? car.price >= o.min && car.price <= o.max : false;
-        }
-        case "mileage": {
-          const o = mileageOptions.find((x) => x.label === value);
-          return o ? car.mileage >= o.min && car.mileage <= o.max : false;
-        }
-        case "status": {
-          const o = statusOptions.find((x) => x.label === value);
-          return o ? car.status === o.value : false;
-        }
-        default: return false;
-      }
-    }).length;
 
   /* ─────────────────── Render ─────────────────── */
   return (
@@ -387,7 +442,6 @@ export default function OurStock({ cars = [], filters = null }) {
                           <p className="stock-modal-empty">Select a make first</p>
                         ) : (
                           options.map((opt) => {
-                            const count    = getCount(f.key, opt);
                             const selected = isSelected(f.key, opt);
                             return (
                               <div
@@ -399,7 +453,6 @@ export default function OurStock({ cars = [], filters = null }) {
                                   {selected && <FaCheck size={8} />}
                                 </div>
                                 <span className="stock-modal-option-label">{opt}</span>
-                                <span className="stock-modal-option-count">({count})</span>
                               </div>
                             );
                           })
@@ -422,15 +475,36 @@ export default function OurStock({ cars = [], filters = null }) {
 
       {/* Browse Section */}
       <div className="stock-browse-section" id="browse-section">
-        <h2 className="stock-browse-title">
-          Browse All Cars <span className="stock-browse-count">({filtered.length})</span>
-        </h2>
+        <div className="stock-browse-header">
+          <h2 className="stock-browse-title">
+            Browse All Cars
+            {data && <span className="stock-browse-count">{count} {count === 1 ? "car" : "cars"} found</span>}
+          </h2>
+          <label className="stock-sort">
+            <span className="stock-sort-label">Sort by</span>
+            <select
+              className="stock-sort-select"
+              value={sort}
+              onChange={(e) => navigate({ sort: e.target.value === DEFAULT_SORT ? null : e.target.value })}
+            >
+              {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          </label>
+        </div>
 
-        {filtered.length === 0 ? (
+        {result.failed && !loading ? (
+          <div className="stock-no-results">
+            We couldn&apos;t load cars right now.{" "}
+            <button type="button" className="stock-retry" onClick={retry}>Try again</button>
+          </div>
+        ) : !data || (loading && count === 0) ? (
+          <div className="stock-no-results" role="status">Loading cars…</div>
+        ) : count === 0 ? (
           <div className="stock-no-results">No vehicles match your search. Try adjusting your filters.</div>
         ) : (
-          <div className="stock-cards-grid">
-            {filtered.map((car) => (
+          <>
+          <div className={`stock-cards-grid${loading ? " stock-cards-grid--loading" : ""}`} aria-busy={loading}>
+            {cars.map((car) => (
               <div key={car.id} className="mazda-card" onClick={() => router.push(carUrl(car))} style={{ cursor: "pointer" }}>
                 <div className="card-image-container">
                   <img src={car.image_url} alt={car.title} className="card-image" />
@@ -476,6 +550,44 @@ export default function OurStock({ cars = [], filters = null }) {
               </div>
             ))}
           </div>
+
+          {totalPages > 1 && (
+            <nav className="stock-pagination" aria-label="Stock pages">
+              <button
+                type="button"
+                className="stock-page-btn"
+                onClick={() => goToPage(page - 1)}
+                disabled={page <= 1 || loading}
+              >
+                ‹ Prev
+              </button>
+              {pageList(page, totalPages).map((p, i) =>
+                p === "…" ? (
+                  <span key={`gap-${i}`} className="stock-page-gap">…</span>
+                ) : (
+                  <button
+                    key={p}
+                    type="button"
+                    className={`stock-page-btn${p === page ? " stock-page-btn--active" : ""}`}
+                    onClick={() => goToPage(p)}
+                    disabled={loading}
+                    aria-current={p === page ? "page" : undefined}
+                  >
+                    {p}
+                  </button>
+                )
+              )}
+              <button
+                type="button"
+                className="stock-page-btn"
+                onClick={() => goToPage(page + 1)}
+                disabled={page >= totalPages || loading}
+              >
+                Next ›
+              </button>
+            </nav>
+          )}
+          </>
         )}
       </div>
 

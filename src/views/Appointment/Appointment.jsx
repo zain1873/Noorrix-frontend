@@ -115,8 +115,22 @@ function CarPickerSection() {
     getCars()
       .then((data) => {
         if (active) {
-          setCars(Array.isArray(data) ? data : data?.cars || []);
+          const list = Array.isArray(data) ? data : data?.cars || [];
+          setCars(list);
           setLoading(false);
+
+          // Opened from the chat's "Book Test Drive" button (/appointment?car=ID) —
+          // open that car's test drive form straight away, then drop the param so a
+          // refresh doesn't reopen it.
+          const params = new URLSearchParams(window.location.search);
+          const carId = params.get("car");
+          if (carId) {
+            const car = list.find((c) => String(c.id) === carId && c.status !== "sold");
+            if (car) setSelectedCar(car);
+            params.delete("car");
+            const query = params.toString();
+            window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
+          }
         }
       })
       .catch((err) => {
