@@ -20,3 +20,7 @@
   transform: scale(1.1);
   box-shadow: 0 6px 18px rgba(0,0,0,0.3);
 }
+/* Hidden — replaced by the ChatBot launcher. Remove this rule to bring it back. */
+.whatsapp-float {
+  display: none;
+}
