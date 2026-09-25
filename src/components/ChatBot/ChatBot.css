@@ -489,6 +489,17 @@
   border-color: #25d366;
 }
 
+.ncb-car-btn--book {
+  color: var(--ncb-primary);
+  background: #fff;
+  border: 1.5px solid var(--ncb-primary);
+}
+
+.ncb-car-btn--book:hover {
+  color: #fff;
+  background: var(--ncb-primary);
+}
+
 /* Loading skeleton */
 .ncb-car--loading:hover {
   transform: none;

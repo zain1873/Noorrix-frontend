@@ -25,14 +25,15 @@ function carLine(car) {
   return `- ${parts.filter(Boolean).join(" | ")}`;
 }
 
-const BUDGET_STEPS = [5000, 10000, 15000, 20000, 30000, 50000];
+// Fine steps first, so a small, cheap stock still gets more than one band;
+// fall back to the coarse steps if the fine ones give too many buttons.
+const FINE_BUDGET_STEPS = [2000, 3000, 5000, 10000, 15000, 20000, 30000, 50000];
+const COARSE_BUDGET_STEPS = [5000, 10000, 15000, 20000, 30000, 50000];
+const MAX_BANDS = 4; // plus "Any budget" → at most 5 buttons
 const k = (n) => `£${n.toLocaleString("en-GB")}`;
 
-/** Budget ranges that actually contain cars, e.g. "Under £5,000", "£5,000 – £10,000", "£30,000+". */
-function budgetBands(cars) {
-  const prices = cars.map((c) => Number(c.price)).filter((p) => p > 0);
-  if (!prices.length) return [];
-  const edges = [0, ...BUDGET_STEPS, Infinity];
+function bandsFor(prices, steps) {
+  const edges = [0, ...steps, Infinity];
   const bands = [];
   for (let i = 0; i < edges.length - 1; i++) {
     const [lo, hi] = [edges[i], edges[i + 1]];
@@ -42,24 +43,28 @@ function budgetBands(cars) {
   return bands;
 }
 
-const FEW_CARS = 3;
+/** Budget ranges that actually contain cars, e.g. "Under £5,000", "£5,000 – £10,000", "£30,000+". */
+function budgetBands(cars) {
+  const prices = cars.map((c) => Number(c.price)).filter((p) => p > 0);
+  if (!prices.length) return [];
+  const fine = bandsFor(prices, FINE_BUDGET_STEPS);
+  return fine.length <= MAX_BANDS ? fine : bandsFor(prices, COARSE_BUDGET_STEPS);
+}
+
+const MAX_CARDS = 3;
 
 /** How to handle "Find me a car" — decided here, not by the model, so it stays consistent. */
 function searchFlow(forSale) {
-  if (forSale.length <= FEW_CARS) {
-    return `- We only have ${forSale.length} car(s) for sale, so when the customer asks to find or see cars, show all of them straight away — do not ask budget or gearbox questions.`;
+  if (!forSale.length) {
+    return `- We have no cars for sale right now, so when the customer asks to find a car, say so and offer [Vehicle sourcing](/vehicle-sourcing) or a call.`;
   }
-  const steps = [];
-  if (budgetBands(forSale).length > 1) steps.push(`Budget — ask for their budget (in the customer's language) with the budget options above.`);
+  const steps = [`Budget — ask for their budget (in the customer's language) with the budget options above.`];
   if (new Set(forSale.map((c) => c.transmission).filter(Boolean)).size > 1) {
     steps.push(`Gearbox — ask automatic or manual (in the customer's language) with the gearbox options. Skip this if all cars in their budget have the same gearbox.`);
   }
-  if (!steps.length) {
-    return `- When the customer asks to find or see cars, show up to ${FEW_CARS} cars straight away.`;
-  }
-  return `- If the customer asks to find or see cars without saying what they want (e.g. "Find me a car"), help them narrow down one question at a time, each with an options tag:
+  return `- If the customer asks to find or see cars without saying what they want (e.g. "Find me a car"), always start by asking their budget — do not show cars yet. Help them narrow down one question at a time, each with an options tag:
 ${steps.map((st, i) => `  ${i + 1}. ${st}`).join("\n")}
-  Then show up to ${FEW_CARS} matching cars. Skip any question the customer has already answered (e.g. "automatic under £10k" → show cars straight away).`;
+  Then show up to ${MAX_CARDS} matching cars ("Any budget" means every car). Skip any question the customer has already answered (e.g. "automatic under £10k" → show cars straight away).`;
 }
 
 export function buildSystemPrompt(cars = []) {
@@ -111,12 +116,18 @@ Example: [See all matching cars](/stock?make=BMW&transmission=Automatic&priceMax
 You can show tappable answer buttons under your message by ending it with an options tag on its own line:
 [[options: First | Second | Third]]
 - Keep each option short (1–4 words). 2–5 options. The customer can still type their own answer.
-- Budget options for the current stock (use exactly these, never invent other ranges): ${budgetBands(forSale).join(" | ") || "(none)"}
+- Budget options for the current stock (use exactly these, never invent other ranges): ${[...budgetBands(forSale), "Any budget"].join(" | ")}
 - Gearbox options: ${values("transmission")}, plus "Any"
-- Translate option labels if you are replying in Roman Urdu (e.g. "Any" → "Koi bhi"), but keep £ amounts as they are.
+- Translate option labels if you are replying in Roman Urdu (e.g. "Any" → "Koi bhi", "Any budget" → "Koi bhi budget"), but keep £ amounts as they are.
+
+## Booking a test drive or appointment
+- Bookings are made on the appointment page, where the customer picks a car and then a date and time: [Book a test drive](/appointment#appointment-form)
+- When the customer wants to book a test drive, a viewing or a visit, give that link. If they mentioned a car, you can show its card too — cards for cars for sale have a "Book Test Drive" button.
+- Never take the date, time, name or phone number in the chat, and never say a booking is confirmed — the booking form does that.
+- For servicing or MOT on the customer's own car, send them to [Servicing](/servicing) instead.
 
 ## Showing cars
-The chat shows a car as a card (photo, name, year, price, mileage, transmission, fuel, status, a "View Details" button and a "WhatsApp" button) when you write its card tag on its own line: [[car:ID]] — for example [[car:44]].
+The chat shows a car as a card (photo, name, year, price, mileage, transmission, fuel, status, a "View Details" button, a "Book Test Drive" button for cars for sale, and a "WhatsApp" button) when you write its card tag on its own line: [[car:ID]] — for example [[car:44]].
 - Before each card, write one short line about why it suits the customer. Do not repeat the price or specs in text and do not add a separate link — the card already shows them.
 - Show at most 3 cards per reply.
 ${searchFlow(forSale)}
