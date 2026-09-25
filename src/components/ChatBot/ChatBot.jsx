@@ -68,9 +68,35 @@ function renderText(rawText, carsById, carsStatus) {
   return out;
 }
 
+// The conversation is kept in sessionStorage: it survives page changes and refreshes,
+// and the browser deletes it when the tab is closed.
+const STORAGE_KEY = "noorrix-chat";
+const MAX_STORED = 30; // messages kept, not counting the welcome message
+
+function loadMessages() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY));
+    const valid = Array.isArray(saved)
+      ? saved.filter((m) => (m?.from === "user" || m?.from === "bot") && typeof m.text === "string")
+      : [];
+    return [WELCOME, ...valid.slice(-MAX_STORED)];
+  } catch {
+    return [WELCOME];
+  }
+}
+
+function saveMessages(messages) {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(1).slice(-MAX_STORED)));
+  } catch {
+    /* storage full or blocked (private mode) — the chat still works, it just isn't kept */
+  }
+}
+
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([WELCOME]);
+  const restoredRef = useRef(false);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const listRef = useRef(null);
@@ -103,6 +129,22 @@ export default function ChatBot() {
   }, [open]);
 
   useEffect(() => () => abortRef.current?.abort(), []);
+
+  // Save after every change — but only once the saved chat has been restored,
+  // so the initial welcome-only state never overwrites it.
+  useEffect(() => {
+    if (restoredRef.current) saveMessages(messages);
+  }, [messages]);
+
+  // The saved chat is restored the first time the chat is opened (the panel is closed
+  // on page load, and restoring here keeps the server and client render identical).
+  const toggleOpen = () => {
+    if (!restoredRef.current) {
+      restoredRef.current = true;
+      setMessages(loadMessages());
+    }
+    setOpen((o) => !o);
+  };
 
   // Appends streamed text to the last (bot) message.
   const appendToBot = (chunk) =>
@@ -275,7 +317,7 @@ export default function ChatBot() {
       <button
         type="button"
         className="ncb-launcher"
-        onClick={() => setOpen((o) => !o)}
+        onClick={toggleOpen}
         aria-label={open ? "Close chat" : "Chat with us"}
         aria-expanded={open}
       >

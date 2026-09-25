@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
         </AuthProvider>
 
         <WhatsAppButton />
-        {/* <ChatBot /> */}
+        <ChatBot />
       </body>
     </html>
   );
