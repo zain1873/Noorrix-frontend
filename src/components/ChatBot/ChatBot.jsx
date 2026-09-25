@@ -68,9 +68,40 @@ function renderText(rawText, carsById, carsStatus) {
   return out;
 }
 
+// The conversation is kept in sessionStorage: it survives page changes and refreshes,
+// and the browser deletes it when the tab is closed. It is also cleared after a minute
+// with no activity (no new message and no typing).
+const STORAGE_KEY = "noorrix-chat";
+const MAX_STORED = 30; // messages kept, not counting the welcome message
+const IDLE_MS = 60 * 1000;
+
+/** Saved chat plus the time of its last activity; a fresh chat if none or it has gone idle. */
+function loadMessages() {
+  const fresh = { messages: [WELCOME], lastActive: Date.now() };
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY));
+    if (!Array.isArray(saved?.messages) || !(Date.now() - saved.lastActive < IDLE_MS)) return fresh;
+    const valid = saved.messages.filter((m) => (m?.from === "user" || m?.from === "bot") && typeof m.text === "string");
+    return { messages: [WELCOME, ...valid.slice(-MAX_STORED)], lastActive: saved.lastActive };
+  } catch {
+    return fresh;
+  }
+}
+
+function saveMessages(messages, lastActive) {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ messages: messages.slice(1).slice(-MAX_STORED), lastActive }));
+  } catch {
+    /* storage full or blocked (private mode) — the chat still works, it just isn't kept */
+  }
+}
+
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([WELCOME]);
+  const restoredRef = useRef(false);
+  const restoringRef = useRef(false); // the next messages change is the restore, not new activity
+  const lastActiveRef = useRef(0);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const listRef = useRef(null);
@@ -103,6 +134,39 @@ export default function ChatBot() {
   }, [open]);
 
   useEffect(() => () => abortRef.current?.abort(), []);
+
+  // Save after every change — but only once the saved chat has been restored,
+  // so the initial welcome-only state never overwrites it.
+  useEffect(() => {
+    if (!restoredRef.current) return;
+    if (restoringRef.current) restoringRef.current = false;
+    else lastActiveRef.current = Date.now();
+    saveMessages(messages, lastActiveRef.current);
+  }, [messages]);
+
+  // Empty the chat once it has been idle for a minute. Paused while a reply is streaming;
+  // typing in the box counts as activity.
+  useEffect(() => {
+    if (typing || messages.length <= 1) return;
+    const timer = setTimeout(() => {
+      setMessages([WELCOME]);
+      setInput("");
+    }, Math.max(0, lastActiveRef.current + IDLE_MS - Date.now()));
+    return () => clearTimeout(timer);
+  }, [messages, input, typing]);
+
+  // The saved chat is restored the first time the chat is opened (the panel is closed
+  // on page load, and restoring here keeps the server and client render identical).
+  const toggleOpen = () => {
+    if (!restoredRef.current) {
+      restoredRef.current = true;
+      restoringRef.current = true;
+      const saved = loadMessages();
+      lastActiveRef.current = saved.lastActive;
+      setMessages(saved.messages);
+    }
+    setOpen((o) => !o);
+  };
 
   // Appends streamed text to the last (bot) message.
   const appendToBot = (chunk) =>
@@ -260,7 +324,10 @@ export default function ChatBot() {
             ref={inputRef}
             type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              lastActiveRef.current = Date.now();
+              setInput(e.target.value);
+            }}
             placeholder="Type your message…"
             aria-label="Type your message"
             maxLength={500}
@@ -275,7 +342,7 @@ export default function ChatBot() {
       <button
         type="button"
         className="ncb-launcher"
-        onClick={() => setOpen((o) => !o)}
+        onClick={toggleOpen}
         aria-label={open ? "Close chat" : "Chat with us"}
         aria-expanded={open}
       >

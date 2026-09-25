@@ -477,8 +477,7 @@ export default function OurStock({ filters = null }) {
       <div className="stock-browse-section" id="browse-section">
         <div className="stock-browse-header">
           <h2 className="stock-browse-title">
-            Browse All Cars
-            {data && <span className="stock-browse-count">{count} {count === 1 ? "car" : "cars"} found</span>}
+            {data && count > 0 ? `Browse All ${count} ${count === 1 ? "Car" : "Cars"}` : "Browse All Cars"}
           </h2>
           <label className="stock-sort">
             <span className="stock-sort-label">Sort by</span>
