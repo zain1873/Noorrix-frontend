@@ -27,7 +27,7 @@ function carLine(car) {
 
 // Fine steps first, so a small, cheap stock still gets more than one band;
 // fall back to the coarse steps if the fine ones give too many buttons.
-const FINE_BUDGET_STEPS = [2000, 3000, 5000, 10000, 15000, 20000, 30000, 50000];
+const FINE_BUDGET_STEPS = [1500, 3000, 5000, 10000, 15000, 20000, 30000, 50000];
 const COARSE_BUDGET_STEPS = [5000, 10000, 15000, 20000, 30000, 50000];
 const MAX_BANDS = 4; // plus "Any budget" → at most 5 buttons
 const k = (n) => `£${n.toLocaleString("en-GB")}`;
