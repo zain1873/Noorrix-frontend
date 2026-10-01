@@ -98,6 +98,7 @@
   color: var(--theme-color);
   letter-spacing: 0.01em;
   background: #f5f6ff;
+  display: none;
 }
 .testimonial-badge svg {
   color: var(--theme-color);
