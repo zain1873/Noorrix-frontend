@@ -6,6 +6,9 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { FaStar, FaRegStar, FaCommentAlt, FaPen } from "react-icons/fa";
 import { getTestimonials } from "../../lib/testimonials";
 import ReviewModal from "./ReviewModal";
+// AutoTrader logo lives in public/assets/images (served at /assets/images/autoTraderLogo.svg),
+// so it's referenced by URL path rather than imported.
+const autoTraderLogo = "/assets/images/autoTraderLogo.svg"; 
 
 // Swiper core styles
 import "swiper/css";
@@ -151,10 +154,7 @@ export default function Testimonials() {
                   </div>
                 </div>
 
-                {/* Review */}
-                <p className="review-text">{t.review}</p>
-
-                {/* Author */}
+                {/* Author (moved to top) */}
                 <div className="author-row">
                   {t.photo_url ? (
                     <img
@@ -176,6 +176,23 @@ export default function Testimonials() {
                     <span className="author-name">{t.name}</span>
                     {t.role && <span className="author-title">{t.role}</span>}
                   </div>
+                </div>
+
+                {/* Review */}
+                <p className="review-text">{t.review}</p>
+
+                {/* Footer: quotation (left) + Autotrader logo (right) */}
+                <div className="card-footer">
+                  <svg className="quote-icon" viewBox="0 0 80 64" aria-hidden="true">
+                    <path d="M44.7465 35.343V0H79.9965V35.532H63.7465C63.7465 35.595 63.7465 35.658 63.7465 35.721C63.4965 39.438 64.184 42.966 66.184 46.116C68.309 49.518 71.4965 51.723 75.1215 53.172C75.684 53.361 76.1215 53.55 76.559 53.613C77.3715 53.865 77.8715 53.991 77.8715 53.991C77.8715 56.889 77.809 59.787 77.8715 62.685C68.684 63.945 59.3715 60.48 52.9965 53.676C48.809 49.203 46.1215 43.533 45.059 37.548C44.9965 37.233 44.934 36.981 44.934 36.729C44.8715 36.225 44.7465 35.847 44.7465 35.532C44.7465 35.469 44.684 35.406 44.7465 35.343Z" />
+                    <path transform="translate(-44.7465 0)" d="M44.7465 35.343V0H79.9965V35.532H63.7465C63.7465 35.595 63.7465 35.658 63.7465 35.721C63.4965 39.438 64.184 42.966 66.184 46.116C68.309 49.518 71.4965 51.723 75.1215 53.172C75.684 53.361 76.1215 53.55 76.559 53.613C77.3715 53.865 77.8715 53.991 77.8715 53.991C77.8715 56.889 77.809 59.787 77.8715 62.685C68.684 63.945 59.3715 60.48 52.9965 53.676C48.809 49.203 46.1215 43.533 45.059 37.548C44.9965 37.233 44.934 36.981 44.934 36.729C44.8715 36.225 44.7465 35.847 44.7465 35.532C44.7465 35.469 44.684 35.406 44.7465 35.343Z" />
+                  </svg>
+                  <img
+                    src={autoTraderLogo.src || autoTraderLogo}
+                    alt="Autotrader"
+                    className="source-logo"
+                    loading="lazy"
+                  />
                 </div>
               </div>
             </SwiperSlide>
