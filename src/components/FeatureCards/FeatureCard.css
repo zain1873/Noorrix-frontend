@@ -273,7 +273,7 @@
   margin: 0 0 12px;
   line-height: 1.4;
   font-weight: 500;
-  min-height: 34px;
+  min-height: 34px !important;
 }
 
 /* === Specs Grid === */
